@@ -30,11 +30,13 @@ import '@fontsource/public-sans/700.css';
 // project import
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import axios from 'axios';
+import config from './config';
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 // ==============================|| MAIN - REACT DOM RENDER ||============================== //
-
+axios.defaults.baseURL = config.baseURLApi;
+axios.defaults.headers.common['Content-Type'] = 'application/json';
 root.render(<App />);
 
 // If you want to start measuring performance in your app, pass a function
