@@ -5,7 +5,7 @@ import Loader from './Loader';
 
 // ==============================|| LOADABLE - LAZY LOADING ||============================== //
 
-const Loadable = (Component) => (props) => (
+const Loadable = (Component: React.FunctionComponent) => (props: JSX.IntrinsicAttributes) => (
   <Suspense fallback={<Loader />}>
     <Component {...props} />
   </Suspense>
