@@ -1,16 +1,10 @@
-import React from "react";
-import {
-  Paper,
-  TextField as Input,
-  InputAdornment,
-  Box,
-  Typography,
-} from "@mui/material";
-import { Search as SearchIcon } from "@mui/icons-material";
-import classnames from "classnames";
+import React from 'react';
+import { Paper, TextField as Input, InputAdornment, Box, Typography } from '@mui/material';
+import { Search as SearchIcon } from '@mui/icons-material';
+import classnames from 'classnames';
 
 // styles
-import useStyles from "./styles";
+import useStyles from './styles';
 
 interface WidgetProps {
   children?: React.ReactNode;
@@ -46,7 +40,7 @@ export default function Widget({
       className={classnames(
         {
           [classes.inheritHeight]: inheritHeight,
-          [classes.widgetWrapper]: !inheritHeight,
+          [classes.widgetWrapper]: !inheritHeight
         },
         className
       )}
@@ -54,30 +48,21 @@ export default function Widget({
     >
       <Paper
         className={classnames(classes.paper, {
-          [props.paperClass || "paper"]: props.paperClass,
+          [props.paperClass || 'paper']: props.paperClass
         })}
         classes={{ root: classes.widgetRoot }}
       >
         {!title ? (
-          <>
-            {header ? (
-              <div className={classes.widgetHeader}>{header}</div>
-            ) : null}
-          </>
+          <>{header ? <div className={classes.widgetHeader}>{header}</div> : null}</>
         ) : (
           <div className={classes.widgetHeader}>
-            <Box
-              display="flex"
-              alignItems={"center"}
-              justifyContent={"space-between"}
-              width={"100%"}
-            >
-              <Box display="flex" style={{ width: "calc(100% - 20px)" }}>
+            <Box display="flex" alignItems={'center'} justifyContent={'space-between'} width={'100%'}>
+              <Box display="flex" style={{ width: 'calc(100% - 20px)' }}>
                 <Typography variant="h6" color="textSecondary" noWrap>
                   {title}
                 </Typography>
                 <Box alignSelf="flex-end" ml={1}>
-                  <Typography color="textPrimary" variant={"caption"}>
+                  <Typography color="textPrimary" variant={'caption'}>
                     {subtitle}
                   </Typography>
                 </Box>
@@ -94,7 +79,7 @@ export default function Widget({
                       <InputAdornment position="start">
                         <SearchIcon className={classes.searchIcon} />
                       </InputAdornment>
-                    ),
+                    )
                   }}
                 />
               )}
@@ -105,7 +90,7 @@ export default function Widget({
           className={classnames(classes.widgetBody, {
             [classes.noPadding]: noBodyPadding,
             [classes.paddingTop]: !title && !noBodyPadding,
-            [bodyClass || "body"]: bodyClass,
+            [bodyClass || 'body']: bodyClass
           })}
         >
           {children}

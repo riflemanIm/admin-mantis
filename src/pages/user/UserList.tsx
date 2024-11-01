@@ -1,19 +1,10 @@
-import React from "react";
-import DateFnsAdapter from "@date-io/date-fns";
-import { useSnackbar } from "notistack";
-import { Box, Button, Stack } from "@mui/material";
-import {
-  GridActionsCellItem,
-  GridRowParams,
-  GridColDef,
-  GridRowSelectionModel,
-} from "@mui/x-data-grid";
-import Widget from "../../components/Widget/Widget";
-import {
-  useManagementDispatch,
-  useManagementState,
-  actions,
-} from "../../context/ManagementContext";
+import React from 'react';
+import DateFnsAdapter from '@date-io/date-fns';
+import { useSnackbar } from 'notistack';
+import { Box, Button, Stack } from '@mui/material';
+import { GridActionsCellItem, GridRowParams, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
+import Widget from '../../components/Widget';
+import { useManagementDispatch, useManagementState, actions } from '../../context/ManagementContext';
 
 // Icons
 import {
@@ -25,51 +16,44 @@ import {
   DeleteOutlined as DeleteIcon,
   Merge as MergeIcon,
   TokenOutlined as TokenIcon,
-  SmartToyOutlined as SmartToyIcon,
-} from "@mui/icons-material";
+  SmartToyOutlined as SmartToyIcon
+} from '@mui/icons-material';
 
-import {
-  AccountRole,
-  getEnumName,
-  listEnums,
-  RegistrationSource,
-  isNetRole,
-} from "../../helpers/enums";
-import { UserDto } from "../../helpers/dto";
-import { useUserState } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
-import TokenDialog from "./TokenDialog";
-import { useTranslation } from "react-i18next";
-import { DeleteDialog } from "../../components/Common/deleteDialog";
-import UserDetailsDialog from "./UserDetailsDialog";
-import { QuestionDialog } from "../../components/Common/questionDialog";
-import UserMergeDialog from "./UserMergeDialog";
-import { BaseListGrid } from "../../components/BaseListGrid";
+import { AccountRole, getEnumName, listEnums, RegistrationSource, isNetRole } from '../../helpers/enums';
+import { UserDto } from '../../helpers/dto';
+import { useUserState } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import TokenDialog from './TokenDialog';
+import { useTranslation } from 'react-i18next';
+import { DeleteDialog } from '../../components/Common/deleteDialog';
+import UserDetailsDialog from './UserDetailsDialog';
+import { QuestionDialog } from '../../components/Common/questionDialog';
+import UserMergeDialog from './UserMergeDialog';
+import { BaseListGrid } from '../../components/BaseListGrid';
 
 const UserList = (): JSX.Element => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const {
-    currentUser: { role },
+    currentUser: { role }
   } = useUserState();
 
   const { enqueueSnackbar } = useSnackbar();
   function sendNotification(text?: string | null) {
     if (!text) return;
     enqueueSnackbar(text, {
-      variant: "success",
+      variant: 'success'
     });
   }
 
-  const [selectionModel, setSelectionModel] =
-    React.useState<GridRowSelectionModel>([]);
+  const [selectionModel, setSelectionModel] = React.useState<GridRowSelectionModel>([]);
 
   const [issueToken, setIssueToken] = React.useState<{
     isOpen: boolean;
     userId?: number;
     medicalNetId?: number;
   }>({
-    isOpen: false,
+    isOpen: false
   });
 
   const [details, setDetails] = React.useState<{
@@ -77,7 +61,7 @@ const UserList = (): JSX.Element => {
     userId: number;
   }>({
     isOpen: false,
-    userId: 0,
+    userId: 0
   });
 
   const [merge, setMerge] = React.useState<{
@@ -85,7 +69,7 @@ const UserList = (): JSX.Element => {
     userIds: number[];
   }>({
     isOpen: false,
-    userIds: [],
+    userIds: []
   });
 
   const [question, setQuestion] = React.useState<{
@@ -95,8 +79,8 @@ const UserList = (): JSX.Element => {
     apply?: () => void;
   }>({
     isOpen: false,
-    title: "",
-    text: "",
+    title: '',
+    text: ''
   });
 
   const dispatch = useManagementDispatch();
@@ -113,7 +97,7 @@ const UserList = (): JSX.Element => {
   const closeQuestionDialog = () => {
     setQuestion({
       ...question,
-      isOpen: false,
+      isOpen: false
     });
   };
 
@@ -127,7 +111,7 @@ const UserList = (): JSX.Element => {
     actions
       .doDelete(managementValue.idToDelete as number)(dispatch)
       .then(() => {
-        sendNotification(t("COMMON.RECORDDELETED"));
+        sendNotification(t('COMMON.RECORDDELETED'));
       });
   };
 
@@ -137,24 +121,24 @@ const UserList = (): JSX.Element => {
 
   const closeTokenDialog = () => {
     setIssueToken({
-      isOpen: false,
+      isOpen: false
     });
   };
 
   const closeDetailsDialog = () => {
     setDetails({
       isOpen: false,
-      userId: 0,
+      userId: 0
     });
   };
 
   const closeMergeDialog = (success: boolean) => {
     setMerge({
       isOpen: false,
-      userIds: [],
+      userIds: []
     });
     if (success) {
-      dispatch({ type: "LIST_REFRESH" });
+      dispatch({ type: 'LIST_REFRESH' });
     }
   };
 
@@ -182,7 +166,7 @@ const UserList = (): JSX.Element => {
               setIssueToken({
                 isOpen: true,
                 userId: params.id as number,
-                medicalNetId: params.row.medicalNetId,
+                medicalNetId: params.row.medicalNetId
               })
             }
           />,
@@ -194,7 +178,7 @@ const UserList = (): JSX.Element => {
             onClick={() =>
               setDetails({
                 isOpen: true,
-                userId: params.id as number,
+                userId: params.id as number
               })
             }
           />,
@@ -207,9 +191,9 @@ const UserList = (): JSX.Element => {
             onClick={() => {
               setQuestion({
                 isOpen: true,
-                title: t("USER.ACTIVATE_TITLE"),
-                text: t("USER.ACTIVATE_TEXT"),
-                apply: () => doUserActivate(params.id as number),
+                title: t('USER.ACTIVATE_TITLE'),
+                text: t('USER.ACTIVATE_TEXT'),
+                apply: () => doUserActivate(params.id as number)
               });
             }}
           />,
@@ -219,7 +203,7 @@ const UserList = (): JSX.Element => {
             label="Delete"
             color="primary"
             onClick={() => openModal(params.id as number)}
-          />,
+          />
         ];
       }
       if (role === AccountRole.netAdmin) {
@@ -239,7 +223,7 @@ const UserList = (): JSX.Element => {
             onClick={() =>
               setDetails({
                 isOpen: true,
-                userId: params.id as number,
+                userId: params.id as number
               })
             }
           />,
@@ -250,7 +234,7 @@ const UserList = (): JSX.Element => {
             color="primary"
             disabled={!!params.row.mmk}
             onClick={() => openModal(params.id as number)}
-          />,
+          />
         ];
       }
       if (role === AccountRole.operator) {
@@ -270,7 +254,7 @@ const UserList = (): JSX.Element => {
             onClick={() =>
               setDetails({
                 isOpen: true,
-                userId: params.id as number,
+                userId: params.id as number
               })
             }
           />,
@@ -284,18 +268,18 @@ const UserList = (): JSX.Element => {
               actions.getChatIdentifiers(params.id as number).then((chat) => {
                 if (chat.warning) {
                   enqueueSnackbar(chat.warning, {
-                    variant: "warning",
+                    variant: 'warning'
                   });
                 }
                 // переходим в чат
-                navigate("/app/chat", {
+                navigate('/app/chat', {
                   state: {
-                    activeGroupId: chat.operatorGroupId,
-                  },
+                    activeGroupId: chat.operatorGroupId
+                  }
                 });
               });
             }}
-          />,
+          />
         ];
       }
       return [];
@@ -306,126 +290,110 @@ const UserList = (): JSX.Element => {
   const dateFns = new DateFnsAdapter();
   const columns: GridColDef<UserDto>[] = [
     {
-      field: "userId",
-      align: "left",
-      headerName: t("USER.FIELDS.userId") ?? "",
-      type: "number",
-      width: 80,
+      field: 'userId',
+      align: 'left',
+      headerName: t('USER.FIELDS.userId') ?? '',
+      type: 'number',
+      width: 80
     },
     {
-      field: "actions",
-      align: "left",
-      headerName: t("USER.FIELDS.actions") ?? "",
+      field: 'actions',
+      align: 'left',
+      headerName: t('USER.FIELDS.actions') ?? '',
       sortable: false,
       filterable: false,
       width: role === AccountRole.admin ? 200 : 120,
-      type: "actions",
-      getActions: (params: GridRowParams) => getActions(params),
+      type: 'actions',
+      getActions: (params: GridRowParams) => getActions(params)
     },
     {
-      field: "isActive",
-      headerName: t("USER.FIELDS.isActive") ?? "",
-      type: "boolean",
+      field: 'isActive',
+      headerName: t('USER.FIELDS.isActive') ?? '',
+      type: 'boolean'
     },
     {
-      field: "userType",
-      align: "left",
-      headerName: t("USER.FIELDS.userType") ?? "",
-      type: "singleSelect",
-      valueOptions: listEnums(AccountRole, t, "ENUMS.AccountRole"),
+      field: 'userType',
+      align: 'left',
+      headerName: t('USER.FIELDS.userType') ?? '',
+      type: 'singleSelect',
+      valueOptions: listEnums(AccountRole, t, 'ENUMS.AccountRole'),
 
-      valueFormatter: (value: string) =>
-        getEnumName(AccountRole, value, t, "ENUMS.AccountRole"),
+      valueFormatter: (value: string) => getEnumName(AccountRole, value, t, 'ENUMS.AccountRole')
     },
     {
-      field: "email",
-      align: "left",
-      headerName: t("USER.FIELDS.email") ?? "",
-      width: 200,
+      field: 'email',
+      align: 'left',
+      headerName: t('USER.FIELDS.email') ?? '',
+      width: 200
     },
     {
-      field: "phone",
-      align: "left",
-      headerName: t("USER.FIELDS.phone") ?? "",
-      width: 120,
+      field: 'phone',
+      align: 'left',
+      headerName: t('USER.FIELDS.phone') ?? '',
+      width: 120
     },
     {
-      field: "mmk",
-      align: "left",
-      headerName: t("USER.FIELDS.mmk") ?? "",
-      type: "number",
+      field: 'mmk',
+      align: 'left',
+      headerName: t('USER.FIELDS.mmk') ?? '',
+      type: 'number'
     },
     {
-      field: "fullName",
-      align: "left",
-      headerName: t("USER.FIELDS.fullName") ?? "",
+      field: 'fullName',
+      align: 'left',
+      headerName: t('USER.FIELDS.fullName') ?? '',
       minWidth: 200,
-      flex: 1,
+      flex: 1
     },
     {
-      field: "gender",
-      align: "left",
-      headerName: t("USER.FIELDS.gender") ?? "",
-      type: "singleSelect",
-      valueOptions: ["F", "M"],
-      width: 60,
+      field: 'gender',
+      align: 'left',
+      headerName: t('USER.FIELDS.gender') ?? '',
+      type: 'singleSelect',
+      valueOptions: ['F', 'M'],
+      width: 60
     },
     {
-      field: "birthDate",
-      align: "right",
-      headerName: t("USER.FIELDS.birthDate") ?? "",
+      field: 'birthDate',
+      align: 'right',
+      headerName: t('USER.FIELDS.birthDate') ?? '',
       width: 120,
-      type: "date",
-      valueFormatter: (value: string) =>
-        value ? dateFns.formatByString(new Date(value), "dd.MM.yyyy") : "",
+      type: 'date',
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy') : '')
     },
     {
-      field: "cdate",
-      align: "right",
-      headerName: t("USER.FIELDS.cdate") ?? "",
+      field: 'cdate',
+      align: 'right',
+      headerName: t('USER.FIELDS.cdate') ?? '',
       width: 150,
-      type: "dateTime",
-      valueFormatter: (value: string) =>
-        value
-          ? dateFns.formatByString(new Date(value), "dd.MM.yyyy HH:mm")
-          : "",
+      type: 'dateTime',
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy HH:mm') : '')
     },
     {
-      field: "registrationSourceId",
-      align: "center",
-      headerName: t("USER.FIELDS.registrationSourceId") ?? "",
+      field: 'registrationSourceId',
+      align: 'center',
+      headerName: t('USER.FIELDS.registrationSourceId') ?? '',
       width: 100,
-      type: "singleSelect",
-      valueOptions: listEnums(
-        RegistrationSource,
-        t,
-        "ENUMS.RegistrationSource"
-      ),
-      valueFormatter: (value: string) =>
-        getEnumName(RegistrationSource, value, t, "ENUMS.RegistrationSource"),
+      type: 'singleSelect',
+      valueOptions: listEnums(RegistrationSource, t, 'ENUMS.RegistrationSource'),
+      valueFormatter: (value: string) => getEnumName(RegistrationSource, value, t, 'ENUMS.RegistrationSource')
     },
     {
-      field: "lastActive",
-      align: "right",
-      headerName: t("USER.FIELDS.lastActive") ?? "",
+      field: 'lastActive',
+      align: 'right',
+      headerName: t('USER.FIELDS.lastActive') ?? '',
       width: 150,
-      valueFormatter: (value: string) =>
-        value
-          ? dateFns.formatByString(new Date(value), "dd.MM.yyyy HH:mm")
-          : "",
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy HH:mm') : '')
     },
     {
-      field: "hasDuplicate",
-      headerName: t("USER.FIELDS.hasDuplicate") ?? "",
+      field: 'hasDuplicate',
+      headerName: t('USER.FIELDS.hasDuplicate') ?? '',
       width: 60,
-      type: "boolean",
-    },
+      type: 'boolean'
+    }
   ];
 
-  const canMerge =
-    role === AccountRole.admin ||
-    role === AccountRole.netAdmin ||
-    role === AccountRole.operator;
+  const canMerge = role === AccountRole.admin || role === AccountRole.netAdmin || role === AccountRole.operator;
 
   return (
     <Stack spacing={3}>
@@ -458,11 +426,7 @@ const UserList = (): JSX.Element => {
         onRequestMergeInfo={actions.getMergeInfo}
         onMerge={actions.doMerge}
       />
-      <DeleteDialog
-        open={managementValue.modalOpen}
-        onClose={closeModal}
-        onDelete={handleDelete}
-      />
+      <DeleteDialog open={managementValue.modalOpen} onClose={closeModal} onDelete={handleDelete} />
       <QuestionDialog
         open={question.isOpen}
         title={question.title}
@@ -482,9 +446,9 @@ const UserList = (): JSX.Element => {
           doFetch={actions.doFetch}
           defaultSort={[
             {
-              field: "userId",
-              sort: "desc",
-            },
+              field: 'userId',
+              sort: 'desc'
+            }
           ]}
           checkboxSelection={canMerge}
           rowSelectionModel={selectionModel}
@@ -494,13 +458,8 @@ const UserList = (): JSX.Element => {
           startActions={
             <React.Fragment>
               {!isNetRole(role) && (
-                <Button
-                  size="small"
-                  color="primary"
-                  href="#/app/user/add"
-                  startIcon={<AddIcon />}
-                >
-                  {t("LIST.ADD")}
+                <Button size="small" color="primary" href="#/app/user/add" startIcon={<AddIcon />}>
+                  {t('LIST.ADD')}
                 </Button>
               )}
               {canMerge && (
@@ -512,25 +471,20 @@ const UserList = (): JSX.Element => {
                     console.log(selectionModel);
                     setMerge({
                       isOpen: true,
-                      userIds: selectionModel as number[],
+                      userIds: selectionModel as number[]
                     });
                   }}
                   startIcon={<MergeIcon />}
                 >
-                  {t("USER.MERGE")}
+                  {t('USER.MERGE')}
                 </Button>
               )}
             </React.Fragment>
           }
           endActions={
             role !== AccountRole.operator ? (
-              <Button
-                size="small"
-                color="primary"
-                href="#/app/user/report"
-                startIcon={<BarChartIcon />}
-              >
-                {t("USER.REPORT")}
+              <Button size="small" color="primary" href="#/app/user/report" startIcon={<BarChartIcon />}>
+                {t('USER.REPORT')}
               </Button>
             ) : undefined
           }

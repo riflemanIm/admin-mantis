@@ -1,49 +1,39 @@
-import React from "react";
-import { useSnackbar } from "notistack";
+import React from 'react';
+import { useSnackbar } from 'notistack';
 
-import { Button, Stack } from "@mui/material";
+import { Button, Stack } from '@mui/material';
 
 import {
   Add as AddIcon,
   CreateOutlined as CreateIcon,
   DeleteOutlined as DeleteIcon,
   Html as HtmlIcon,
-  TextSnippet as TextSnippetIcon,
-} from "@mui/icons-material";
+  TextSnippet as TextSnippetIcon
+} from '@mui/icons-material';
 
-import Widget from "../../components/Widget/Widget";
-import {
-  useNotificationTemplateDispatch,
-  useNotificationTemplateState,
-  actions,
-} from "../../context/NotificationTemplateContext";
+import Widget from '../../components/Widget';
+import { useNotificationTemplateDispatch, useNotificationTemplateState, actions } from '../../context/NotificationTemplateContext';
 
-import { NotificationTemplateDto } from "../../helpers/dto";
-import {
-  GridActionsCellItem,
-  GridColDef,
-  GridRowParams,
-} from "@mui/x-data-grid";
-import { useNavigate } from "react-router-dom";
+import { NotificationTemplateDto } from '../../helpers/dto';
+import { GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
+import { useNavigate } from 'react-router-dom';
 import {
   getEnumName,
   NotificationRecordType,
   notificationRecordTypeNames,
   NotificationType,
-  notificationTypeNames,
-} from "../../helpers/enums";
-import TemplateDialog from "./TemplateDialog";
-import { useTranslation } from "react-i18next";
-import { DeleteDialog } from "../../components/Common/deleteDialog";
-import { BaseListGrid } from "../../components/BaseListGrid";
+  notificationTypeNames
+} from '../../helpers/enums';
+import TemplateDialog from './TemplateDialog';
+import { useTranslation } from 'react-i18next';
+import { DeleteDialog } from '../../components/Common/deleteDialog';
+import { BaseListGrid } from '../../components/BaseListGrid';
 
 const NotificationTemplateList = (): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [template, setTemplate] = React.useState<
-    { text: string; recordType: NotificationRecordType } | undefined
-  >(undefined);
+  const [template, setTemplate] = React.useState<{ text: string; recordType: NotificationRecordType } | undefined>(undefined);
 
   const dispatch = useNotificationTemplateDispatch();
   const state = useNotificationTemplateState();
@@ -58,40 +48,38 @@ const NotificationTemplateList = (): JSX.Element => {
   const handleDelete = () => {
     actions
       .doDelete(state.idToDelete as number)(dispatch)
-      .then(() => sendNotification(t("COMMON.RECORDDELETED")));
+      .then(() => sendNotification(t('COMMON.RECORDDELETED')));
   };
 
   const { enqueueSnackbar } = useSnackbar();
   function sendNotification(text: string) {
     enqueueSnackbar(text, {
-      variant: "success",
+      variant: 'success'
     });
   }
 
   const columns: GridColDef<NotificationTemplateDto>[] = [
     {
-      field: "ntfTemplateClinicId",
-      align: "right",
-      headerName: t("NOTIFICATIONTEMPLATE.FIELDS.ntfTemplateClinicId") ?? "",
-      type: "number",
-      width: 80,
+      field: 'ntfTemplateClinicId',
+      align: 'right',
+      headerName: t('NOTIFICATIONTEMPLATE.FIELDS.ntfTemplateClinicId') ?? '',
+      type: 'number',
+      width: 80
     },
     {
-      field: "actions",
-      align: "left",
-      headerName: t("NOTIFICATIONTEMPLATE.FIELDS.actions") ?? "",
+      field: 'actions',
+      align: 'left',
+      headerName: t('NOTIFICATIONTEMPLATE.FIELDS.actions') ?? '',
       sortable: false,
       filterable: false,
-      type: "actions",
+      type: 'actions',
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
           key="edit"
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() =>
-            navigate(`/app/notificationTemplate/${params.id}/edit`)
-          }
+          onClick={() => navigate(`/app/notificationTemplate/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -99,66 +87,56 @@ const NotificationTemplateList = (): JSX.Element => {
           label="Удалить"
           color="primary"
           onClick={() => openModal(params.id as number)}
-        />,
-      ],
+        />
+      ]
     },
     {
-      field: "description",
-      align: "left",
-      headerName: t("NOTIFICATIONTEMPLATE.FIELDS.description") ?? "",
-      width: 300,
+      field: 'description',
+      align: 'left',
+      headerName: t('NOTIFICATIONTEMPLATE.FIELDS.description') ?? '',
+      width: 300
     },
     {
-      field: "notificationType",
-      align: "left",
-      headerName: t("NOTIFICATIONTEMPLATE.FIELDS.notificationType") ?? "",
-      type: "singleSelect",
+      field: 'notificationType',
+      align: 'left',
+      headerName: t('NOTIFICATIONTEMPLATE.FIELDS.notificationType') ?? '',
+      type: 'singleSelect',
       width: 200,
-      valueOptions: notificationTypeNames(t, "ENUMS.NotificationType"),
-      valueFormatter: (value: string) =>
-        getEnumName(NotificationType, value, t, "ENUMS.NotificationType"),
+      valueOptions: notificationTypeNames(t, 'ENUMS.NotificationType'),
+      valueFormatter: (value: string) => getEnumName(NotificationType, value, t, 'ENUMS.NotificationType')
     },
     {
-      field: "medicalNetId",
-      align: "left",
-      headerName: t("NOTIFICATIONTEMPLATE.FIELDS.medicalNetId") ?? "",
-      width: 300,
+      field: 'medicalNetId',
+      align: 'left',
+      headerName: t('NOTIFICATIONTEMPLATE.FIELDS.medicalNetId') ?? '',
+      width: 300
     },
     {
-      field: "clinicId",
-      align: "left",
-      headerName: t("NOTIFICATIONTEMPLATE.FIELDS.clinicId") ?? "",
+      field: 'clinicId',
+      align: 'left',
+      headerName: t('NOTIFICATIONTEMPLATE.FIELDS.clinicId') ?? ''
     },
     {
-      field: "recordType",
-      align: "left",
-      headerName: t("NOTIFICATIONTEMPLATE.FIELDS.recordType") ?? "",
-      type: "singleSelect",
+      field: 'recordType',
+      align: 'left',
+      headerName: t('NOTIFICATIONTEMPLATE.FIELDS.recordType') ?? '',
+      type: 'singleSelect',
       width: 200,
-      valueOptions: notificationRecordTypeNames(
-        t,
-        "ENUMS.NotificationRecordType"
-      ),
-      valueFormatter: (value: string) =>
-        getEnumName(
-          NotificationRecordType,
-          value,
-          t,
-          "ENUMS.NotificationRecordType"
-        ),
+      valueOptions: notificationRecordTypeNames(t, 'ENUMS.NotificationRecordType'),
+      valueFormatter: (value: string) => getEnumName(NotificationRecordType, value, t, 'ENUMS.NotificationRecordType')
     },
     {
-      field: "langCode",
-      align: "left",
-      headerName: t("NOTIFICATIONTEMPLATE.FIELDS.langCode") ?? "",
+      field: 'langCode',
+      align: 'left',
+      headerName: t('NOTIFICATIONTEMPLATE.FIELDS.langCode') ?? ''
     },
     {
-      field: "templates",
-      align: "left",
-      headerName: t("NOTIFICATIONTEMPLATE.FIELDS.templates") ?? "",
+      field: 'templates',
+      align: 'left',
+      headerName: t('NOTIFICATIONTEMPLATE.FIELDS.templates') ?? '',
       sortable: false,
       filterable: false,
-      type: "actions",
+      type: 'actions',
       getActions: (params: GridRowParams<NotificationTemplateDto>) => [
         <GridActionsCellItem
           key="text"
@@ -169,7 +147,7 @@ const NotificationTemplateList = (): JSX.Element => {
           onClick={() =>
             setTemplate({
               text: params.row.template as string,
-              recordType: params.row.recordType,
+              recordType: params.row.recordType
             })
           }
         />,
@@ -182,21 +160,17 @@ const NotificationTemplateList = (): JSX.Element => {
           onClick={() =>
             setTemplate({
               text: params.row.templateHtml as string,
-              recordType: params.row.recordType,
+              recordType: params.row.recordType
             })
           }
-        />,
-      ],
-    },
+        />
+      ]
+    }
   ];
 
   return (
     <Stack spacing={3}>
-      <DeleteDialog
-        open={state.modalOpen}
-        onClose={closeModal}
-        onDelete={handleDelete}
-      />
+      <DeleteDialog open={state.modalOpen} onClose={closeModal} onDelete={handleDelete} />
       <TemplateDialog
         isOpen={!!template}
         template={template?.text}
@@ -215,18 +189,13 @@ const NotificationTemplateList = (): JSX.Element => {
           doFetch={actions.doFetch}
           defaultSort={[
             {
-              field: "ntfTemplateClinicId",
-              sort: "asc",
-            },
+              field: 'ntfTemplateClinicId',
+              sort: 'asc'
+            }
           ]}
           startActions={
-            <Button
-              size="small"
-              color="primary"
-              href="#/app/notificationTemplate/add"
-              startIcon={<AddIcon />}
-            >
-              {t("LIST.ADD")}
+            <Button size="small" color="primary" href="#/app/notificationTemplate/add" startIcon={<AddIcon />}>
+              {t('LIST.ADD')}
             </Button>
           }
         />

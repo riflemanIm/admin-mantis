@@ -31,6 +31,12 @@
   },
   "parser": "@babel/eslint-parser",
   "parserOptions": {
+    "parser": "@babel/eslint-parser",
+    "babelOptions": {
+      "parserOpts": {
+        "plugins": ["jsx", "tsx"]
+      }
+    },
     "requireConfigFile": false,
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,

@@ -20,6 +20,14 @@ const dashboard = {
       url: '/dashboard/default',
       icon: icons.DashboardOutlined,
       breadcrumbs: false
+    },
+    {
+      id: 'specialization',
+      title: 'Specialization',
+      type: 'item',
+      url: '/specialization/list',
+      icon: icons.DashboardOutlined,
+      breadcrumbs: false
     }
   ]
 };

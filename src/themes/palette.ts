@@ -1,18 +1,17 @@
 // material-ui
-import { createTheme } from '@mui/material/styles';
+import { presetPalettes } from '@ant-design/colors';
+import { PaletteMode, createTheme } from '@mui/material';
+import Theme from './theme';
 
 // third-party
-import { presetPalettes } from '@ant-design/colors';
 
 // project import
-import ThemeOption from './theme';
 
-// ==============================|| DEFAULT THEME - PALETTE ||============================== //
+// ==============================|| DEFAULT THEME - PALETTE  ||============================== //
 
-export default function Palette(mode, presetColor) {
+const Palette = (mode: PaletteMode) => {
   const colors = presetPalettes;
-
-  let greyPrimary = [
+  const greyPrimary = [
     '#ffffff',
     '#fafafa',
     '#f5f5f5',
@@ -25,12 +24,12 @@ export default function Palette(mode, presetColor) {
     '#141414',
     '#000000'
   ];
-  let greyAscent = ['#fafafa', '#bfbfbf', '#434343', '#1f1f1f'];
-  let greyConstant = ['#fafafb', '#e6ebf1'];
+  const greyAscent = ['#fafafa', '#bfbfbf', '#434343', '#1f1f1f'];
+  const greyConstant = ['#fafafb', '#e6ebf1'];
 
   colors.grey = [...greyPrimary, ...greyAscent, ...greyConstant];
 
-  const paletteColor = ThemeOption(colors, presetColor, mode);
+  const paletteColor = Theme(colors);
 
   return createTheme({
     palette: {
@@ -55,4 +54,6 @@ export default function Palette(mode, presetColor) {
       }
     }
   });
-}
+};
+
+export default Palette;

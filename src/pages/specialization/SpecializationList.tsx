@@ -1,13 +1,9 @@
-import React from "react";
-import { useSnackbar } from "notistack";
-import { Button, Stack } from "@mui/material";
-import Widget from "../../components/Widget/Widget";
+import React from 'react';
+import { useSnackbar } from 'notistack';
+import { Button, Stack } from '@mui/material';
+import Widget from '../../components/Widget';
 
-import {
-  useSpecializationDispatch,
-  useSpecializationState,
-  actions,
-} from "../../context/SpecializationContext";
+import { useSpecializationDispatch, useSpecializationState, actions } from '../../context/SpecializationContext';
 
 // Icons
 import {
@@ -16,41 +12,35 @@ import {
   DeleteOutlined as DeleteIcon,
   GetApp as DownloadIcon,
   ImportExportOutlined as ImportExportIcon,
-  LabelImportant as LabelImportantIcon,
-} from "@mui/icons-material";
+  LabelImportant as LabelImportantIcon
+} from '@mui/icons-material';
 
-import { SpecializationDto, SpecializationNameDto } from "../../helpers/dto";
-import { useNavigate } from "react-router-dom";
-import {
-  GridActionsCellItem,
-  GridColDef,
-  GridRowParams,
-} from "@mui/x-data-grid";
-import { useUserState } from "../../context/UserContext";
-import { isNetRole } from "../../helpers/enums";
-import ImageInfo from "./ImageInfo";
-import SpecializationOrderDialog from "./SpecializationOrderDialog";
-import { useLanguageValue } from "../../context/LanguageContext";
-import { useTranslation } from "react-i18next";
-import { DeleteDialog } from "../../components/Common/deleteDialog";
-import config from "../../config";
-import { uploadToServer } from "../../helpers/file";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import { BaseListGrid } from "../../components/BaseListGrid";
+import { SpecializationDto, SpecializationNameDto } from '../../helpers/dto';
+import { useNavigate } from 'react-router-dom';
+import { GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
+import { useUserState } from '../../context/UserContext';
+import { isNetRole } from '../../helpers/enums';
+import ImageInfo from './ImageInfo';
+import SpecializationOrderDialog from './SpecializationOrderDialog';
+import { useLanguageValue } from '../../context/LanguageContext';
+import { useTranslation } from 'react-i18next';
+import { DeleteDialog } from '../../components/Common/deleteDialog';
+import config from '../../config';
+import { uploadToServer } from '../../helpers/file';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { BaseListGrid } from '../../components/BaseListGrid';
 
 const SpecializationList = (): JSX.Element => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const {
-    currentUser: { role, langCode, medicalNetId: defaultMedicalNetId },
+    currentUser: { role, langCode, medicalNetId: defaultMedicalNetId }
   } = useUserState();
 
-  const [medicalNetId, setMedicalNetId] = React.useState<number | undefined>(
-    undefined
-  );
+  const [medicalNetId, setMedicalNetId] = React.useState<number | undefined>(undefined);
 
   const [sortOrder, setSortOrder] = React.useState<{
     id?: number;
@@ -59,7 +49,7 @@ const SpecializationList = (): JSX.Element => {
   }>({
     id: undefined,
     isOpen: false,
-    value: undefined,
+    value: undefined
   });
 
   const [isLoadingFile, setIsLoadingFile] = React.useState(false);
@@ -72,10 +62,7 @@ const SpecializationList = (): JSX.Element => {
   }, []);
 
   React.useEffect(() => {
-    setMedicalNetId(
-      defaultMedicalNetId ||
-        (state.medicalNets.length && state.medicalNets[0].medicalNetId)
-    );
+    setMedicalNetId(defaultMedicalNetId || (state.medicalNets.length && state.medicalNets[0].medicalNetId));
   }, [defaultMedicalNetId, state.medicalNets]);
 
   const openModal = (id: number) => {
@@ -90,35 +77,31 @@ const SpecializationList = (): JSX.Element => {
     setSortOrder({
       id,
       isOpen: true,
-      value,
+      value
     });
   };
 
   const closeSortOrderModal = (success: boolean, value?: number) => {
     if (success) {
-      actions.doSetSortOrder(
-        sortOrder.id as number,
-        value,
-        medicalNetId
-      )(dispatch);
+      actions.doSetSortOrder(sortOrder.id as number, value, medicalNetId)(dispatch);
     }
     setSortOrder({
       id: undefined,
       isOpen: false,
-      value: undefined,
+      value: undefined
     });
   };
 
   const handleDelete = () => {
     actions
       .doDelete(state.idToDelete as number)(dispatch)
-      .then(() => sendNotification(t("COMMON.RECORDDELETED")));
+      .then(() => sendNotification(t('COMMON.RECORDDELETED')));
   };
 
   const { enqueueSnackbar } = useSnackbar();
   function sendNotification(text: string, isError = false) {
     enqueueSnackbar(text, {
-      variant: isError ? "warning" : "success",
+      variant: isError ? 'warning' : 'success'
     });
   }
 
@@ -132,13 +115,13 @@ const SpecializationList = (): JSX.Element => {
 
       await uploadToServer(`/specialization/import`, {
         filedata,
-        filename,
+        filename
       })
         .then(() => {
           setIsLoadingFile(false);
-          sendNotification(t("SPECIALIZATION.IMPORTED"));
+          sendNotification(t('SPECIALIZATION.IMPORTED'));
           setTimeout(() => {
-            navigate("/app/specialization/list");
+            navigate('/app/specialization/list');
           }, 1000);
         })
         .catch((e) => {
@@ -151,19 +134,19 @@ const SpecializationList = (): JSX.Element => {
 
   const columns: GridColDef[] = [
     {
-      field: "specializationId",
-      align: "right",
-      headerName: t("SPECIALIZATION.FIELDS.specializationId") ?? "",
+      field: 'specializationId',
+      align: 'right',
+      headerName: t('SPECIALIZATION.FIELDS.specializationId') ?? '',
       width: 80,
-      type: "number",
+      type: 'number'
     },
     {
-      field: "actions",
-      align: "left",
-      headerName: t("SPECIALIZATION.FIELDS.actions") ?? "",
+      field: 'actions',
+      align: 'left',
+      headerName: t('SPECIALIZATION.FIELDS.actions') ?? '',
       sortable: false,
       filterable: false,
-      type: "actions",
+      type: 'actions',
       width: 150,
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
@@ -178,12 +161,7 @@ const SpecializationList = (): JSX.Element => {
           icon={<ImportExportIcon />}
           label="Поправить порядок"
           color="primary"
-          onClick={() =>
-            openSortOrderModal(
-              params.row.specializationId,
-              params.row.sortOrder
-            )
-          }
+          onClick={() => openSortOrderModal(params.row.specializationId, params.row.sortOrder)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -191,65 +169,59 @@ const SpecializationList = (): JSX.Element => {
           label="Удалить"
           color="primary"
           onClick={() => openModal(params.id as number)}
-        />,
-      ],
+        />
+      ]
     },
     {
-      field: "code",
-      align: "left",
-      headerName: t("SPECIALIZATION.FIELDS.code") ?? "",
-      width: 200,
+      field: 'code',
+      align: 'left',
+      headerName: t('SPECIALIZATION.FIELDS.code') ?? '',
+      width: 200
     },
     {
-      field: "sortOrder",
-      align: "left",
-      headerName: t("SPECIALIZATION.FIELDS.sortOrder") ?? "",
-      type: "number",
+      field: 'sortOrder',
+      align: 'left',
+      headerName: t('SPECIALIZATION.FIELDS.sortOrder') ?? '',
+      type: 'number'
     },
     {
-      field: "shortDescription",
-      align: "left",
-      headerName: t("SPECIALIZATION.FIELDS.shortDescription") ?? "",
+      field: 'shortDescription',
+      align: 'left',
+      headerName: t('SPECIALIZATION.FIELDS.shortDescription') ?? '',
       sortable: false,
       filterable: false,
       width: 300,
-      valueGetter: (value, row) =>
-        row.names.find((it: SpecializationNameDto) => it.langCode === langCode)
-          ?.shortDescription,
+      valueGetter: (value, row) => row.names.find((it: SpecializationNameDto) => it.langCode === langCode)?.shortDescription
     },
     {
-      field: "description",
-      align: "left",
-      headerName: t("SPECIALIZATION.FIELDS.description") ?? "",
+      field: 'description',
+      align: 'left',
+      headerName: t('SPECIALIZATION.FIELDS.description') ?? '',
       sortable: false,
       filterable: false,
       width: 400,
-      valueGetter: (value, row) =>
-        row.names.find((it: SpecializationNameDto) => it.langCode === langCode)
-          ?.description,
+      valueGetter: (value, row) => row.names.find((it: SpecializationNameDto) => it.langCode === langCode)?.description
     },
     {
-      field: "image",
-      align: "left",
-      headerName: t("SPECIALIZATION.FIELDS.image") ?? "",
+      field: 'image',
+      align: 'left',
+      headerName: t('SPECIALIZATION.FIELDS.image') ?? '',
       sortable: false,
       filterable: false,
       disableExport: true,
       width: 280,
-      renderCell: (params) =>
-        params.value ? <ImageInfo content={params.value} /> : "",
+      renderCell: (params) => (params.value ? <ImageInfo content={params.value} /> : '')
     },
     {
-      field: "largeImage",
-      align: "left",
-      headerName: t("SPECIALIZATION.FIELDS.largeImage") ?? "",
+      field: 'largeImage',
+      align: 'left',
+      headerName: t('SPECIALIZATION.FIELDS.largeImage') ?? '',
       sortable: false,
       filterable: false,
       disableExport: true,
       width: 280,
-      renderCell: (params) =>
-        params.value ? <ImageInfo content={params.value} /> : "",
-    },
+      renderCell: (params) => (params.value ? <ImageInfo content={params.value} /> : '')
+    }
   ];
 
   return (
@@ -259,95 +231,63 @@ const SpecializationList = (): JSX.Element => {
         isOpen={sortOrder.isOpen}
         onClose={(success, value) => closeSortOrderModal(success, value)}
       />
-      <DeleteDialog
-        open={state.modalOpen}
-        onClose={closeModal}
-        onDelete={handleDelete}
-      />
-      <Widget inheritHeight>
-        <Stack spacing={2} direction="row">
-          {!isNetRole(role) && (
-            <FormControl variant="standard" size="small" style={{ width: 300 }}>
-              <InputLabel id="id-medical_net-label">
-                {t("REPORT.MEDICALNET")}
-              </InputLabel>
-              <Select
-                name="medicalNetId"
-                id="id-medical_net-select"
-                labelId="id-medical_net-label"
-                label={t("REPORT.MEDICALNET")}
-                onChange={(event) =>
-                  setMedicalNetId(
-                    event.target.value ? Number(event.target.value) : undefined
-                  )
-                }
-                value={(state.medicalNets?.length > 0 && medicalNetId) || ""}
-              >
-                {state.medicalNets?.map((item) => (
-                  <MenuItem value={item.medicalNetId} key={item.medicalNetId}>
-                    {item.title}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
-        </Stack>
-      </Widget>
-      <Widget inheritHeight noBodyPadding>
-        <BaseListGrid<SpecializationDto>
-          columns={columns}
-          idField="specializationId"
-          exportName="specialization"
-          storagePrefix="specialization"
-          state={state}
-          dispatch={dispatch}
-          doFetch={actions.doFetch}
-          params={[medicalNetId ?? -1]}
-          defaultSort={[
-            {
-              field: "specializationId",
-              sort: "asc",
-            },
-          ]}
-          loading={isLoadingFile}
-          startActions={
-            <Button
-              size="small"
-              color="primary"
-              startIcon={<AddIcon />}
-              href="#/app/specialization/add"
+      <DeleteDialog open={state.modalOpen} onClose={closeModal} onDelete={handleDelete} />
+
+      <Stack spacing={2} direction="row">
+        {!isNetRole(role) && (
+          <FormControl variant="standard" size="small" style={{ width: 300 }}>
+            <InputLabel id="id-medical_net-label">{t('REPORT.MEDICALNET')}</InputLabel>
+            <Select
+              name="medicalNetId"
+              id="id-medical_net-select"
+              labelId="id-medical_net-label"
+              label={t('REPORT.MEDICALNET')}
+              onChange={(event) => setMedicalNetId(event.target.value ? Number(event.target.value) : undefined)}
+              value={(state.medicalNets?.length > 0 && medicalNetId) || ''}
             >
-              {t("LIST.ADD")}
+              {state.medicalNets?.map((item) => (
+                <MenuItem value={item.medicalNetId} key={item.medicalNetId}>
+                  {item.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+      </Stack>
+
+      <BaseListGrid<SpecializationDto>
+        columns={columns}
+        idField="specializationId"
+        exportName="specialization"
+        storagePrefix="specialization"
+        state={state}
+        dispatch={dispatch}
+        doFetch={actions.doFetch}
+        params={[medicalNetId ?? -1]}
+        defaultSort={[
+          {
+            field: 'specializationId',
+            sort: 'asc'
+          }
+        ]}
+        loading={isLoadingFile}
+        startActions={
+          <Button size="small" color="primary" startIcon={<AddIcon />} href="#/app/specialization/add">
+            {t('LIST.ADD')}
+          </Button>
+        }
+        endActions={
+          <React.Fragment>
+            <Button size="small" color="secondary" startIcon={<DownloadIcon />} href={`${config.baseURLApi}/specialization/export`}>
+              {t('LIST.EXPORT')}
             </Button>
-          }
-          endActions={
-            <React.Fragment>
-              <Button
-                size="small"
-                color="secondary"
-                startIcon={<DownloadIcon />}
-                href={`${config.baseURLApi}/specialization/export`}
-              >
-                {t("LIST.EXPORT")}
-              </Button>
-              <Button
-                size="small"
-                color="secondary"
-                component="label"
-                startIcon={<LabelImportantIcon />}
-              >
-                <input
-                  hidden
-                  accept="application/json"
-                  type="file"
-                  onChange={handleFile}
-                />
-                {t("LIST.IMPORT")}
-              </Button>
-            </React.Fragment>
-          }
-        />
-      </Widget>
+            <Button size="small" color="secondary" component="label" startIcon={<LabelImportantIcon />}>
+              <input hidden accept="application/json" type="file" onChange={handleFile} />
+              {t('LIST.IMPORT')}
+            </Button>
+          </React.Fragment>
+        }
+      />
     </Stack>
   );
 };

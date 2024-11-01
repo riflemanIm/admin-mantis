@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
-import InputMask from "react-input-mask";
+import React, { useState } from 'react';
+import { useSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
+import InputMask from 'react-input-mask';
 
 import {
   Box,
@@ -21,56 +21,40 @@ import {
   Button,
   Typography,
   StepProps,
-  Stack,
-} from "@mui/material";
+  Stack
+} from '@mui/material';
 
-import {
-  VisibilityOff as VisibilityOffIcon,
-  Visibility as VisibilityIcon,
-} from "@mui/icons-material";
-import useStyles from "./styles";
-import config from "../../config";
+import { VisibilityOff as VisibilityOffIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
+import useStyles from './styles';
+import config from '../../config';
 
-import Widget from "../../components/Widget/Widget";
+import Widget from '../../components/Widget';
 
-import {
-  useManagementDispatch,
-  useManagementState,
-  actions,
-} from "../../context/ManagementContext";
-import {
-  extractExtensionFrom,
-  uploadToServer,
-  deleteAvararServer,
-} from "../../helpers/file";
-import isEmpty from "../../helpers/isEmpty";
-import useForm from "../../hooks/useForm";
-import validate from "./validation";
-import { cleanPhoneValue } from "../../helpers/numberFormat";
-import {
-  AccountRole,
-  Gender,
-  getEnumName,
-  listEnums,
-} from "../../helpers/enums";
+import { useManagementDispatch, useManagementState, actions } from '../../context/ManagementContext';
+import { extractExtensionFrom, uploadToServer, deleteAvararServer } from '../../helpers/file';
+import isEmpty from '../../helpers/isEmpty';
+import useForm from '../../hooks/useForm';
+import validate from './validation';
+import { cleanPhoneValue } from '../../helpers/numberFormat';
+import { AccountRole, Gender, getEnumName, listEnums } from '../../helpers/enums';
 
-import { useTranslation } from "react-i18next";
-import MuiUIPicker from "../../components/MUIDatePicker";
-import dayjs from "dayjs";
-import { useUserState } from "../../context/UserContext";
+import { useTranslation } from 'react-i18next';
+import MuiUIPicker from '../../components/MUIDatePicker';
+import dayjs from 'dayjs';
+import { useUserState } from '../../context/UserContext';
 
 function getSteps() {
-  return ["Создать аккаунт", "Персональная информация"];
+  return ['Создать аккаунт', 'Персональная информация'];
 }
 
 function getStepContent(step: number) {
   switch (step) {
     case 0:
-      return "Создать аккаунт";
+      return 'Создать аккаунт';
     case 1:
-      return "Персональная информация";
+      return 'Персональная информация';
     default:
-      return "";
+      return '';
   }
 }
 
@@ -84,7 +68,7 @@ const AddUser = (): JSX.Element => {
   const userId = current?.userId;
   const { token } = useUserState();
 
-  console.log("activeStep", activeStep, "userId", userId);
+  console.log('activeStep', activeStep, 'userId', userId);
 
   const fileInput = React.useRef(null);
   const steps = getSteps();
@@ -98,7 +82,7 @@ const AddUser = (): JSX.Element => {
           setIsLoadingImg(false);
         })
         .catch((e) => {
-          console.log("delete img err", e);
+          console.log('delete img err', e);
           setIsLoadingImg(false);
         });
     }
@@ -109,35 +93,33 @@ const AddUser = (): JSX.Element => {
     if (!event.target.files) return;
     const filedata = event.target.files[0];
     const filename = filedata.name;
-    const extension = (filename && extractExtensionFrom(filename)) || "";
-    if (filename != null && ["jpg", "jpeg"].includes(extension.toLowerCase())) {
+    const extension = (filename && extractExtensionFrom(filename)) || '';
+    if (filename != null && ['jpg', 'jpeg'].includes(extension.toLowerCase())) {
       const filename = `${userId}.${extension}`;
 
       setIsLoadingImg(true);
       await uploadToServer(`/user/photo/${userId}`, {
         filedata,
-        filename,
+        filename
       })
         .then((res) => {
           setIsLoadingImg(false);
-          console.log("res", res);
+          console.log('res', res);
         })
         .catch((e) => {
           setIsLoadingImg(false);
-          console.log("ee", e);
+          console.log('ee', e);
         });
     } else {
-      sendNotification(
-        "Можно загружать только файлы с расширением .JPG, .JPEG"
-      );
+      sendNotification('Можно загружать только файлы с расширением .JPG, .JPEG');
     }
     return null;
   };
 
   const { enqueueSnackbar } = useSnackbar();
   function sendNotification(errorMessage?: string) {
-    enqueueSnackbar(errorMessage || t("COMMON.RECORDSAVED"), {
-      variant: errorMessage ? "warning" : "success",
+    enqueueSnackbar(errorMessage || t('COMMON.RECORDSAVED'), {
+      variant: errorMessage ? 'warning' : 'success'
     });
   }
 
@@ -157,23 +139,23 @@ const AddUser = (): JSX.Element => {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
-    console.log("------- activeStep -----------", activeStep);
-    if (activeStep === 0 && values.email !== "" && values.password !== "") {
+    console.log('------- activeStep -----------', activeStep);
+    if (activeStep === 0 && values.email !== '' && values.password !== '') {
       actions.doCreate(
         {
           email: values.email,
           password: values.password,
           isActive: false,
-          userType: AccountRole.patient,
+          userType: AccountRole.patient
         },
         () => {
-          enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-            variant: "success",
+          enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+            variant: 'success'
           });
         },
         (errorMessage) => {
           enqueueSnackbar(errorMessage, {
-            variant: "warning",
+            variant: 'warning'
           });
           handleBack();
         }
@@ -184,14 +166,14 @@ const AddUser = (): JSX.Element => {
         userId,
         values,
         () => {
-          enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-            variant: "success",
+          enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+            variant: 'success'
           });
-          navigate("/app/user/list");
+          navigate('/app/user/list');
         },
         (errorMessage) => {
           enqueueSnackbar(errorMessage, {
-            variant: "warning",
+            variant: 'warning'
           });
         }
       )(managementDispatch);
@@ -203,44 +185,34 @@ const AddUser = (): JSX.Element => {
   };
 
   const saveData = () => {
-    const birthDate = dayjs(values.birthDate).format("YYYY-MM-DD");
+    const birthDate = dayjs(values.birthDate).format('YYYY-MM-DD');
     const data = { ...values, birthDate };
     if (userId)
       actions.doUpdate(
         userId,
         data,
         () => {
-          enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-            variant: "success",
+          enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+            variant: 'success'
           });
-          navigate("/app/user/list");
+          navigate('/app/user/list');
         },
         (errorMessage) => {
           enqueueSnackbar(errorMessage, {
-            variant: "warning",
+            variant: 'warning'
           });
         }
       )(managementDispatch);
   };
 
-  const {
-    values,
-    errors,
-    handleGenericChange,
-    handleChange,
-    handleChangeSelect,
-    handlePhoneChange,
-  } = useForm(saveData, validate);
+  const { values, errors, handleGenericChange, handleChange, handleChangeSelect, handlePhoneChange } = useForm(saveData, validate);
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
   const validRoles = [];
-  for (let role = AccountRole.unknown; role <= AccountRole.netMarketer; role++)
-    validRoles.push(role);
+  for (let role = AccountRole.unknown; role <= AccountRole.netMarketer; role++) validRoles.push(role);
 
   return (
     <Stack spacing={3}>
@@ -254,10 +226,7 @@ const AddUser = (): JSX.Element => {
             }
             return (
               <Step key={label} {...stepProps}>
-                <StepLabel
-                  {...labelProps}
-                  classes={{ completed: classes.stepCompleted }}
-                >
+                <StepLabel {...labelProps} classes={{ completed: classes.stepCompleted }}>
                   {label}
                 </StepLabel>
               </Step>
@@ -274,12 +243,7 @@ const AddUser = (): JSX.Element => {
             </Typography>
             {activeStep === 0 ? (
               <>
-                <FormControl
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  style={{ marginBottom: 35 }}
-                >
+                <FormControl variant="outlined" margin="normal" fullWidth style={{ marginBottom: 35 }}>
                   <InputLabel id="id-role-label">Роль</InputLabel>
                   <Select
                     name="userType"
@@ -290,52 +254,42 @@ const AddUser = (): JSX.Element => {
                   >
                     {validRoles.map((role) => (
                       <MenuItem value={role} key={role}>
-                        {getEnumName(AccountRole, role, t, "ENUMS.AccountRole")}
+                        {getEnumName(AccountRole, role, t, 'ENUMS.AccountRole')}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
                 <TextField
                   variant="outlined"
-                  value={values?.email || ""}
+                  value={values?.email || ''}
                   name="email"
                   autoComplete="off"
                   onChange={handleChange}
                   style={{ marginBottom: 35 }}
-                  label={t("USER.FIELDS.email")}
-                  placeholder={t("USER.FIELDS.email") ?? ""}
+                  label={t('USER.FIELDS.email')}
+                  placeholder={t('USER.FIELDS.email') ?? ''}
                   type="text"
                   fullWidth
                 />
-                <InputMask
-                  mask="+7 (999) 999 9999"
-                  value={values?.phone || ""}
-                  onChange={handlePhoneChange}
-                >
+                <InputMask mask="+7 (999) 999 9999" value={values?.phone || ''} onChange={handlePhoneChange}>
                   <TextField
                     name="phone"
                     variant="outlined"
                     style={{ marginBottom: 35 }}
-                    label={t("USER.FIELDS.phone")}
+                    label={t('USER.FIELDS.phone')}
                     type="tel"
                     fullWidth
                   />
                 </InputMask>
-                <FormControl
-                  variant="outlined"
-                  style={{ marginBottom: 35 }}
-                  fullWidth
-                >
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    {t("USER.FIELDS.password")}
-                  </InputLabel>
+                <FormControl variant="outlined" style={{ marginBottom: 35 }} fullWidth>
+                  <InputLabel htmlFor="outlined-adornment-password">{t('USER.FIELDS.password')}</InputLabel>
                   <OutlinedInput
                     name="password"
                     autoComplete="off"
-                    value={values.password || ""}
+                    value={values.password || ''}
                     onChange={handleChange}
-                    label={t("USER.FIELDS.password")}
-                    type={visibilePass ? "text" : "password"}
+                    label={t('USER.FIELDS.password')}
+                    type={visibilePass ? 'text' : 'password'}
                     required
                     error={errors?.password != null}
                     endAdornment={
@@ -345,18 +299,12 @@ const AddUser = (): JSX.Element => {
                           onClick={() => setVisibilePass(!visibilePass)}
                           onMouseDown={handleMouseDownPassword}
                         >
-                          {!visibilePass ? (
-                            <VisibilityOffIcon color="error" />
-                          ) : (
-                            <VisibilityIcon color="primary" />
-                          )}
+                          {!visibilePass ? <VisibilityOffIcon color="error" /> : <VisibilityIcon color="primary" />}
                         </IconButton>
                       </InputAdornment>
                     }
                   />
-                  <FormHelperText>
-                    {errors?.password != null && errors?.password}
-                  </FormHelperText>
+                  <FormHelperText>{errors?.password != null && errors?.password}</FormHelperText>
                 </FormControl>
               </>
             ) : activeStep === 1 && userId != null ? (
@@ -368,46 +316,29 @@ const AddUser = (): JSX.Element => {
                       <CircularProgress size={18} />
                     ) : (
                       <>
-                        <span
-                          className={classes.deleteImageX}
-                          onClick={() => deleteOneImage()}
-                          role="button"
-                        >
+                        <span className={classes.deleteImageX} onClick={() => deleteOneImage()} role="button">
                           ×
                         </span>
-                        <img
-                          src={`${config.baseURLApi}/user/photo/${userId}?token=${token}`}
-                          alt=""
-                          height={"100%"}
-                        />
+                        <img src={`${config.baseURLApi}/user/photo/${userId}?token=${token}`} alt="" height={'100%'} />
                       </>
                     )}
                   </div>
                 </div>
-                <label
-                  className={classes.uploadLabel}
-                  style={{ cursor: "pointer" }}
-                >
-                  {"Upload an image"}
-                  <input
-                    style={{ display: "none" }}
-                    accept="image/jpeg"
-                    type="file"
-                    ref={fileInput}
-                    onChange={handleFile}
-                  />
+                <label className={classes.uploadLabel} style={{ cursor: 'pointer' }}>
+                  {'Upload an image'}
+                  <input style={{ display: 'none' }} accept="image/jpeg" type="file" ref={fileInput} onChange={handleFile} />
                 </label>
                 <Typography variant="subtitle2" style={{ marginBottom: 35 }}>
                   .JPG, .JPEG
                 </Typography>
                 <TextField
                   variant="outlined"
-                  value={(!isEmpty(values) && values.firstName) || ""}
+                  value={(!isEmpty(values) && values.firstName) || ''}
                   name="firstName"
                   onChange={handleChange}
                   style={{ marginBottom: 35 }}
-                  label={t("USER.FIELDS.firstName")}
-                  placeholder={t("USER.FIELDS.firstName") ?? ""}
+                  label={t('USER.FIELDS.firstName')}
+                  placeholder={t('USER.FIELDS.firstName') ?? ''}
                   type="text"
                   fullWidth
                   required
@@ -416,23 +347,23 @@ const AddUser = (): JSX.Element => {
                 />
                 <TextField
                   variant="outlined"
-                  value={values.middleName || ""}
+                  value={values.middleName || ''}
                   name="middleName"
                   onChange={handleChange}
                   style={{ marginBottom: 35 }}
-                  label={t("USER.FIELDS.middleName")}
-                  placeholder={t("USER.FIELDS.middleName") ?? ""}
+                  label={t('USER.FIELDS.middleName')}
+                  placeholder={t('USER.FIELDS.middleName') ?? ''}
                   type="text"
                   fullWidth
                 />
                 <TextField
                   variant="outlined"
-                  value={values.lastName || ""}
+                  value={values.lastName || ''}
                   name="lastName"
                   onChange={handleChange}
                   style={{ marginBottom: 35 }}
-                  label={t("USER.FIELDS.lastName")}
-                  placeholder={t("USER.FIELDS.lastName") ?? ""}
+                  label={t('USER.FIELDS.lastName')}
+                  placeholder={t('USER.FIELDS.lastName') ?? ''}
                   type="text"
                   fullWidth
                   required
@@ -440,31 +371,22 @@ const AddUser = (): JSX.Element => {
                   helperText={errors?.lastName != null && errors?.lastName}
                 />
                 <MuiUIPicker
-                  label={t("USER.FIELDS.birthDate")}
+                  label={t('USER.FIELDS.birthDate')}
                   value={values?.birthDate != null ? values?.birthDate : null}
-                  handleChange={(value) =>
-                    handleGenericChange("birthDate", value)
-                  }
+                  handleChange={(value) => handleGenericChange('birthDate', value)}
                   required={true}
                   errorText={errors?.birthDate}
                 />
 
-                <FormControl
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  style={{ marginBottom: 35 }}
-                >
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    {t("USER.FIELDS.gender")}
-                  </InputLabel>
+                <FormControl variant="outlined" margin="normal" fullWidth style={{ marginBottom: 35 }}>
+                  <InputLabel id="demo-simple-select-outlined-label">{t('USER.FIELDS.gender')}</InputLabel>
                   <Select
                     name="gender"
                     value={values.gender != null && values.gender}
                     onChange={handleChangeSelect}
-                    label={t("USER.FIELDS.gender")}
+                    label={t('USER.FIELDS.gender')}
                   >
-                    {listEnums<Gender>(Gender, t, "ENUMS.Gender").map((it) => (
+                    {listEnums<Gender>(Gender, t, 'ENUMS.Gender').map((it) => (
                       <MenuItem key={it.value} value={it.value}>
                         {it.label}
                       </MenuItem>
@@ -476,32 +398,18 @@ const AddUser = (): JSX.Element => {
             <div>
               <div>
                 {activeStep === 0 ? (
-                  <Box display="flex" justifyContent={"flex-end"}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                    >
+                  <Box display="flex" justifyContent={'flex-end'}>
+                    <Button variant="contained" color="primary" onClick={handleNext}>
                       Далее
                     </Button>
                   </Box>
                 ) : (
-                  <Box display="flex" justifyContent={"space-between"}>
-                    <Button
-                      onClick={handleBack}
-                      variant={"outlined"}
-                      color={"primary"}
-                    >
+                  <Box display="flex" justifyContent={'space-between'}>
+                    <Button onClick={handleBack} variant={'outlined'} color={'primary'}>
                       Назад
                     </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                    >
-                      {activeStep === steps.length - 1
-                        ? t("COMMON.SAVE")
-                        : "Далее"}
+                    <Button variant="contained" color="primary" onClick={handleNext}>
+                      {activeStep === steps.length - 1 ? t('COMMON.SAVE') : 'Далее'}
                     </Button>
                   </Box>
                 )}

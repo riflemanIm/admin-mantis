@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Grid2,
   Card,
@@ -11,20 +11,16 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  Typography,
-} from "@mui/material";
-import { Close as CloseIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import Widget from "../../components/Widget/Widget";
+  Typography
+} from '@mui/material';
+import { Close as CloseIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import Widget from '../../components/Widget';
 
-import ImageUploading, { ImageListType } from "react-images-uploading";
-import { MedicalNetImageDto } from "../../helpers/dto";
-import {
-  actions,
-  useMedicalNetFaqDispatch,
-  useMedicalNetFaqState,
-} from "../../context/MedicalNetFaqContext";
-import { useTranslation } from "react-i18next";
-import { useSnackbar } from "notistack";
+import ImageUploading, { ImageListType } from 'react-images-uploading';
+import { MedicalNetImageDto } from '../../helpers/dto';
+import { actions, useMedicalNetFaqDispatch, useMedicalNetFaqState } from '../../context/MedicalNetFaqContext';
+import { useTranslation } from 'react-i18next';
+import { useSnackbar } from 'notistack';
 
 interface ImageGalleryProps {
   medicalNetId: number | undefined;
@@ -32,26 +28,20 @@ interface ImageGalleryProps {
   onClose: (name?: string, id?: number) => void;
 }
 
-const imageDataPrefix = "data:image/jpeg;base64,";
+const imageDataPrefix = 'data:image/jpeg;base64,';
 
 const removeImageDataPrefix = (image: string): string => {
-  return image.startsWith(imageDataPrefix)
-    ? image.slice(imageDataPrefix.length)
-    : image;
+  return image.startsWith(imageDataPrefix) ? image.slice(imageDataPrefix.length) : image;
 };
 
-const ImageGallery = ({
-  medicalNetId,
-  isOpen,
-  onClose,
-}: ImageGalleryProps): JSX.Element => {
+const ImageGallery = ({ medicalNetId, isOpen, onClose }: ImageGalleryProps): JSX.Element => {
   const { t } = useTranslation();
   const [images, setImages] = React.useState<MedicalNetImageDto[]>([]);
 
   const { enqueueSnackbar } = useSnackbar();
   function sendNotification(errorMessage?: string) {
-    enqueueSnackbar(errorMessage || t("COMMON.RECORDSAVED"), {
-      variant: errorMessage ? "warning" : "success",
+    enqueueSnackbar(errorMessage || t('COMMON.RECORDSAVED'), {
+      variant: errorMessage ? 'warning' : 'success'
     });
   }
 
@@ -71,8 +61,8 @@ const ImageGallery = ({
       const newImages = imageList.slice(addUpdateIndex[0]).map((it) => {
         return {
           medicalNetId,
-          name: it.file?.name || "image",
-          image: removeImageDataPrefix(it.image),
+          name: it.file?.name || 'image',
+          image: removeImageDataPrefix(it.image)
         };
       });
 
@@ -81,65 +71,34 @@ const ImageGallery = ({
   };
 
   const removeImage = (medicalNetImageId: number) => {
-    actions.doDeleteImage(
-      medicalNetId,
-      medicalNetImageId,
-      sendNotification
-    )(dispatch);
+    actions.doDeleteImage(medicalNetId, medicalNetImageId, sendNotification)(dispatch);
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={() => onClose()}
-      scroll={"body"}
-      maxWidth="md"
-      fullWidth
-      aria-labelledby="scroll-dialog-title"
-    >
+    <Dialog open={isOpen} onClose={() => onClose()} scroll={'body'} maxWidth="md" fullWidth aria-labelledby="scroll-dialog-title">
       <DialogTitle id="alert-dialog-title">
-        <span>{t("MEDICALNETFAQ.IMAGEGALLERY")}</span>
+        <span>{t('MEDICALNETFAQ.IMAGEGALLERY')}</span>
         <IconButton
           aria-label="close"
           onClick={() => onClose(undefined)}
           sx={{
-            position: "absolute",
+            position: 'absolute',
             right: 8,
-            top: 8,
+            top: 8
           }}
         >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <ImageUploading
-          multiple
-          value={images}
-          onChange={onChange}
-          acceptType={["jpg", "jpeg"]}
-          dataURLKey="image"
-        >
-          {({
-            imageList,
-            onImageUpload,
-            onImageRemove,
-            isDragging,
-            dragProps,
-          }) => (
+        <ImageUploading multiple value={images} onChange={onChange} acceptType={['jpg', 'jpeg']} dataURLKey="image">
+          {({ imageList, onImageUpload, onImageRemove, isDragging, dragProps }) => (
             <Grid2 container spacing={3}>
               <Grid2 size={12}>
                 <Widget>
-                  <Box
-                    display="flex"
-                    justifyContent={"center"}
-                    style={isDragging ? { color: "red" } : undefined}
-                  >
-                    <Button
-                      onClick={onImageUpload}
-                      {...dragProps}
-                      style={{ width: "100%", height: "100%" }}
-                    >
-                      {t("COMMON.UPLOADZONE")}
+                  <Box display="flex" justifyContent={'center'} style={isDragging ? { color: 'red' } : undefined}>
+                    <Button onClick={onImageUpload} {...dragProps} style={{ width: '100%', height: '100%' }}>
+                      {t('COMMON.UPLOADZONE')}
                     </Button>
                   </Box>
                 </Widget>
@@ -148,14 +107,8 @@ const ImageGallery = ({
               {imageList.map((c, inx) => (
                 <Grid2 size={{ xs: 12, md: 3 }} key={inx}>
                   <Card>
-                    <CardActionArea
-                      onClick={() => onClose(c.name, c.medicalNetImageId)}
-                    >
-                      <CardMedia
-                        image={`${imageDataPrefix}${c.image}`}
-                        title="Gallery"
-                        style={{ height: 200 }}
-                      />
+                    <CardActionArea onClick={() => onClose(c.name, c.medicalNetImageId)}>
+                      <CardMedia image={`${imageDataPrefix}${c.image}`} title="Gallery" style={{ height: 200 }} />
                     </CardActionArea>
                     <CardActions>
                       <Typography sx={{ flex: 1 }}>{c.name}</Typography>

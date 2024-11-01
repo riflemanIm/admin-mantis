@@ -1,16 +1,12 @@
-import React from "react";
-import { useSnackbar } from "notistack";
-import DateFnsAdapter from "@date-io/date-fns";
+import React from 'react';
+import { useSnackbar } from 'notistack';
+import DateFnsAdapter from '@date-io/date-fns';
 
-import { Button, ButtonGroup, Stack } from "@mui/material";
+import { Button, ButtonGroup, Stack } from '@mui/material';
 
-import Widget from "../../components/Widget/Widget";
+import Widget from '../../components/Widget';
 
-import {
-  useClinicDispatch,
-  useClinicState,
-  actions,
-} from "../../context/ClinicContext";
+import { useClinicDispatch, useClinicState, actions } from '../../context/ClinicContext';
 
 // Icons
 import {
@@ -20,30 +16,26 @@ import {
   BugReportOutlined as BugReportIcon,
   BadgeOutlined as BadgeIcon,
   PaymentOutlined as PaymentIcon,
-  Storage as StorageIcon,
-} from "@mui/icons-material";
+  Storage as StorageIcon
+} from '@mui/icons-material';
 
-import { ClinicDto } from "../../helpers/dto";
-import { useUserState } from "../../context/UserContext";
-import { isNetRole } from "../../helpers/enums";
-import { useNavigate } from "react-router-dom";
-import {
-  GridActionsCellItem,
-  GridColDef,
-  GridRowParams,
-} from "@mui/x-data-grid";
-import { useTranslation } from "react-i18next";
-import { DeleteDialog } from "../../components/Common/deleteDialog";
-import { BaseListGrid } from "../../components/BaseListGrid";
-import GenericDialog from "../../components/Common/genericDialog";
-import ClientDatabaseList from "./ClientDatabaseList";
+import { ClinicDto } from '../../helpers/dto';
+import { useUserState } from '../../context/UserContext';
+import { isNetRole } from '../../helpers/enums';
+import { useNavigate } from 'react-router-dom';
+import { GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
+import { useTranslation } from 'react-i18next';
+import { DeleteDialog } from '../../components/Common/deleteDialog';
+import { BaseListGrid } from '../../components/BaseListGrid';
+import GenericDialog from '../../components/Common/genericDialog';
+import ClientDatabaseList from './ClientDatabaseList';
 
 const ClinicList = (): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dateFns = new DateFnsAdapter();
   const {
-    currentUser: { role },
+    currentUser: { role }
   } = useUserState();
 
   const [showClientDatabase, setShowClientDatabase] = React.useState(false);
@@ -61,31 +53,31 @@ const ClinicList = (): JSX.Element => {
   const handleDelete = () => {
     actions
       .doDelete(clinicValue.idToDelete as number)(dispatch)
-      .then(() => sendNotification(t("COMMON.RECORDDELETED")));
+      .then(() => sendNotification(t('COMMON.RECORDDELETED')));
   };
   const { enqueueSnackbar } = useSnackbar();
   function sendNotification(text: string) {
     enqueueSnackbar(text, {
-      variant: "success",
+      variant: 'success'
     });
   }
 
   const columns: GridColDef<ClinicDto>[] = [
     {
-      field: "clinicId",
-      align: "right",
-      headerName: t("CLINIC.FIELDS.clinicId") ?? "",
+      field: 'clinicId',
+      align: 'right',
+      headerName: t('CLINIC.FIELDS.clinicId') ?? '',
       width: 80,
-      type: "number",
+      type: 'number'
     },
     {
-      field: "actions",
-      align: "left",
-      headerName: t("CLINIC.FIELDS.actions") ?? "",
+      field: 'actions',
+      align: 'left',
+      headerName: t('CLINIC.FIELDS.actions') ?? '',
       sortable: false,
       filterable: false,
       width: 190,
-      type: "actions",
+      type: 'actions',
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
           key="edit"
@@ -122,53 +114,48 @@ const ClinicList = (): JSX.Element => {
           color="primary"
           disabled={isNetRole(role)}
           onClick={() => openModal(params.id as number)}
-        />,
-      ],
+        />
+      ]
     },
     {
-      field: "code",
-      align: "left",
-      headerName: t("CLINIC.FIELDS.code") ?? "",
-      width: 200,
+      field: 'code',
+      align: 'left',
+      headerName: t('CLINIC.FIELDS.code') ?? '',
+      width: 200
     },
     {
-      field: "title",
-      align: "left",
-      headerName: t("CLINIC.FIELDS.title") ?? "",
-      width: 300,
+      field: 'title',
+      align: 'left',
+      headerName: t('CLINIC.FIELDS.title') ?? '',
+      width: 300
     },
     {
-      field: "email",
-      align: "left",
-      headerName: t("CLINIC.FIELDS.email") ?? "",
-      width: 200,
+      field: 'email',
+      align: 'left',
+      headerName: t('CLINIC.FIELDS.email') ?? '',
+      width: 200
     },
     {
-      field: "isVisible",
-      headerName: t("CLINIC.FIELDS.isVisible") ?? "",
-      type: "boolean",
+      field: 'isVisible',
+      headerName: t('CLINIC.FIELDS.isVisible') ?? '',
+      type: 'boolean'
     },
     {
-      field: "cdate",
-      align: "right",
-      headerName: t("CLINIC.FIELDS.cdate") ?? "",
+      field: 'cdate',
+      align: 'right',
+      headerName: t('CLINIC.FIELDS.cdate') ?? '',
       width: 100,
-      type: "date",
-      valueFormatter: (value: string) =>
-        value ? dateFns.formatByString(new Date(value), "dd.MM.yyyy") : "",
-    },
+      type: 'date',
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy') : '')
+    }
   ];
 
   return (
     <Stack spacing={3}>
-      <DeleteDialog
-        open={clinicValue.modalOpen}
-        onClose={closeModal}
-        onDelete={handleDelete}
-      />
+      <DeleteDialog open={clinicValue.modalOpen} onClose={closeModal} onDelete={handleDelete} />
       <GenericDialog
         isOpen={showClientDatabase}
-        title={t("CLIENTDATABASE.TITLE")}
+        title={t('CLIENTDATABASE.TITLE')}
         onClose={() => {
           setShowClientDatabase(false);
         }}
@@ -192,28 +179,18 @@ const ClinicList = (): JSX.Element => {
           storagePrefix="clinic"
           defaultSort={[
             {
-              field: "clinicId",
-              sort: "asc",
-            },
+              field: 'clinicId',
+              sort: 'asc'
+            }
           ]}
           startActions={
-            <Button
-              size="small"
-              color="primary"
-              href="#/app/clinic/add"
-              startIcon={<AddIcon />}
-            >
-              {t("LIST.ADD")}
+            <Button size="small" color="primary" href="#/app/clinic/add" startIcon={<AddIcon />}>
+              {t('LIST.ADD')}
             </Button>
           }
           endActions={
-            <Button
-              size="small"
-              color="primary"
-              startIcon={<StorageIcon />}
-              onClick={() => setShowClientDatabase(true)}
-            >
-              {t("CLIENTDATABASE.TITLE")}
+            <Button size="small" color="primary" startIcon={<StorageIcon />} onClick={() => setShowClientDatabase(true)}>
+              {t('CLIENTDATABASE.TITLE')}
             </Button>
           }
         />

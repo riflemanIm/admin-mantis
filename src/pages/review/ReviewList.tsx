@@ -1,17 +1,13 @@
-import React from "react";
-import { useSnackbar } from "notistack";
-import DateFnsAdapter from "@date-io/date-fns";
+import React from 'react';
+import { useSnackbar } from 'notistack';
+import DateFnsAdapter from '@date-io/date-fns';
 
-import Widget from "../../components/Widget/Widget";
-import {
-  useReviewState,
-  useReviewDispatch,
-  actions,
-} from "../../context/ReviewContext";
+import Widget from '../../components/Widget';
+import { useReviewState, useReviewDispatch, actions } from '../../context/ReviewContext';
 
-import { EmrReviewDto, GenericReviewDto } from "../../helpers/dto";
+import { EmrReviewDto, GenericReviewDto } from '../../helpers/dto';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Button,
@@ -26,17 +22,17 @@ import {
   Rating,
   Select,
   Stack,
-  Typography,
-} from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
-import { useLanguageValue } from "../../context/LanguageContext";
+  Typography
+} from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import { useLanguageValue } from '../../context/LanguageContext';
 
 const ReviewList = (): JSX.Element => {
   const { languageState } = useLanguageValue();
   const { t } = useTranslation();
   const dateFns = new DateFnsAdapter();
 
-  const [type, setType] = React.useState("doctor");
+  const [type, setType] = React.useState('doctor');
   const [rows, setRows] = React.useState<GenericReviewDto[]>([]);
 
   const state = useReviewState();
@@ -44,10 +40,10 @@ const ReviewList = (): JSX.Element => {
 
   React.useEffect(() => {
     switch (type) {
-      case "doctor":
+      case 'doctor':
         actions.doFetchDoctorReviews()(dispatch);
         break;
-      case "emr":
+      case 'emr':
         actions.doFetchEmrReviews()(dispatch);
         break;
     }
@@ -60,8 +56,7 @@ const ReviewList = (): JSX.Element => {
   const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
-    if (state.errorMessage)
-      enqueueSnackbar(state.errorMessage, { variant: "error" });
+    if (state.errorMessage) enqueueSnackbar(state.errorMessage, { variant: 'error' });
   }, [state.errorMessage]);
 
   const approve = React.useCallback(
@@ -89,28 +84,21 @@ const ReviewList = (): JSX.Element => {
     if (row.userInfo.email) {
       contacts.push(row.userInfo.email);
     }
-    parts.push(contacts.join(", "));
-    return parts.join(" ");
+    parts.push(contacts.join(', '));
+    return parts.join(' ');
   }, []);
 
   const getDoctorHeader = React.useCallback(
     (row: GenericReviewDto): string => {
-      const doctor = `${t("REVIEW.CLINIC")}: ${row.clinicName} (${
-        row.clinicId
-      }), ${t("REVIEW.DOCTOR")}: ${row.doctorInfo?.firstName} ${
+      const doctor = `${t('REVIEW.CLINIC')}: ${row.clinicName} (${row.clinicId}), ${t('REVIEW.DOCTOR')}: ${row.doctorInfo?.firstName} ${
         row.doctorInfo?.lastName
       } (${row.doctorId})`;
 
-      if (type === "doctor" || !(row as EmrReviewDto).visitDate) return doctor;
+      if (type === 'doctor' || !(row as EmrReviewDto).visitDate) return doctor;
 
-      const visitDate = dateFns.formatByString(
-        new Date((row as EmrReviewDto).visitDate),
-        "dd.MM.yyyy"
-      );
+      const visitDate = dateFns.formatByString(new Date((row as EmrReviewDto).visitDate), 'dd.MM.yyyy');
 
-      return `${t("REVIEW.VISITDATE")}: ${visitDate}, ${doctor}, ${t(
-        "REVIEW.VISITTYPE"
-      )}: ${(row as EmrReviewDto).visitType}`;
+      return `${t('REVIEW.VISITDATE')}: ${visitDate}, ${doctor}, ${t('REVIEW.VISITTYPE')}: ${(row as EmrReviewDto).visitType}`;
     },
     [languageState.language, type]
   );
@@ -118,25 +106,21 @@ const ReviewList = (): JSX.Element => {
   return (
     <Stack spacing={2}>
       <Widget inheritHeight>
-        <FormControl
-          variant="standard"
-          size="small"
-          style={{ marginLeft: 8, width: 300 }}
-        >
-          <InputLabel id="id-type-label">{t("REVIEW.TYPE")}</InputLabel>
+        <FormControl variant="standard" size="small" style={{ marginLeft: 8, width: 300 }}>
+          <InputLabel id="id-type-label">{t('REVIEW.TYPE')}</InputLabel>
           <Select
             name="type"
             id="id-type-select"
             labelId="id-type-label"
-            label={t("REVIEW.TYPE")}
+            label={t('REVIEW.TYPE')}
             onChange={(event) => setType(event.target.value)}
             value={type}
           >
             <MenuItem value="doctor">
-              <em>{t("REVIEW.DOCTOR")}</em>
+              <em>{t('REVIEW.DOCTOR')}</em>
             </MenuItem>
             <MenuItem value="emr">
-              <em>{t("REVIEW.EMR")}</em>
+              <em>{t('REVIEW.EMR')}</em>
             </MenuItem>
           </Select>
         </FormControl>
@@ -152,40 +136,23 @@ const ReviewList = (): JSX.Element => {
                       <PersonIcon />
                     </Avatar>
                   }
-                  title={
-                    <Typography sx={{ fontSize: 16 }}>
-                      {getUserInfo(it)}
-                    </Typography>
-                  }
-                  subheader={dateFns.formatByString(
-                    new Date(it.date),
-                    "dd.MM.yyyy"
-                  )}
+                  title={<Typography sx={{ fontSize: 16 }}>{getUserInfo(it)}</Typography>}
+                  subheader={dateFns.formatByString(new Date(it.date), 'dd.MM.yyyy')}
                 />
                 <CardContent>
-                  <Typography
-                    sx={{ fontSize: 14 }}
-                    color="text.secondary"
-                    gutterBottom
-                  >
+                  <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     {getDoctorHeader(it)}
                   </Typography>
                   <Rating name="read-only" value={it.rating} readOnly />
                   <Typography variant="body2">{it.text}</Typography>
                 </CardContent>
-                {type === "doctor" && (
+                {type === 'doctor' && (
                   <CardActions>
-                    <Button
-                      aria-label="approve"
-                      onClick={() => approve(it.id as number)}
-                    >
-                      {t("COMMON.ACCEPT")}
+                    <Button aria-label="approve" onClick={() => approve(it.id as number)}>
+                      {t('COMMON.ACCEPT')}
                     </Button>
-                    <Button
-                      aria-label="delete"
-                      onClick={() => remove(it.id as number)}
-                    >
-                      {t("COMMON.DELETE")}
+                    <Button aria-label="delete" onClick={() => remove(it.id as number)}>
+                      {t('COMMON.DELETE')}
                     </Button>
                   </CardActions>
                 )}

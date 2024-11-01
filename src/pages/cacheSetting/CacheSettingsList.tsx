@@ -1,29 +1,18 @@
-import React from "react";
-import { useSnackbar } from "notistack";
+import React from 'react';
+import { useSnackbar } from 'notistack';
 
-import Widget from "../../components/Widget/Widget";
+import Widget from '../../components/Widget';
 
-import { CacheSettingDto } from "../../helpers/dto";
-import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColDef,
-  GridRowParams,
-} from "@mui/x-data-grid";
+import { CacheSettingDto } from '../../helpers/dto';
+import { DataGrid, GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
 // Icons
-import {
-  KeyOutlined as KeyIcon,
-  DeleteOutline as DeleteIcon,
-} from "@mui/icons-material";
-import { getGridLocaleText } from "../../helpers/grid";
-import { useTranslation } from "react-i18next";
-import { useLanguageValue } from "../../context/LanguageContext";
-import {
-  CacheSettingsContext,
-  actions,
-} from "../../context/CacheSettingsContext";
-import CacheDetailsDialog from "./CacheDetailsDialog";
-import { DeleteDialog } from "../../components/Common/deleteDialog";
+import { KeyOutlined as KeyIcon, DeleteOutline as DeleteIcon } from '@mui/icons-material';
+import { getGridLocaleText } from '../../helpers/grid';
+import { useTranslation } from 'react-i18next';
+import { useLanguageValue } from '../../context/LanguageContext';
+import { CacheSettingsContext, actions } from '../../context/CacheSettingsContext';
+import CacheDetailsDialog from './CacheDetailsDialog';
+import { DeleteDialog } from '../../components/Common/deleteDialog';
 
 const CacheSettingsList = (): JSX.Element => {
   const { languageState } = useLanguageValue();
@@ -34,14 +23,14 @@ const CacheSettingsList = (): JSX.Element => {
     code: string;
   }>({
     isOpen: false,
-    code: "",
+    code: ''
   });
   const [deleteState, setDeleteState] = React.useState<{
     isOpen: boolean;
     code: string;
   }>({
     isOpen: false,
-    code: "",
+    code: ''
   });
   const { state, dispatch } = React.useContext(CacheSettingsContext);
 
@@ -56,45 +45,37 @@ const CacheSettingsList = (): JSX.Element => {
   const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
-    if (state.errorMessage)
-      enqueueSnackbar(state.errorMessage, { variant: "error" });
+    if (state.errorMessage) enqueueSnackbar(state.errorMessage, { variant: 'error' });
   }, [state.errorMessage]);
 
-  const processRowUpdate = React.useCallback(
-    async (newRow: CacheSettingDto, oldRow: CacheSettingDto) => {
-      if (
-        newRow.driver === oldRow.driver &&
-        newRow.ttl === oldRow.ttl &&
-        newRow.memoryTTL === oldRow.memoryTTL &&
-        newRow.hotSwap === oldRow.hotSwap
-      )
-        return oldRow;
-      const success = await actions.doUpdate(
-        newRow.cacheSettingsId,
-        newRow
-      )(dispatch);
-      if (success)
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), { variant: "success" });
-      return success ? newRow : oldRow;
-    },
-    []
-  );
+  const processRowUpdate = React.useCallback(async (newRow: CacheSettingDto, oldRow: CacheSettingDto) => {
+    if (
+      newRow.driver === oldRow.driver &&
+      newRow.ttl === oldRow.ttl &&
+      newRow.memoryTTL === oldRow.memoryTTL &&
+      newRow.hotSwap === oldRow.hotSwap
+    )
+      return oldRow;
+    const success = await actions.doUpdate(newRow.cacheSettingsId, newRow)(dispatch);
+    if (success) enqueueSnackbar(t('COMMON.RECORDSAVED'), { variant: 'success' });
+    return success ? newRow : oldRow;
+  }, []);
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
-    enqueueSnackbar(error.message, { variant: "error" });
+    enqueueSnackbar(error.message, { variant: 'error' });
   }, []);
 
   const closeDetailsDialog = React.useCallback(() => {
     setDetails({
       isOpen: false,
-      code: "",
+      code: ''
     });
   }, [details]);
 
   const closeDeleteDialog = React.useCallback(() => {
     setDeleteState({
       isOpen: false,
-      code: "",
+      code: ''
     });
   }, [deleteState]);
 
@@ -104,19 +85,16 @@ const CacheSettingsList = (): JSX.Element => {
       .then((count: number) => {
         setDeleteState({
           isOpen: false,
-          code: "",
+          code: ''
         });
-        enqueueSnackbar(
-          t("CACHESETTINGS.DELETED").replace("{count}", String(count)),
-          { variant: "success" }
-        );
+        enqueueSnackbar(t('CACHESETTINGS.DELETED').replace('{count}', String(count)), { variant: 'success' });
       })
       .catch((error: Error) => {
         setDeleteState({
           isOpen: false,
-          code: "",
+          code: ''
         });
-        enqueueSnackbar(error.message, { variant: "error" });
+        enqueueSnackbar(error.message, { variant: 'error' });
       });
   }, [deleteState.code]);
 
@@ -124,24 +102,24 @@ const CacheSettingsList = (): JSX.Element => {
     const uniqueGroups = new Set(rows.map((item) => item.groupName));
     return [
       {
-        field: "actions",
-        align: "left",
-        headerName: t("SETTING.FIELDS.actions") ?? "",
+        field: 'actions',
+        align: 'left',
+        headerName: t('SETTING.FIELDS.actions') ?? '',
         sortable: false,
         filterable: false,
         // width: 180,
-        type: "actions",
+        type: 'actions',
         getActions: (params: GridRowParams) => [
           <GridActionsCellItem
             key="keys"
             icon={<KeyIcon />}
             label="Ключи"
             color="primary"
-            disabled={params.row.driver !== "redis"}
+            disabled={params.row.driver !== 'redis'}
             onClick={() =>
               setDetails({
                 isOpen: true,
-                code: params.row.code,
+                code: params.row.code
               })
             }
           />,
@@ -150,69 +128,69 @@ const CacheSettingsList = (): JSX.Element => {
             icon={<DeleteIcon />}
             label="Удалить"
             color="primary"
-            disabled={params.row.driver !== "redis"}
+            disabled={params.row.driver !== 'redis'}
             onClick={() =>
               setDeleteState({
                 isOpen: true,
-                code: params.row.code,
+                code: params.row.code
               })
             }
-          />,
-        ],
+          />
+        ]
       },
       {
-        field: "groupName",
-        align: "left",
-        headerName: t("SETTING.FIELDS.groupName") ?? "",
+        field: 'groupName',
+        align: 'left',
+        headerName: t('SETTING.FIELDS.groupName') ?? '',
         width: 150,
-        type: "singleSelect",
-        valueOptions: [...uniqueGroups],
+        type: 'singleSelect',
+        valueOptions: [...uniqueGroups]
       },
       {
-        field: "code",
-        align: "left",
-        headerName: t("SETTING.FIELDS.code") ?? "",
-        width: 200,
+        field: 'code',
+        align: 'left',
+        headerName: t('SETTING.FIELDS.code') ?? '',
+        width: 200
       },
       {
-        field: "driver",
-        align: "left",
-        type: "singleSelect",
-        valueOptions: ["memory", "redis", "disabled"],
-        headerName: "driver",
+        field: 'driver',
+        align: 'left',
+        type: 'singleSelect',
+        valueOptions: ['memory', 'redis', 'disabled'],
+        headerName: 'driver',
         editable: true,
-        width: 120,
+        width: 120
       },
       {
-        field: "ttl",
-        align: "right",
-        type: "number",
-        headerName: "ttl",
+        field: 'ttl',
+        align: 'right',
+        type: 'number',
+        headerName: 'ttl',
         editable: true,
-        width: 120,
+        width: 120
       },
       {
-        field: "memoryTTL",
-        align: "right",
-        type: "number",
-        headerName: t("CACHESETTINGS.FIELDS.memoryTTL") ?? "",
+        field: 'memoryTTL',
+        align: 'right',
+        type: 'number',
+        headerName: t('CACHESETTINGS.FIELDS.memoryTTL') ?? '',
         editable: true,
-        width: 120,
+        width: 120
       },
       {
-        field: "hotSwap",
-        type: "boolean",
-        headerName: t("CACHESETTINGS.FIELDS.hotSwap") ?? "",
+        field: 'hotSwap',
+        type: 'boolean',
+        headerName: t('CACHESETTINGS.FIELDS.hotSwap') ?? '',
         editable: true,
-        width: 120,
+        width: 120
       },
       {
-        field: "name",
-        align: "left",
-        headerName: t("SETTING.FIELDS.name") ?? "",
+        field: 'name',
+        align: 'left',
+        headerName: t('SETTING.FIELDS.name') ?? '',
         minWidth: 200,
-        flex: 1,
-      },
+        flex: 1
+      }
     ];
   }, [languageState.language, rows]);
 
@@ -220,7 +198,7 @@ const CacheSettingsList = (): JSX.Element => {
     <Widget inheritHeight noBodyPadding>
       <DeleteDialog
         open={deleteState.isOpen}
-        deleteText={t("CACHESETTINGS.DELETECONFIRM")}
+        deleteText={t('CACHESETTINGS.DELETECONFIRM')}
         onClose={closeDeleteDialog}
         onDelete={handleDelete}
       />
@@ -238,7 +216,7 @@ const CacheSettingsList = (): JSX.Element => {
         rows={rows}
         columns={columns}
         getRowId={(row: CacheSettingDto) => row.cacheSettingsId}
-        getRowHeight={() => "auto"}
+        getRowHeight={() => 'auto'}
         localeText={getGridLocaleText(languageState.language)}
         processRowUpdate={processRowUpdate}
         onProcessRowUpdateError={handleProcessRowUpdateError}

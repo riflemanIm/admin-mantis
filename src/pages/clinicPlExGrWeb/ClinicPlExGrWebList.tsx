@@ -1,24 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import Widget from "../../components/Widget/Widget";
+import Widget from '../../components/Widget';
 
 // Icons
-import { CreateOutlined as CreateIcon } from "@mui/icons-material";
+import { CreateOutlined as CreateIcon } from '@mui/icons-material';
 
-import { ClinicPlExGrWebDto } from "../../helpers/dto";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  GridActionsCellItem,
-  GridColDef,
-  GridRowParams,
-} from "@mui/x-data-grid";
-import { useTranslation } from "react-i18next";
-import {
-  actions,
-  useClinicPlExGrWebDispatch,
-  useClinicPlExGrWebState,
-} from "../../context/ClinicPlExGrWebContext";
-import { BaseListGrid } from "../../components/BaseListGrid";
+import { ClinicPlExGrWebDto } from '../../helpers/dto';
+import { useNavigate, useParams } from 'react-router-dom';
+import { GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
+import { useTranslation } from 'react-i18next';
+import { actions, useClinicPlExGrWebDispatch, useClinicPlExGrWebState } from '../../context/ClinicPlExGrWebContext';
+import { BaseListGrid } from '../../components/BaseListGrid';
 
 const ClinicPlExGrWebList = (): JSX.Element => {
   const { t } = useTranslation();
@@ -34,52 +26,48 @@ const ClinicPlExGrWebList = (): JSX.Element => {
 
   const columns: GridColDef[] = [
     {
-      field: "plExGrWebId",
-      align: "right",
-      headerName: t("CLINICPLEXGRWEB.FIELDS.plExGrWebId") ?? "",
+      field: 'plExGrWebId',
+      align: 'right',
+      headerName: t('CLINICPLEXGRWEB.FIELDS.plExGrWebId') ?? '',
       width: 120,
-      type: "number",
+      type: 'number'
     },
     {
-      field: "actions",
-      align: "left",
-      headerName: t("CLINICPLEXGRWEB.FIELDS.actions") ?? "",
+      field: 'actions',
+      align: 'left',
+      headerName: t('CLINICPLEXGRWEB.FIELDS.actions') ?? '',
       sortable: false,
       filterable: false,
-      type: "actions",
+      type: 'actions',
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
           key="edit"
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() =>
-            navigate(`/app/clinic/${clinicId}/plExGrWeb/${params.id}/edit`)
-          }
-        />,
-      ],
+          onClick={() => navigate(`/app/clinic/${clinicId}/plExGrWeb/${params.id}/edit`)}
+        />
+      ]
     },
     {
-      field: "code",
-      align: "left",
-      headerName: t("CLINICPLEXGRWEB.FIELDS.code") ?? "",
-      width: 300,
+      field: 'code',
+      align: 'left',
+      headerName: t('CLINICPLEXGRWEB.FIELDS.code') ?? '',
+      width: 300
     },
     {
-      field: "specializationId",
-      align: "left",
-      headerName: t("CLINICPLEXGRWEB.FIELDS.specializationId") ?? "",
-      type: "number",
+      field: 'specializationId',
+      align: 'left',
+      headerName: t('CLINICPLEXGRWEB.FIELDS.specializationId') ?? '',
+      type: 'number',
       minWidth: 200,
       flex: 1,
-      headerAlign: "left",
+      headerAlign: 'left',
       valueGetter: (value) => {
-        const specialization = state.specializations.find(
-          (it) => it.specializationId === value
-        );
+        const specialization = state.specializations.find((it) => it.specializationId === value);
         return specialization ? `${value} (${specialization.code})` : value;
-      },
-    },
+      }
+    }
   ];
 
   return (
@@ -94,9 +82,9 @@ const ClinicPlExGrWebList = (): JSX.Element => {
         doFetch={actions.doFetch(Number(clinicId))}
         defaultSort={[
           {
-            field: "plExGrWebId",
-            sort: "asc",
-          },
+            field: 'plExGrWebId',
+            sort: 'asc'
+          }
         ]}
       />
     </Widget>

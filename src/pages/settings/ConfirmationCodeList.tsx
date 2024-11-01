@@ -1,18 +1,14 @@
-import React from "react";
-import DateFnsAdapter from "@date-io/date-fns";
+import React from 'react';
+import DateFnsAdapter from '@date-io/date-fns';
 
-import Widget from "../../components/Widget/Widget";
+import Widget from '../../components/Widget';
 
-import {
-  actions,
-  useConfirmationCodeDispatch,
-  useConfirmationCodeState,
-} from "../../context/ConfirmationCodeContext";
-import { ConfirmationCodeDto } from "../../helpers/dto";
-import { GridColDef } from "@mui/x-data-grid";
-import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
-import { BaseListGrid } from "../../components/BaseListGrid";
+import { actions, useConfirmationCodeDispatch, useConfirmationCodeState } from '../../context/ConfirmationCodeContext';
+import { ConfirmationCodeDto } from '../../helpers/dto';
+import { GridColDef } from '@mui/x-data-grid';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { BaseListGrid } from '../../components/BaseListGrid';
 
 const ConfirmationCodeList = (): JSX.Element => {
   const { t } = useTranslation();
@@ -24,70 +20,67 @@ const ConfirmationCodeList = (): JSX.Element => {
 
   const columns: GridColDef[] = [
     {
-      field: "confirmationCodesId",
-      align: "right",
-      headerName: t("CONFIRMATIONCODE.FIELDS.confirmationCodesId") ?? "",
+      field: 'confirmationCodesId',
+      align: 'right',
+      headerName: t('CONFIRMATIONCODE.FIELDS.confirmationCodesId') ?? '',
       width: 80,
-      type: "number",
+      type: 'number'
     },
     {
-      field: "userId",
-      align: "right",
-      headerName: t("CONFIRMATIONCODE.FIELDS.userId") ?? "",
+      field: 'userId',
+      align: 'right',
+      headerName: t('CONFIRMATIONCODE.FIELDS.userId') ?? '',
       width: 120,
-      type: "number",
+      type: 'number'
     },
     {
-      field: "code",
-      align: "left",
-      headerName: t("CONFIRMATIONCODE.FIELDS.code") ?? "",
-      width: 120,
+      field: 'code',
+      align: 'left',
+      headerName: t('CONFIRMATIONCODE.FIELDS.code') ?? '',
+      width: 120
     },
     {
-      field: "customData",
-      align: "left",
-      headerName: t("CONFIRMATIONCODE.FIELDS.customData") ?? "",
-      width: 120,
+      field: 'customData',
+      align: 'left',
+      headerName: t('CONFIRMATIONCODE.FIELDS.customData') ?? '',
+      width: 120
     },
     {
-      field: "creationDate",
-      align: "right",
-      headerName: t("CONFIRMATIONCODE.FIELDS.creationDate") ?? "",
+      field: 'creationDate',
+      align: 'right',
+      headerName: t('CONFIRMATIONCODE.FIELDS.creationDate') ?? '',
       width: 180,
-      type: "date",
-      valueFormatter: (value: string) =>
-        value
-          ? dateFns.formatByString(new Date(value), "dd.MM.yyyy HH:mm:ss")
-          : "",
+      type: 'date',
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy HH:mm:ss') : '')
     },
     {
-      field: "lifeTime",
-      align: "right",
-      headerName: t("CONFIRMATIONCODE.FIELDS.lifeTime") ?? "",
+      field: 'lifeTime',
+      align: 'right',
+      headerName: t('CONFIRMATIONCODE.FIELDS.lifeTime') ?? '',
       width: 120,
-      type: "number",
+      type: 'number'
     },
     {
-      field: "maxTryCnt",
-      align: "right",
-      headerName: t("CONFIRMATIONCODE.FIELDS.maxTryCnt") ?? "",
+      field: 'maxTryCnt',
+      align: 'right',
+      headerName: t('CONFIRMATIONCODE.FIELDS.maxTryCnt') ?? '',
       width: 120,
-      type: "number",
+      type: 'number'
     },
     {
-      field: "tryCnt",
-      align: "right",
-      headerName: t("CONFIRMATIONCODE.FIELDS.tryCnt") ?? "",
+      field: 'tryCnt',
+      align: 'right',
+      headerName: t('CONFIRMATIONCODE.FIELDS.tryCnt') ?? '',
       width: 120,
-      type: "number",
+      type: 'number'
     },
     {
-      field: "nextCodeDelay",
-      align: "right",
-      headerName: t("CONFIRMATIONCODE.FIELDS.nextCodeDelay") ?? "",
+      field: 'nextCodeDelay',
+      align: 'right',
+      headerName: t('CONFIRMATIONCODE.FIELDS.nextCodeDelay') ?? '',
       width: 120,
-      type: "number",
-    },
+      type: 'number'
+    }
   ];
 
   return (
@@ -101,9 +94,9 @@ const ConfirmationCodeList = (): JSX.Element => {
         doFetch={actions.doFetch(Number(id))}
         defaultSort={[
           {
-            field: "confirmationCodesId",
-            sort: "desc",
-          },
+            field: 'confirmationCodesId',
+            sort: 'desc'
+          }
         ]}
       />
     </Widget>

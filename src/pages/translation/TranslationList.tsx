@@ -1,6 +1,6 @@
-import React from "react";
-import { useSnackbar } from "notistack";
-import DateFnsAdapter from "@date-io/date-fns";
+import React from 'react';
+import { useSnackbar } from 'notistack';
+import DateFnsAdapter from '@date-io/date-fns';
 
 import {
   Box,
@@ -13,35 +13,26 @@ import {
   Typography,
   Button,
   Theme,
-  Stack,
-} from "@mui/material";
+  Stack
+} from '@mui/material';
 
-import Widget from "../../components/Widget/Widget";
-import {
-  useTranslationDispatch,
-  useTranslationState,
-  actions,
-  TranslationFilter,
-} from "../../context/TranslationContext";
-import { useUserState } from "../../context/UserContext";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import Widget from '../../components/Widget';
+import { useTranslationDispatch, useTranslationState, actions, TranslationFilter } from '../../context/TranslationContext';
+import { useUserState } from '../../context/UserContext';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // Icons
-import {
-  DeleteOutlined as DeleteIcon,
-  DoneAll as DoneAllIcon,
-  CreateOutlined as CreateIcon,
-} from "@mui/icons-material";
+import { DeleteOutlined as DeleteIcon, DoneAll as DoneAllIcon, CreateOutlined as CreateIcon } from '@mui/icons-material';
 
-import AdminActions from "./TranslationAdminActions";
-import AdminActionsMenu from "./TranslationAdminActionsMenu";
-import InterActions from "./TranslationInterActions";
-import InterActionsMenu from "./TranslationInterActionsMenu";
-import TranslationFilters from "./TranslationFilters";
-import capitalizeFirst from "../../helpers/capitalize";
-import { AccountRole } from "../../helpers/enums";
-import { TranslationCheckIndex, TranslationsDto } from "../../helpers/dto";
-import { DeleteDialog } from "../../components/Common/deleteDialog";
+import AdminActions from './TranslationAdminActions';
+import AdminActionsMenu from './TranslationAdminActionsMenu';
+import InterActions from './TranslationInterActions';
+import InterActionsMenu from './TranslationInterActionsMenu';
+import TranslationFilters from './TranslationFilters';
+import capitalizeFirst from '../../helpers/capitalize';
+import { AccountRole } from '../../helpers/enums';
+import { TranslationCheckIndex, TranslationsDto } from '../../helpers/dto';
+import { DeleteDialog } from '../../components/Common/deleteDialog';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -51,62 +42,59 @@ import {
   GridRowParams,
   GridRowSelectionModel,
   GridSortModel,
-  GridToolbar,
-} from "@mui/x-data-grid";
-import { getGridLocaleText } from "../../helpers/grid";
-import { useLanguageValue } from "../../context/LanguageContext";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
+  GridToolbar
+} from '@mui/x-data-grid';
+import { getGridLocaleText } from '../../helpers/grid';
+import { useLanguageValue } from '../../context/LanguageContext';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 const filterValsToModel = (filterVals: TranslationFilter): GridFilterModel => {
   const result: GridFilterModel = {
-    items: [],
+    items: []
   };
   if (filterVals.pname) {
     result.items.push({
-      field: "pname",
-      operator: "equals",
-      value: filterVals.pname,
+      field: 'pname',
+      operator: 'equals',
+      value: filterVals.pname
     });
   }
   if (filterVals.gkey) {
     result.items.push({
-      field: "gkey",
-      operator: "equals",
-      value: filterVals.gkey,
+      field: 'gkey',
+      operator: 'equals',
+      value: filterVals.gkey
     });
   }
-  if (
-    filterVals.checked === "checked_all" ||
-    filterVals.checked === "not_checked_all"
-  ) {
-    const isChecked = filterVals.checked === "checked_all";
+  if (filterVals.checked === 'checked_all' || filterVals.checked === 'not_checked_all') {
+    const isChecked = filterVals.checked === 'checked_all';
     result.items.push(
       {
-        field: "checkedEn",
-        operator: "is",
-        value: isChecked,
+        field: 'checkedEn',
+        operator: 'is',
+        value: isChecked
       },
       {
-        field: "checkedRu",
-        operator: "is",
-        value: isChecked,
+        field: 'checkedRu',
+        operator: 'is',
+        value: isChecked
       },
       {
-        field: "checkedFr",
-        operator: "is",
-        value: isChecked,
+        field: 'checkedFr',
+        operator: 'is',
+        value: isChecked
       }
     );
   }
-  if (["ru", "en", "fr"].includes(filterVals.checked as string)) {
+  if (['ru', 'en', 'fr'].includes(filterVals.checked as string)) {
     const lang = filterVals.checked as string;
     const field = `checked${capitalizeFirst(lang)}`;
     result.items.push({
       field,
-      operator: "is",
-      value: false,
+      operator: 'is',
+      value: false
     });
   }
   return result;
@@ -118,34 +106,27 @@ const TranslationList = (): JSX.Element => {
   const navigate = useNavigate();
   const dateFns = new DateFnsAdapter();
   const {
-    currentUser: { role },
+    currentUser: { role }
   } = useUserState();
 
-  const [sortModel, setSortModel] = useLocalStorage<GridSortModel>(
-    "translation:sort",
-    [
-      {
-        field: "pname",
-        sort: "asc",
-      },
-    ]
-  );
+  const [sortModel, setSortModel] = useLocalStorage<GridSortModel>('translation:sort', [
+    {
+      field: 'pname',
+      sort: 'asc'
+    }
+  ]);
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
-    items: [],
+    items: []
   });
-  const [externalFilters, setExternalFilters] = React.useState<GridFilterModel>(
-    {
-      items: [],
-    }
-  );
-  const [paginationModel, setPaginationModel] =
-    useLocalStorage<GridPaginationModel>("translation:paginationModel", {
-      page: 0,
-      pageSize: 10,
-    });
-  const [selectionModel, setSelectionModel] =
-    React.useState<GridRowSelectionModel>([]);
+  const [externalFilters, setExternalFilters] = React.useState<GridFilterModel>({
+    items: []
+  });
+  const [paginationModel, setPaginationModel] = useLocalStorage<GridPaginationModel>('translation:paginationModel', {
+    page: 0,
+    pageSize: 10
+  });
+  const [selectionModel, setSelectionModel] = React.useState<GridRowSelectionModel>([]);
   const translationDispatch = useTranslationDispatch();
 
   const fetchAll = React.useCallback(() => {
@@ -154,7 +135,7 @@ const TranslationList = (): JSX.Element => {
       startIndex,
       paginationModel.pageSize,
       JSON.stringify({
-        items: [...filterModel.items, ...externalFilters.items],
+        items: [...filterModel.items, ...externalFilters.items]
       }),
       sortModel[0]?.field,
       sortModel[0]?.sort
@@ -167,23 +148,14 @@ const TranslationList = (): JSX.Element => {
       startIndex,
       paginationModel.pageSize,
       JSON.stringify({
-        items: [...filterModel.items, ...externalFilters.items],
+        items: [...filterModel.items, ...externalFilters.items]
       }),
       sortModel[0]?.field,
       sortModel[0]?.sort
     )(translationDispatch);
   }, [paginationModel, filterModel, externalFilters, sortModel]);
 
-  const {
-    rows,
-    idToDelete,
-    modalOpen,
-    modalOpenCheched,
-    checked,
-    filterVals,
-    loading,
-    totalCount,
-  } = useTranslationState();
+  const { rows, idToDelete, modalOpen, modalOpenCheched, checked, filterVals, loading, totalCount } = useTranslationState();
 
   React.useEffect(() => {
     setExternalFilters(filterValsToModel(filterVals));
@@ -199,13 +171,13 @@ const TranslationList = (): JSX.Element => {
 
   const closeModalCheched = () => {
     translationDispatch({
-      type: "TRANSLATIONS_CHECKED_CLOSE",
+      type: 'TRANSLATIONS_CHECKED_CLOSE'
     });
   };
 
   const openModalCheched = () => {
     translationDispatch({
-      type: "TRANSLATIONS_CHECKED_OPEN",
+      type: 'TRANSLATIONS_CHECKED_OPEN'
     });
   };
 
@@ -213,40 +185,36 @@ const TranslationList = (): JSX.Element => {
     actions
       .doDelete(idToDelete as number)(translationDispatch)
       .then(() => {
-        sendNotification(t("COMMON.RECORDDELETED"));
+        sendNotification(t('COMMON.RECORDDELETED'));
       });
   };
 
   const { enqueueSnackbar } = useSnackbar();
   function sendNotification(text: string) {
     enqueueSnackbar(text, {
-      variant: "success",
+      variant: 'success'
     });
   }
 
   const needCheck = (row: TranslationsDto, lang: string) => {
     const { langRu, langEn, langFr, checkedRu, checkedEn, checkedFr } = row;
-    let val = "";
+    let val = '';
     let checked = null;
-    if (lang === "ru") {
+    if (lang === 'ru') {
       val = langRu;
       checked = checkedRu;
     }
-    if (lang === "en") {
+    if (lang === 'en') {
       val = langEn;
       checked = checkedEn;
     }
-    if (lang === "fr") {
+    if (lang === 'fr') {
       val = langFr;
       checked = checkedFr;
     }
 
     return (
-      <Typography
-        variant="body2"
-        color={!checked ? "primary" : undefined}
-        component="div"
-      >
+      <Typography variant="body2" color={!checked ? 'primary' : undefined} component="div">
         {val}
       </Typography>
     );
@@ -258,23 +226,21 @@ const TranslationList = (): JSX.Element => {
     newChecked[`checked${capitalizeFirst(lang)}` as TranslationCheckIndex] =
       !checked[`checked${capitalizeFirst(lang)}` as TranslationCheckIndex];
     translationDispatch({
-      type: "TRANSLATIONS_SELECTED_CHECKED",
-      payload: { ...checked, ...newChecked },
+      type: 'TRANSLATIONS_SELECTED_CHECKED',
+      payload: { ...checked, ...newChecked }
     });
   };
 
   const saveChecked = () => {
-    if (selectionModel.length === 0) sendNotification("No rows selected");
+    if (selectionModel.length === 0) sendNotification('No rows selected');
     else {
       actions.doUpdateChecked(selectionModel as number[], {
-        ...checked,
+        ...checked
       })(translationDispatch, sendNotification, fetchAll);
     }
   };
 
-  const isMobile = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down("sm")
-  );
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
   const getActions = React.useCallback(
     (params: GridRowParams) => {
@@ -293,7 +259,7 @@ const TranslationList = (): JSX.Element => {
             label="Issue support token"
             color="primary"
             onClick={() => openModalConfirm(params.id as number)}
-          />,
+          />
         ];
       }
       if (role === AccountRole.interpreter) {
@@ -304,7 +270,7 @@ const TranslationList = (): JSX.Element => {
             label="Edit"
             color="primary"
             onClick={() => navigate(`/app/translation/${params.id}/edit`)}
-          />,
+          />
         ];
       }
       return [];
@@ -314,82 +280,80 @@ const TranslationList = (): JSX.Element => {
 
   const columns: GridColDef[] = [
     {
-      field: "id",
-      align: "left",
-      headerName: "ID",
-      type: "number",
-      width: 80,
+      field: 'id',
+      align: 'left',
+      headerName: 'ID',
+      type: 'number',
+      width: 80
     },
     {
-      field: "actions",
-      align: "left",
-      headerName: "Actions",
+      field: 'actions',
+      align: 'left',
+      headerName: 'Actions',
       sortable: false,
       filterable: false,
-      type: "actions",
-      getActions: (params: GridRowParams) => getActions(params),
-    },
+      type: 'actions',
+      getActions: (params: GridRowParams) => getActions(params)
+    }
   ];
   if (role === AccountRole.admin) {
     columns.push(
       {
-        field: "gkey",
-        align: "left",
-        headerName: "Group",
-        width: 120,
+        field: 'gkey',
+        align: 'left',
+        headerName: 'Group',
+        width: 120
       },
       {
-        field: "tkey",
-        align: "left",
-        headerName: "Key",
-        width: 200,
+        field: 'tkey',
+        align: 'left',
+        headerName: 'Key',
+        width: 200
       }
     );
   }
   columns.push(
     {
-      field: "langRu",
-      align: "left",
-      headerName: "Russian",
-      renderCell: (params) => needCheck(params.row, "ru"),
-      flex: 1,
+      field: 'langRu',
+      align: 'left',
+      headerName: 'Russian',
+      renderCell: (params) => needCheck(params.row, 'ru'),
+      flex: 1
     },
     {
-      field: "langEn",
-      align: "left",
-      headerName: "English",
-      renderCell: (params) => needCheck(params.row, "en"),
-      flex: 1,
+      field: 'langEn',
+      align: 'left',
+      headerName: 'English',
+      renderCell: (params) => needCheck(params.row, 'en'),
+      flex: 1
     },
     {
-      field: "langFr",
-      align: "left",
-      headerName: "Franch",
-      renderCell: (params) => needCheck(params.row, "fr"),
-      flex: 1,
+      field: 'langFr',
+      align: 'left',
+      headerName: 'Franch',
+      renderCell: (params) => needCheck(params.row, 'fr'),
+      flex: 1
     },
     {
-      field: "created_at",
-      align: "left",
-      headerName: "Created",
+      field: 'created_at',
+      align: 'left',
+      headerName: 'Created',
       width: 120,
-      type: "date",
-      valueFormatter: (value: string) =>
-        value ? dateFns.formatByString(new Date(value), "dd.MM.yyyy") : "",
+      type: 'date',
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy') : '')
     },
     {
-      field: "updated_at",
-      align: "left",
-      headerName: "Changed",
+      field: 'updated_at',
+      align: 'left',
+      headerName: 'Changed',
       width: 120,
-      type: "date",
-      valueFormatter: (value: string) =>
-        value ? dateFns.formatByString(new Date(value), "dd.MM.yyyy") : "",
+      type: 'date',
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy') : '')
     },
     {
-      field: "email",
-      align: "left",
-      headerName: "By",
+      field: 'email',
+      align: 'left',
+      headerName: 'By'
     }
   );
 
@@ -406,7 +370,7 @@ const TranslationList = (): JSX.Element => {
                 color="primary"
                 onClick={() => {
                   if (selectionModel.length == 0) {
-                    sendNotification("No rows selected");
+                    sendNotification('No rows selected');
                   } else {
                     openModalCheched();
                   }
@@ -446,16 +410,12 @@ const TranslationList = (): JSX.Element => {
             paginationMode="server"
             pageSizeOptions={[5, 10, 25, 50, 100]}
             paginationModel={paginationModel}
-            onPaginationModelChange={(newPaginationModel) =>
-              setPaginationModel(newPaginationModel)
-            }
+            onPaginationModelChange={(newPaginationModel) => setPaginationModel(newPaginationModel)}
             sortModel={sortModel}
             onSortModelChange={(newSortModel) => setSortModel(newSortModel)}
             filterModel={filterModel}
             filterMode="server"
-            onFilterModelChange={(newFilterModel) =>
-              setFilterModel(newFilterModel)
-            }
+            onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
             checkboxSelection={true}
             onRowSelectionModelChange={(newSelectionModel) => {
               setSelectionModel(newSelectionModel);
@@ -463,47 +423,29 @@ const TranslationList = (): JSX.Element => {
             rowSelectionModel={selectionModel}
             localeText={getGridLocaleText(languageState.language)}
             slots={{
-              toolbar: GridToolbar,
+              toolbar: GridToolbar
             }}
             slotProps={{
               toolbar: {
                 csvOptions: {
-                  fileName: "translations",
-                  delimiter: ";",
-                  utf8WithBom: true,
-                },
-              },
+                  fileName: 'translations',
+                  delimiter: ';',
+                  utf8WithBom: true
+                }
+              }
             }}
           />
         </Widget>
       </Stack>
-      <DeleteDialog
-        open={modalOpen}
-        onClose={closeModalConfirm}
-        onDelete={handleDelete}
-      />
-      <Dialog
-        open={modalOpenCheched}
-        onClose={closeModalCheched}
-        scroll={"body"}
-        aria-labelledby="scroll-dialog-title"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Select language(s) and confirm
-        </DialogTitle>
+      <DeleteDialog open={modalOpen} onClose={closeModalConfirm} onDelete={handleDelete} />
+      <Dialog open={modalOpenCheched} onClose={closeModalCheched} scroll={'body'} aria-labelledby="scroll-dialog-title">
+        <DialogTitle id="alert-dialog-title">Select language(s) and confirm</DialogTitle>
         <DialogContent>
           <Box display="flex" justifyContent="center" flexDirection="row">
             <Box display="flex" flexDirection="column" width={600}>
               <FormControlLabel
                 style={{ marginBottom: 35 }}
-                control={
-                  <Switch
-                    checked={checked.checkedRu}
-                    onChange={() => handleChecked("ru")}
-                    value={true}
-                    color="primary"
-                  />
-                }
+                control={<Switch checked={checked.checkedRu} onChange={() => handleChecked('ru')} value={true} color="primary" />}
                 label={
                   <Typography variant="h6" color="textSecondary">
                     Russian
@@ -513,14 +455,7 @@ const TranslationList = (): JSX.Element => {
 
               <FormControlLabel
                 style={{ marginBottom: 35 }}
-                control={
-                  <Switch
-                    checked={checked.checkedEn}
-                    onChange={() => handleChecked("en")}
-                    value={true}
-                    color="primary"
-                  />
-                }
+                control={<Switch checked={checked.checkedEn} onChange={() => handleChecked('en')} value={true} color="primary" />}
                 label={
                   <Typography variant="h6" color="textSecondary">
                     English
@@ -530,14 +465,7 @@ const TranslationList = (): JSX.Element => {
 
               <FormControlLabel
                 style={{ marginBottom: 35 }}
-                control={
-                  <Switch
-                    checked={checked.checkedFr}
-                    onChange={() => handleChecked("fr")}
-                    value={true}
-                    color="primary"
-                  />
-                }
+                control={<Switch checked={checked.checkedFr} onChange={() => handleChecked('fr')} value={true} color="primary" />}
                 label={
                   <Typography variant="h6" color="textSecondary">
                     Franch

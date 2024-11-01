@@ -1,25 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import Widget from "../../components/Widget/Widget";
+import Widget from '../../components/Widget';
 
 // Icons
-import { CreateOutlined as CreateIcon } from "@mui/icons-material";
+import { CreateOutlined as CreateIcon } from '@mui/icons-material';
 
-import { ClinicSpecializationDto } from "../../helpers/dto";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  GridActionsCellItem,
-  GridColDef,
-  GridRowParams,
-} from "@mui/x-data-grid";
-import {
-  actions,
-  useClinicSpecializationDispatch,
-  useClinicSpecializationState,
-} from "../../context/ClinicSpecializationContext";
-import { useTranslation } from "react-i18next";
-import { useLanguageValue } from "../../context/LanguageContext";
-import { BaseListGrid } from "../../components/BaseListGrid";
+import { ClinicSpecializationDto } from '../../helpers/dto';
+import { useNavigate, useParams } from 'react-router-dom';
+import { GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
+import { actions, useClinicSpecializationDispatch, useClinicSpecializationState } from '../../context/ClinicSpecializationContext';
+import { useTranslation } from 'react-i18next';
+import { useLanguageValue } from '../../context/LanguageContext';
+import { BaseListGrid } from '../../components/BaseListGrid';
 
 const ClinicSpecializationList = (): JSX.Element => {
   const { languageState } = useLanguageValue();
@@ -36,52 +28,48 @@ const ClinicSpecializationList = (): JSX.Element => {
 
   const columns: GridColDef[] = [
     {
-      field: "clinicSpecializationId",
-      align: "right",
-      headerName: t("CLINICSPECIALIZATION.FIELDS.clinicSpecializationId") ?? "",
+      field: 'clinicSpecializationId',
+      align: 'right',
+      headerName: t('CLINICSPECIALIZATION.FIELDS.clinicSpecializationId') ?? '',
       width: 120,
-      type: "number",
+      type: 'number'
     },
     {
-      field: "actions",
-      align: "left",
-      headerName: t("CLINICSPECIALIZATION.FIELDS.actions") ?? "",
+      field: 'actions',
+      align: 'left',
+      headerName: t('CLINICSPECIALIZATION.FIELDS.actions') ?? '',
       sortable: false,
       filterable: false,
-      type: "actions",
+      type: 'actions',
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
           key="edit"
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() =>
-            navigate(`/app/clinic/${clinicId}/specialization/${params.id}/edit`)
-          }
-        />,
-      ],
+          onClick={() => navigate(`/app/clinic/${clinicId}/specialization/${params.id}/edit`)}
+        />
+      ]
     },
     {
-      field: "name",
-      align: "left",
-      headerName: t("CLINICSPECIALIZATION.FIELDS.name") ?? "",
-      width: 300,
+      field: 'name',
+      align: 'left',
+      headerName: t('CLINICSPECIALIZATION.FIELDS.name') ?? '',
+      width: 300
     },
     {
-      field: "specializationId",
-      align: "left",
-      headerName: t("CLINICSPECIALIZATION.FIELDS.specializationId") ?? "",
-      type: "number",
+      field: 'specializationId',
+      align: 'left',
+      headerName: t('CLINICSPECIALIZATION.FIELDS.specializationId') ?? '',
+      type: 'number',
       flex: 1,
       minWidth: 200,
-      headerAlign: "left",
+      headerAlign: 'left',
       valueGetter: (value) => {
-        const specialization = clinicSpecializationValue.specializations.find(
-          (it) => it.specializationId === value
-        );
+        const specialization = clinicSpecializationValue.specializations.find((it) => it.specializationId === value);
         return specialization ? `${value} (${specialization.code})` : value;
-      },
-    },
+      }
+    }
   ];
 
   return (
@@ -96,9 +84,9 @@ const ClinicSpecializationList = (): JSX.Element => {
         doFetch={actions.doFetch(Number(clinicId))}
         defaultSort={[
           {
-            field: "clinicSpecializationId",
-            sort: "asc",
-          },
+            field: 'clinicSpecializationId',
+            sort: 'asc'
+          }
         ]}
       />
     </Widget>

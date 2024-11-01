@@ -1,20 +1,11 @@
-import React from "react";
-import {
-  Grid2,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardMedia,
-  IconButton,
-  Button,
-  Box,
-} from "@mui/material";
-import { Delete as DeleteIcon } from "@mui/icons-material";
-import Widget from "../../components/Widget/Widget";
+import React from 'react';
+import { Grid2, Card, CardActionArea, CardActions, CardMedia, IconButton, Button, Box } from '@mui/material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
+import Widget from '../../components/Widget';
 
-import ImageUploading, { ImageListType } from "react-images-uploading";
-import { ClinicImageDto } from "../../helpers/dto";
-import { useTranslation } from "react-i18next";
+import ImageUploading, { ImageListType } from 'react-images-uploading';
+import { ClinicImageDto } from '../../helpers/dto';
+import { useTranslation } from 'react-i18next';
 
 interface GalleryProps {
   imgs: ClinicImageDto[];
@@ -23,20 +14,13 @@ interface GalleryProps {
   clinicId: number;
 }
 
-const imageDataPrefix = "data:image/jpeg;base64,";
+const imageDataPrefix = 'data:image/jpeg;base64,';
 
 const removeImageDataPrefix = (image: string): string => {
-  return image.startsWith(imageDataPrefix)
-    ? image.slice(imageDataPrefix.length)
-    : image;
+  return image.startsWith(imageDataPrefix) ? image.slice(imageDataPrefix.length) : image;
 };
 
-const Gallery = ({
-  imgs,
-  addImages,
-  removeImage,
-  clinicId,
-}: GalleryProps): JSX.Element => {
+const Gallery = ({ imgs, addImages, removeImage, clinicId }: GalleryProps): JSX.Element => {
   const { t } = useTranslation();
   const [images, setImages] = React.useState(imgs);
   const maxNumber = 69;
@@ -52,10 +36,10 @@ const Gallery = ({
           clinicId,
           clinicImageId,
           image: removeImageDataPrefix(it.image),
-          sortOrder: 1,
+          sortOrder: 1
         };
       });
-      console.log("newImages", [...images, ...newImages]);
+      console.log('newImages', [...images, ...newImages]);
 
       addImages(newImages);
       setImages([...images, ...newImages]);
@@ -63,29 +47,14 @@ const Gallery = ({
   };
 
   return (
-    <ImageUploading
-      multiple
-      value={images}
-      onChange={onChange}
-      maxNumber={maxNumber}
-      acceptType={["jpg", "jpeg"]}
-      dataURLKey="image"
-    >
+    <ImageUploading multiple value={images} onChange={onChange} maxNumber={maxNumber} acceptType={['jpg', 'jpeg']} dataURLKey="image">
       {({ imageList, onImageUpload, onImageRemove, isDragging, dragProps }) => (
         <Grid2 container spacing={3}>
           <Grid2 size={12}>
             <Widget>
-              <Box
-                display="flex"
-                justifyContent={"center"}
-                style={isDragging ? { color: "red" } : undefined}
-              >
-                <Button
-                  onClick={onImageUpload}
-                  {...dragProps}
-                  style={{ width: "100%", height: "100%" }}
-                >
-                  {t("COMMON.UPLOADZONE")}
+              <Box display="flex" justifyContent={'center'} style={isDragging ? { color: 'red' } : undefined}>
+                <Button onClick={onImageUpload} {...dragProps} style={{ width: '100%', height: '100%' }}>
+                  {t('COMMON.UPLOADZONE')}
                 </Button>
               </Box>
             </Widget>
@@ -95,11 +64,7 @@ const Gallery = ({
             <Grid2 size={{ md: 3, xs: 12 }} key={inx}>
               <Card>
                 <CardActionArea>
-                  <CardMedia
-                    image={`${imageDataPrefix}${c.image}`}
-                    title="Gallery"
-                    style={{ height: 200 }}
-                  />
+                  <CardMedia image={`${imageDataPrefix}${c.image}`} title="Gallery" style={{ height: 200 }} />
                 </CardActionArea>
                 <CardActions>
                   <IconButton

@@ -1,36 +1,28 @@
-import React from "react";
-import { useSnackbar } from "notistack";
-import DateFnsAdapter from "@date-io/date-fns";
+import React from 'react';
+import { useSnackbar } from 'notistack';
+import DateFnsAdapter from '@date-io/date-fns';
 
-import { Button, Stack } from "@mui/material";
+import { Button, Stack } from '@mui/material';
 
 import {
   Add as AddIcon,
   ContentCopy as ContentCopyIcon,
   CreateOutlined as CreateIcon,
-  DeleteOutlined as DeleteIcon,
-} from "@mui/icons-material";
+  DeleteOutlined as DeleteIcon
+} from '@mui/icons-material';
 
-import Widget from "../../components/Widget/Widget";
-import {
-  usePromoDispatch,
-  usePromoState,
-  actions,
-} from "../../context/PromoContext";
+import Widget from '../../components/Widget';
+import { usePromoDispatch, usePromoState, actions } from '../../context/PromoContext';
 
-import { MedicalNetActionDto } from "../../helpers/dto";
-import {
-  GridActionsCellItem,
-  GridColDef,
-  GridRowParams,
-} from "@mui/x-data-grid";
-import { useNavigate } from "react-router-dom";
-import { PromoActionType, listEnums, getEnumName } from "../../helpers/enums";
-import { useTranslation } from "react-i18next";
-import { DeleteDialog } from "../../components/Common/deleteDialog";
-import SuggestionsButton from "./Suggestions";
-import { BaseListGrid } from "../../components/BaseListGrid";
-import { copyToClipboard } from "../../helpers/clipboard";
+import { MedicalNetActionDto } from '../../helpers/dto';
+import { GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
+import { useNavigate } from 'react-router-dom';
+import { PromoActionType, listEnums, getEnumName } from '../../helpers/enums';
+import { useTranslation } from 'react-i18next';
+import { DeleteDialog } from '../../components/Common/deleteDialog';
+import SuggestionsButton from './Suggestions';
+import { BaseListGrid } from '../../components/BaseListGrid';
+import { copyToClipboard } from '../../helpers/clipboard';
 
 const PromoList = (): JSX.Element => {
   const { t } = useTranslation();
@@ -50,32 +42,32 @@ const PromoList = (): JSX.Element => {
   const handleDelete = () => {
     actions
       .doDelete(promoValue.idToDelete as number)(dispatch)
-      .then(() => sendNotification(t("COMMON.RECORDDELETED")));
+      .then(() => sendNotification(t('COMMON.RECORDDELETED')));
   };
 
   const { enqueueSnackbar } = useSnackbar();
   function sendNotification(text: string) {
     enqueueSnackbar(text, {
-      variant: "success",
+      variant: 'success'
     });
   }
 
   const columns: GridColDef<MedicalNetActionDto>[] = [
     {
-      field: "medicalnetActionsId",
-      align: "right",
-      headerName: t("PROMOACTION.FIELDS.medicalnetActionsId") ?? "",
-      type: "number",
-      width: 80,
+      field: 'medicalnetActionsId',
+      align: 'right',
+      headerName: t('PROMOACTION.FIELDS.medicalnetActionsId') ?? '',
+      type: 'number',
+      width: 80
     },
     {
-      field: "actions",
-      align: "left",
-      headerName: t("PROMOACTION.FIELDS.actions") ?? "",
+      field: 'actions',
+      align: 'left',
+      headerName: t('PROMOACTION.FIELDS.actions') ?? '',
       sortable: false,
       filterable: false,
       width: 120,
-      type: "actions",
+      type: 'actions',
       getActions: (params: GridRowParams<MedicalNetActionDto>) => [
         <GridActionsCellItem
           key="edit"
@@ -97,100 +89,78 @@ const PromoList = (): JSX.Element => {
           label="Скопировать"
           color="primary"
           onClick={() => {
-            copyToClipboard(
-              `[${params.row.description}](#/app/promo/${params.id})`
-            ).then(() => {
-              sendNotification(t("COMMON.RECORDCOPIED"));
+            copyToClipboard(`[${params.row.description}](#/app/promo/${params.id})`).then(() => {
+              sendNotification(t('COMMON.RECORDCOPIED'));
             });
           }}
-        />,
-      ],
+        />
+      ]
     },
     {
-      field: "actionType",
-      align: "left",
-      headerName: t("PROMOACTION.FIELDS.actionType") ?? "",
+      field: 'actionType',
+      align: 'left',
+      headerName: t('PROMOACTION.FIELDS.actionType') ?? '',
       width: 100,
-      type: "singleSelect",
-      valueOptions:
-        listEnums(PromoActionType, t, "ENUMS.PromoActionType") ?? "",
-      valueFormatter: (value: string) =>
-        getEnumName(PromoActionType, value, t, "ENUMS.PromoActionType") ?? "",
+      type: 'singleSelect',
+      valueOptions: listEnums(PromoActionType, t, 'ENUMS.PromoActionType') ?? '',
+      valueFormatter: (value: string) => getEnumName(PromoActionType, value, t, 'ENUMS.PromoActionType') ?? ''
     },
     {
-      field: "description",
-      align: "left",
-      headerName: t("PROMOACTION.FIELDS.description") ?? "",
+      field: 'description',
+      align: 'left',
+      headerName: t('PROMOACTION.FIELDS.description') ?? '',
       width: 200,
-      renderCell: (params) =>
-        params.value?.length > 100
-          ? `${params.value.slice(0, 100)}...`
-          : params.value,
+      renderCell: (params) => (params.value?.length > 100 ? `${params.value.slice(0, 100)}...` : params.value)
     },
     {
-      field: "actionText",
-      align: "left",
-      headerName: t("PROMOACTION.FIELDS.actionText") ?? "",
+      field: 'actionText',
+      align: 'left',
+      headerName: t('PROMOACTION.FIELDS.actionText') ?? '',
       width: 300,
-      renderCell: (params) =>
-        params.value?.length > 100
-          ? `${params.value.slice(0, 100)}...`
-          : params.value,
+      renderCell: (params) => (params.value?.length > 100 ? `${params.value.slice(0, 100)}...` : params.value)
     },
     {
-      field: "url",
-      align: "left",
-      headerName: t("PROMOACTION.FIELDS.url") ?? "",
-      width: 300,
+      field: 'url',
+      align: 'left',
+      headerName: t('PROMOACTION.FIELDS.url') ?? '',
+      width: 300
     },
     {
-      field: "dateFrom",
-      align: "left",
-      headerName: t("PROMOACTION.FIELDS.dateFrom") ?? "",
-      type: "date",
-      valueFormatter: (value: string) =>
-        value ? dateFns.formatByString(new Date(value), "dd.MM.yyyy") : "",
+      field: 'dateFrom',
+      align: 'left',
+      headerName: t('PROMOACTION.FIELDS.dateFrom') ?? '',
+      type: 'date',
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy') : '')
     },
     {
-      field: "dateTo",
-      align: "left",
-      headerName: t("PROMOACTION.FIELDS.dateTo") ?? "",
-      type: "date",
-      valueFormatter: (value: string) =>
-        value ? dateFns.formatByString(new Date(value), "dd.MM.yyyy") : "",
+      field: 'dateTo',
+      align: 'left',
+      headerName: t('PROMOACTION.FIELDS.dateTo') ?? '',
+      type: 'date',
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy') : '')
     },
     {
-      field: "sortOrder",
-      align: "right",
-      headerName: t("PROMOACTION.FIELDS.sortOrder") ?? "",
-      type: "number",
+      field: 'sortOrder',
+      align: 'right',
+      headerName: t('PROMOACTION.FIELDS.sortOrder') ?? '',
+      type: 'number'
     },
     {
-      field: "image",
-      align: "left",
-      headerName: t("PROMOACTION.FIELDS.image") ?? "",
+      field: 'image',
+      align: 'left',
+      headerName: t('PROMOACTION.FIELDS.image') ?? '',
       sortable: false,
       filterable: false,
       disableExport: true,
       minWidth: 200,
       flex: 1,
-      renderCell: (params) => (
-        <img
-          src={`data:image/jpeg;base64, ${params.value}`}
-          alt="Alt"
-          style={{ maxWidth: "260px" }}
-        />
-      ),
-    },
+      renderCell: (params) => <img src={`data:image/jpeg;base64, ${params.value}`} alt="Alt" style={{ maxWidth: '260px' }} />
+    }
   ];
 
   return (
     <Stack spacing={3}>
-      <DeleteDialog
-        open={promoValue.modalOpen}
-        onClose={closeModal}
-        onDelete={handleDelete}
-      />
+      <DeleteDialog open={promoValue.modalOpen} onClose={closeModal} onDelete={handleDelete} />
 
       <Widget inheritHeight noBodyPadding>
         <BaseListGrid<MedicalNetActionDto>
@@ -203,18 +173,13 @@ const PromoList = (): JSX.Element => {
           doFetch={actions.doFetch}
           defaultSort={[
             {
-              field: "sortOrder",
-              sort: "asc",
-            },
+              field: 'sortOrder',
+              sort: 'asc'
+            }
           ]}
           startActions={
-            <Button
-              size="small"
-              color="primary"
-              href="#/app/promo/add"
-              startIcon={<AddIcon />}
-            >
-              {t("LIST.ADD")}
+            <Button size="small" color="primary" href="#/app/promo/add" startIcon={<AddIcon />}>
+              {t('LIST.ADD')}
             </Button>
           }
           endActions={<SuggestionsButton size="small" />}

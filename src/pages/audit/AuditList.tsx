@@ -1,28 +1,14 @@
-import React from "react";
-import DateFnsAdapter from "@date-io/date-fns";
+import React from 'react';
+import DateFnsAdapter from '@date-io/date-fns';
 
-import {
-  Box,
-  Typography,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  CircularProgress,
-  IconButton,
-  Select,
-  Stack,
-} from "@mui/material";
+import { Box, Typography, FormControl, InputLabel, MenuItem, CircularProgress, IconButton, Select, Stack } from '@mui/material';
 
-import { RefreshOutlined, Info as InfoIcon } from "@mui/icons-material";
+import { RefreshOutlined, Info as InfoIcon } from '@mui/icons-material';
 
-import Widget from "../../components/Widget/Widget";
-import {
-  useAuditDispatch,
-  useAuditState,
-  actions,
-} from "../../context/AuditContext";
+import Widget from '../../components/Widget';
+import { useAuditDispatch, useAuditState, actions } from '../../context/AuditContext';
 
-import { AuditConditionDto, AuditItemDto } from "../../helpers/dto";
+import { AuditConditionDto, AuditItemDto } from '../../helpers/dto';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -30,57 +16,51 @@ import {
   GridPaginationModel,
   GridRowParams,
   GridSortModel,
-  GridToolbar,
-} from "@mui/x-data-grid";
-import { getGridLocaleText } from "../../helpers/grid";
-import { useTranslation } from "react-i18next";
-import { useLanguageValue } from "../../context/LanguageContext";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
-import MuiUIPicker from "../../components/MUIDateTimePicker";
-import { isNetRole } from "../../helpers/enums";
-import { useUserState } from "../../context/UserContext";
-import { Locales } from "../../helpers/dateFormat";
-import DescriptionDialog from "./DescriptionDialog";
+  GridToolbar
+} from '@mui/x-data-grid';
+import { getGridLocaleText } from '../../helpers/grid';
+import { useTranslation } from 'react-i18next';
+import { useLanguageValue } from '../../context/LanguageContext';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import MuiUIPicker from '../../components/MUIDateTimePicker';
+import { isNetRole } from '../../helpers/enums';
+import { useUserState } from '../../context/UserContext';
+import { Locales } from '../../helpers/dateFormat';
+import DescriptionDialog from './DescriptionDialog';
 
 const EventTypes = [
-  "Login",
-  "Logout",
-  "RefreshToken",
-  "RegisterInit",
-  "RegisterConfirm",
-  "EmailConfirm",
-  "PhoneConfirm",
-  "DeleteSession",
-  "ProfileChange",
+  'Login',
+  'Logout',
+  'RefreshToken',
+  'RegisterInit',
+  'RegisterConfirm',
+  'EmailConfirm',
+  'PhoneConfirm',
+  'DeleteSession',
+  'ProfileChange'
 ];
 
-const ServiceNames = ["telemedialogCentral", "telemedialogAdmin"];
+const ServiceNames = ['telemedialogCentral', 'telemedialogAdmin'];
 
 const AuditList = (): JSX.Element => {
   const { languageState } = useLanguageValue();
   const { t } = useTranslation();
   const dateFns = new DateFnsAdapter({
-    locale: Locales[languageState.language],
+    locale: Locales[languageState.language]
   });
   const {
-    currentUser: { role },
+    currentUser: { role }
   } = useUserState();
   const [condition, setCondition] = React.useState<AuditConditionDto>({
     dateFrom: dateFns.startOfDay(new Date()),
-    dateTo: dateFns.endOfDay(new Date()),
+    dateTo: dateFns.endOfDay(new Date())
   });
-  const [description, setDescription] = React.useState<
-    AuditItemDto | undefined
-  >(undefined);
-  const [sortModel, setSortModel] = useLocalStorage<GridSortModel>(
-    "audit:sort",
-    []
-  );
-  const [paginationModel, setPaginationModel] =
-    useLocalStorage<GridPaginationModel>("audit:paginationModel", {
-      page: 0,
-      pageSize: 10,
-    });
+  const [description, setDescription] = React.useState<AuditItemDto | undefined>(undefined);
+  const [sortModel, setSortModel] = useLocalStorage<GridSortModel>('audit:sort', []);
+  const [paginationModel, setPaginationModel] = useLocalStorage<GridPaginationModel>('audit:paginationModel', {
+    page: 0,
+    pageSize: 10
+  });
   const [rows, setRows] = React.useState<AuditItemDto[]>([]);
 
   const [refreshIndex, setRefreshIndex] = React.useState(0);
@@ -114,99 +94,90 @@ const AuditList = (): JSX.Element => {
 
   const columns: GridColDef[] = [
     {
-      field: "timestamp",
-      align: "left",
-      headerName: t("AUDIT.FIELDS.timestamp") ?? "",
+      field: 'timestamp',
+      align: 'left',
+      headerName: t('AUDIT.FIELDS.timestamp') ?? '',
       width: 180,
-      type: "date",
-      valueFormatter: (value: string) =>
-        value
-          ? dateFns.formatByString(new Date(value), "dd.MM.yyyy HH:mm:ss")
-          : "",
+      type: 'date',
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy HH:mm:ss') : '')
     },
     {
-      field: "eventType",
-      align: "left",
+      field: 'eventType',
+      align: 'left',
       sortable: false,
-      headerName: t("AUDIT.FIELDS.eventType") ?? "",
-      width: 100,
+      headerName: t('AUDIT.FIELDS.eventType') ?? '',
+      width: 100
     },
     {
-      field: "view",
-      align: "left",
+      field: 'view',
+      align: 'left',
       sortable: false,
       filterable: false,
-      type: "actions",
+      type: 'actions',
       width: 30,
       getActions: (params: GridRowParams) => [
-        <GridActionsCellItem
-          key="edit"
-          icon={<InfoIcon />}
-          label="Информация"
-          color="default"
-          onClick={() => setDescription(params.row)}
-        />,
-      ],
+        <GridActionsCellItem key="edit" icon={<InfoIcon />} label="Информация" color="default" onClick={() => setDescription(params.row)} />
+      ]
     },
     {
-      field: "userId",
-      align: "left",
-      headerName: t("AUDIT.FIELDS.user") ?? "",
+      field: 'userId',
+      align: 'left',
+      headerName: t('AUDIT.FIELDS.user') ?? '',
       width: 200,
       valueGetter: (value, row) => {
-        const userId = row.userId || "-";
+        const userId = row.userId || '-';
         if (row.props?.user?.name) {
           return `${userId} (${row.props.user.name})`;
         }
         return `${userId}`;
-      },
+      }
     },
     {
-      field: "message",
-      align: "left",
+      field: 'message',
+      align: 'left',
       sortable: false,
-      headerName: t("AUDIT.FIELDS.message") ?? "",
+      headerName: t('AUDIT.FIELDS.message') ?? '',
       minWidth: 200,
-      flex: 1,
+      flex: 1
     },
     {
-      field: "workspaceId",
-      align: "left",
-      headerName: t("AUDIT.FIELDS.workspaceId") ?? "",
-      width: 60,
+      field: 'workspaceId',
+      align: 'left',
+      headerName: t('AUDIT.FIELDS.workspaceId') ?? '',
+      width: 60
     },
     {
-      field: "sessionId",
-      align: "left",
+      field: 'sessionId',
+      align: 'left',
       sortable: false,
-      headerName: t("AUDIT.FIELDS.sessionId") ?? "",
-      width: 320,
+      headerName: t('AUDIT.FIELDS.sessionId') ?? '',
+      width: 320
     },
     {
-      field: "origin",
-      align: "left",
+      field: 'origin',
+      align: 'left',
       sortable: false,
-      headerName: t("AUDIT.FIELDS.origin") ?? "",
+      headerName: t('AUDIT.FIELDS.origin') ?? '',
       valueGetter: (value, row) => {
-        if (!row.origin) return "";
+        if (!row.origin) return '';
         return `${row.origin.type} ${row.origin.address}`;
       },
-      width: 150,
-    },
+      width: 150
+    }
   ];
 
   return (
     <Stack spacing={3}>
       <Widget inheritHeight>
-        <Box justifyContent={"flex-start"} display="flex" alignItems={"center"}>
-          <Typography>{t("REPORT.PERIOD")}:</Typography>
+        <Box justifyContent={'flex-start'} display="flex" alignItems={'center'}>
+          <Typography>{t('REPORT.PERIOD')}:</Typography>
           <MuiUIPicker
             value={condition.dateFrom}
             disabled={state.loading}
             handleChange={(dateFrom) =>
               setCondition({
                 ...(condition || {}),
-                dateFrom: dateFrom ? new Date(dateFrom) : new Date(),
+                dateFrom: dateFrom ? new Date(dateFrom) : new Date()
               })
             }
             fullWidth={false}
@@ -220,7 +191,7 @@ const AuditList = (): JSX.Element => {
             handleChange={(dateTo) =>
               setCondition({
                 ...(condition || {}),
-                dateTo: dateTo ? new Date(dateTo) : new Date(),
+                dateTo: dateTo ? new Date(dateTo) : new Date()
               })
             }
             fullWidth={false}
@@ -229,29 +200,21 @@ const AuditList = (): JSX.Element => {
           />
 
           {!isNetRole(role) && (
-            <FormControl
-              variant="standard"
-              size="small"
-              style={{ marginLeft: 8, width: 300 }}
-            >
-              <InputLabel id="id-medical_net-label">
-                {t("REPORT.MEDICALNET")}
-              </InputLabel>
+            <FormControl variant="standard" size="small" style={{ marginLeft: 8, width: 300 }}>
+              <InputLabel id="id-medical_net-label">{t('REPORT.MEDICALNET')}</InputLabel>
               <Select
                 name="medicalNetId"
                 id="id-medical_net-select"
                 labelId="id-medical_net-label"
-                label={t("REPORT.MEDICALNET")}
+                label={t('REPORT.MEDICALNET')}
                 disabled={state.loading}
                 onChange={(event) =>
                   setCondition({
                     ...(condition || {}),
-                    medicalNetId: event.target.value
-                      ? (event.target.value as number)
-                      : undefined,
+                    medicalNetId: event.target.value ? (event.target.value as number) : undefined
                   })
                 }
-                value={condition.medicalNetId || ""}
+                value={condition.medicalNetId || ''}
               >
                 <MenuItem value="">
                   <em>Нет</em>
@@ -265,29 +228,21 @@ const AuditList = (): JSX.Element => {
             </FormControl>
           )}
 
-          <FormControl
-            variant="standard"
-            size="small"
-            style={{ marginLeft: 8, width: 300 }}
-          >
-            <InputLabel id="id-event_type-label">
-              {t("AUDIT.FIELDS.eventType")}
-            </InputLabel>
+          <FormControl variant="standard" size="small" style={{ marginLeft: 8, width: 300 }}>
+            <InputLabel id="id-event_type-label">{t('AUDIT.FIELDS.eventType')}</InputLabel>
             <Select
               name="eventType"
               id="id-event_type-select"
               labelId="id-event_type-label"
-              label={t("AUDIT.FIELDS.eventType")}
+              label={t('AUDIT.FIELDS.eventType')}
               disabled={state.loading}
               onChange={(event) =>
                 setCondition({
                   ...(condition || {}),
-                  eventType: event.target.value
-                    ? (event.target.value as string)
-                    : undefined,
+                  eventType: event.target.value ? (event.target.value as string) : undefined
                 })
               }
-              value={condition.eventType || ""}
+              value={condition.eventType || ''}
             >
               <MenuItem value="">
                 <em>Нет</em>
@@ -299,29 +254,21 @@ const AuditList = (): JSX.Element => {
               ))}
             </Select>
           </FormControl>
-          <FormControl
-            variant="standard"
-            size="small"
-            style={{ marginLeft: 8, width: 300 }}
-          >
-            <InputLabel id="id-service_name-label">
-              {t("AUDIT.FIELDS.serviceName")}
-            </InputLabel>
+          <FormControl variant="standard" size="small" style={{ marginLeft: 8, width: 300 }}>
+            <InputLabel id="id-service_name-label">{t('AUDIT.FIELDS.serviceName')}</InputLabel>
             <Select
               name="serviceName"
               id="id-service_name-select"
               labelId="id-service_name-label"
-              label={t("AUDIT.FIELDS.serviceName")}
+              label={t('AUDIT.FIELDS.serviceName')}
               disabled={state.loading}
               onChange={(event) =>
                 setCondition({
                   ...(condition || {}),
-                  serviceName: event.target.value
-                    ? (event.target.value as string)
-                    : undefined,
+                  serviceName: event.target.value ? (event.target.value as string) : undefined
                 })
               }
-              value={condition.serviceName || ""}
+              value={condition.serviceName || ''}
             >
               <MenuItem value="">
                 <em>Нет</em>
@@ -333,29 +280,21 @@ const AuditList = (): JSX.Element => {
               ))}
             </Select>
           </FormControl>
-          <FormControl
-            variant="standard"
-            size="small"
-            style={{ marginLeft: 8, width: 300 }}
-          >
-            <InputLabel id="id-success-label">
-              {t("AUDIT.FIELDS.success")}
-            </InputLabel>
+          <FormControl variant="standard" size="small" style={{ marginLeft: 8, width: 300 }}>
+            <InputLabel id="id-success-label">{t('AUDIT.FIELDS.success')}</InputLabel>
             <Select
               name="eventType"
               id="id-success-select"
               labelId="id-success-label"
-              label={t("AUDIT.FIELDS.success")}
+              label={t('AUDIT.FIELDS.success')}
               disabled={state.loading}
               onChange={(event) =>
                 setCondition({
                   ...(condition || {}),
-                  success: event.target.value
-                    ? event.target.value === "true"
-                    : undefined,
+                  success: event.target.value ? event.target.value === 'true' : undefined
                 })
               }
-              value={condition.success ?? ""}
+              value={condition.success ?? ''}
             >
               <MenuItem value="">
                 <em>Нет</em>
@@ -395,28 +334,26 @@ const AuditList = (): JSX.Element => {
           columns={columns}
           getRowId={(row: AuditItemDto) => row.id as string}
           rowCount={state.totalCount}
-          getRowHeight={() => "auto"}
+          getRowHeight={() => 'auto'}
           paginationMode="server"
           pageSizeOptions={[5, 10, 25, 50, 100]}
           paginationModel={paginationModel}
-          onPaginationModelChange={(newPaginationModel) =>
-            setPaginationModel(newPaginationModel)
-          }
+          onPaginationModelChange={(newPaginationModel) => setPaginationModel(newPaginationModel)}
           sortModel={sortModel}
           onSortModelChange={(newSortModel) => setSortModel(newSortModel)}
           disableColumnFilter={true}
           localeText={getGridLocaleText(languageState.language)}
           slots={{
-            toolbar: GridToolbar,
+            toolbar: GridToolbar
           }}
           slotProps={{
             toolbar: {
               csvOptions: {
-                fileName: "audit",
-                delimiter: ";",
-                utf8WithBom: true,
-              },
-            },
+                fileName: 'audit',
+                delimiter: ';',
+                utf8WithBom: true
+              }
+            }
           }}
         />
       </Widget>

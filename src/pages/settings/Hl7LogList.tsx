@@ -1,18 +1,14 @@
-import React from "react";
-import DateFnsAdapter from "@date-io/date-fns";
+import React from 'react';
+import DateFnsAdapter from '@date-io/date-fns';
 
-import Widget from "../../components/Widget/Widget";
+import Widget from '../../components/Widget';
 
-import {
-  actions,
-  useHl7LogDispatch,
-  useHl7LogState,
-} from "../../context/HL7LogContext";
-import { Hl7LogDto } from "../../helpers/dto";
-import { GridColDef } from "@mui/x-data-grid";
-import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
-import { BaseListGrid } from "../../components/BaseListGrid";
+import { actions, useHl7LogDispatch, useHl7LogState } from '../../context/HL7LogContext';
+import { Hl7LogDto } from '../../helpers/dto';
+import { GridColDef } from '@mui/x-data-grid';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { BaseListGrid } from '../../components/BaseListGrid';
 
 const Hl7LogList = (): JSX.Element => {
   const { t } = useTranslation();
@@ -24,42 +20,39 @@ const Hl7LogList = (): JSX.Element => {
 
   const columns: GridColDef[] = [
     {
-      field: "hl7LogId",
-      align: "right",
-      headerName: t("HL7LOG.FIELDS.hl7LogId") ?? "",
+      field: 'hl7LogId',
+      align: 'right',
+      headerName: t('HL7LOG.FIELDS.hl7LogId') ?? '',
       width: 80,
-      type: "number",
+      type: 'number'
     },
     {
-      field: "message",
-      align: "left",
-      headerName: t("HL7LOG.FIELDS.message") ?? "",
+      field: 'message',
+      align: 'left',
+      headerName: t('HL7LOG.FIELDS.message') ?? '',
       minWidth: 200,
-      flex: 1,
+      flex: 1
     },
     {
-      field: "addressHL7",
-      align: "left",
-      headerName: t("HL7LOG.FIELDS.addressHL7") ?? "",
-      width: 200,
+      field: 'addressHL7',
+      align: 'left',
+      headerName: t('HL7LOG.FIELDS.addressHL7') ?? '',
+      width: 200
     },
     {
-      field: "addressTelemed",
-      align: "left",
-      headerName: t("HL7LOG.FIELDS.addressTelemed") ?? "",
-      width: 200,
+      field: 'addressTelemed',
+      align: 'left',
+      headerName: t('HL7LOG.FIELDS.addressTelemed') ?? '',
+      width: 200
     },
     {
-      field: "cdate",
-      align: "right",
-      headerName: t("HL7LOG.FIELDS.cdate") ?? "",
+      field: 'cdate',
+      align: 'right',
+      headerName: t('HL7LOG.FIELDS.cdate') ?? '',
       width: 180,
-      type: "date",
-      valueFormatter: (value: string) =>
-        value
-          ? dateFns.formatByString(new Date(value), "dd.MM.yyyy HH:mm:ss")
-          : "",
-    },
+      type: 'date',
+      valueFormatter: (value: string) => (value ? dateFns.formatByString(new Date(value), 'dd.MM.yyyy HH:mm:ss') : '')
+    }
   ];
 
   return (
@@ -74,9 +67,9 @@ const Hl7LogList = (): JSX.Element => {
         doFetch={actions.doFetch(Number(id))}
         defaultSort={[
           {
-            field: "hl7logId",
-            sort: "asc",
-          },
+            field: 'hl7logId',
+            sort: 'asc'
+          }
         ]}
       />
     </Widget>
