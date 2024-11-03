@@ -45,7 +45,7 @@ const ClinicPlExGrWebList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/clinic/${clinicId}/plExGrWeb/${params.id}/edit`)}
+          onClick={() => navigate(`/clinic/${clinicId}/plExGrWeb/${params.id}/edit`)}
         />
       ]
     },

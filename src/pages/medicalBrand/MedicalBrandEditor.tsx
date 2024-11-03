@@ -1,23 +1,19 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
-import { Box, TextField } from "@mui/material";
+import { Box, TextField } from '@mui/material';
 
-import {
-  useMedicalBrandDispatch,
-  useMedicalBrandState,
-  actions,
-} from "../../context/MedicalBrandContext";
+import { useMedicalBrandDispatch, useMedicalBrandState, actions } from '../../context/MedicalBrandContext';
 
-import useForm from "../../hooks/useForm";
-import validate, { MedicalBrandError } from "./validation";
-import { MedicalBrandDto } from "../../helpers/dto";
-import { useTranslation } from "react-i18next";
-import UploadImageButton from "../../components/Common/uploadImageButton";
-import { EditorButtons } from "../../components/Common/editorButtons";
-import isEmpty from "../../helpers/isEmpty";
+import useForm from '../../hooks/useForm';
+import validate, { MedicalBrandError } from './validation';
+import { MedicalBrandDto } from '../../helpers/dto';
+import { useTranslation } from 'react-i18next';
+import UploadImageButton from '../../components/Common/uploadImageButton';
+import { EditorButtons } from '../../components/Common/editorButtons';
+import isEmpty from '../../helpers/isEmpty';
 
 const MedicalBrandEditor = (): JSX.Element => {
   const { t } = useTranslation();
@@ -37,7 +33,7 @@ const MedicalBrandEditor = (): JSX.Element => {
   useEffect(() => {
     if (current && id) {
       setValues({
-        ...current,
+        ...current
       });
     }
   }, [current, id]);
@@ -46,14 +42,14 @@ const MedicalBrandEditor = (): JSX.Element => {
     actions.doCreate(
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/medical_brand/list");
+        navigate('/medical_brand/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
@@ -64,27 +60,20 @@ const MedicalBrandEditor = (): JSX.Element => {
       Number(id),
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/medical_brand/list");
+        navigate('/medical_brand/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
   };
 
-  const {
-    values,
-    errors,
-    handleGenericChange,
-    handleChange,
-    handleSubmit,
-    setValues,
-  } = useForm<MedicalBrandDto, MedicalBrandError>(
+  const { values, errors, handleGenericChange, handleChange, handleSubmit, setValues } = useForm<MedicalBrandDto, MedicalBrandError>(
     id ? updateData : createData,
     validate
   );
@@ -94,12 +83,12 @@ const MedicalBrandEditor = (): JSX.Element => {
       <Box display="flex" flexDirection="column" width={600}>
         <TextField
           variant="outlined"
-          value={values?.title || ""}
+          value={values?.title || ''}
           name="title"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALBRAND.FIELDS.title") ?? ""}
-          label={t("MEDICALBRAND.FIELDS.title")}
+          placeholder={t('MEDICALBRAND.FIELDS.title') ?? ''}
+          label={t('MEDICALBRAND.FIELDS.title')}
           type="text"
           fullWidth
           required
@@ -108,34 +97,34 @@ const MedicalBrandEditor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.email || ""}
+          value={values?.email || ''}
           name="email"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALBRAND.FIELDS.email") ?? ""}
-          label={t("MEDICALBRAND.FIELDS.email")}
+          placeholder={t('MEDICALBRAND.FIELDS.email') ?? ''}
+          label={t('MEDICALBRAND.FIELDS.email')}
           type="text"
           fullWidth
         />
         <TextField
           variant="outlined"
-          value={values?.phone || ""}
+          value={values?.phone || ''}
           name="phone"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALBRAND.FIELDS.phone") ?? ""}
-          label={t("MEDICALBRAND.FIELDS.phone")}
+          placeholder={t('MEDICALBRAND.FIELDS.phone') ?? ''}
+          label={t('MEDICALBRAND.FIELDS.phone')}
           type="text"
           fullWidth
         />
         <TextField
           variant="outlined"
-          value={values?.code || ""}
+          value={values?.code || ''}
           name="code"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALBRAND.FIELDS.code") ?? ""}
-          label={t("MEDICALBRAND.FIELDS.code")}
+          placeholder={t('MEDICALBRAND.FIELDS.code') ?? ''}
+          label={t('MEDICALBRAND.FIELDS.code')}
           type="text"
           fullWidth
           required
@@ -147,12 +136,12 @@ const MedicalBrandEditor = (): JSX.Element => {
           accept="image/png,image/jpeg"
           maxHeight={610}
           maxWidth={610}
-          onChange={(newValue: string) => handleGenericChange("logo", newValue)}
-          onDelete={() => handleGenericChange("logo", "")}
+          onChange={(newValue: string) => handleGenericChange('logo', newValue)}
+          onDelete={() => handleGenericChange('logo', '')}
         />
         <EditorButtons
           width={600}
-          onCancel={() => navigate("/app/medical_brand/list")}
+          onCancel={() => navigate('/medical_brand/list')}
           submitDisabled={!isEmpty(errors)}
           onSubmit={handleSubmit}
         />

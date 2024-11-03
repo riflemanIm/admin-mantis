@@ -1,25 +1,22 @@
-import React from "react";
+import React from 'react';
 
-import Chat from "../../components/Chat";
-import {
-  getMedicalNetSettingsInfo,
-  useUserState,
-} from "../../context/UserContext";
-import { Box } from "@mui/material";
-import { useLanguageValue } from "../../context/LanguageContext";
-import { Contact } from "@pmt/chat";
-import { actions } from "../../context/ManagementContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import Chat from '../../components/Chat';
+import { getMedicalNetSettingsInfo, useUserState } from '../../context/UserContext';
+import { Box } from '@mui/material';
+import { useLanguageValue } from '../../context/LanguageContext';
+import { Contact } from '@pmt/chat';
+import { actions } from '../../context/ManagementContext';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const OperatorChat = (): JSX.Element => {
   const { languageState } = useLanguageValue();
   const {
-    currentUser: { medicalNetId },
+    currentUser: { medicalNetId }
   } = useUserState();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [chatServerAddress, setChatServerAddress] = React.useState("");
+  const [chatServerAddress, setChatServerAddress] = React.useState('');
 
   React.useEffect(() => {
     getMedicalNetSettingsInfo(medicalNetId).then((info) => {
@@ -32,7 +29,7 @@ const OperatorChat = (): JSX.Element => {
      * 290px - это высота элементов до и после чата (подвал, заголовок, крошки)
      */
     return (
-      <Box sx={{ height: "calc(100vh - 290px)" }}>
+      <Box sx={{ height: 'calc(100vh - 290px)' }}>
         <Chat
           lang={languageState.language}
           chatServerAddress={chatServerAddress}
@@ -42,19 +39,19 @@ const OperatorChat = (): JSX.Element => {
             actions.getChatUserInfo(contact.userId).then((data) => {
               // подготавливаем фильтр
               localStorage.setItem(
-                "user:filter2",
+                'user:filter2',
                 JSON.stringify({
                   items: [
                     {
-                      field: "userId",
-                      operator: "=",
-                      value: data.userId,
-                    },
-                  ],
+                      field: 'userId',
+                      operator: '=',
+                      value: data.userId
+                    }
+                  ]
                 })
               );
               // переходим в список
-              navigate("/app/user/list");
+              navigate('/user/list');
             });
           }}
         />

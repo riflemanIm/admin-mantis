@@ -1,29 +1,25 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
-import { Box, TextField, Typography } from "@mui/material";
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import { Box, TextField, Typography } from '@mui/material';
 
-import {
-  useSpecializationDispatch,
-  useSpecializationState,
-  actions,
-} from "../../context/SpecializationContext";
+import { useSpecializationDispatch, useSpecializationState, actions } from '../../context/SpecializationContext';
 
-import useForm from "../../hooks/useForm";
-import validate, { SpecializationError } from "./validation";
-import SpecializationImage from "./SpecializationImage";
-import { SpecializationDto, SpecializationNameDto } from "../../helpers/dto";
-import { LangCode } from "../../helpers/enums";
-import { useTranslation } from "react-i18next";
-import { EditorButtons } from "../../components/Common/editorButtons";
-import isEmpty from "../../helpers/isEmpty";
+import useForm from '../../hooks/useForm';
+import validate, { SpecializationError } from './validation';
+import SpecializationImage from './SpecializationImage';
+import { SpecializationDto, SpecializationNameDto } from '../../helpers/dto';
+import { LangCode } from '../../helpers/enums';
+import { useTranslation } from 'react-i18next';
+import { EditorButtons } from '../../components/Common/editorButtons';
+import isEmpty from '../../helpers/isEmpty';
 
 const SpecializationEditor = (): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
-  const langs: LangCode[] = ["rus", "eng", "fra"];
+  const langs: LangCode[] = ['rus', 'eng', 'fra'];
 
   const dispatch = useSpecializationDispatch();
   const { current } = useSpecializationState();
@@ -42,9 +38,9 @@ const SpecializationEditor = (): JSX.Element => {
       item = {
         langCode,
         specializationId: values.specializationId as number,
-        name: "",
-        description: "",
-        shortDescription: "",
+        name: '',
+        description: '',
+        shortDescription: ''
       };
     }
     return item;
@@ -53,7 +49,7 @@ const SpecializationEditor = (): JSX.Element => {
   useEffect(() => {
     if (id && current) {
       setValues({
-        ...current,
+        ...current
       });
     }
   }, [id, current]);
@@ -61,20 +57,20 @@ const SpecializationEditor = (): JSX.Element => {
   const updateData = () => {
     const vals = {
       ...values,
-      names: values.names.filter((it) => !!it.name),
+      names: values.names.filter((it) => !!it.name)
     };
     actions.doUpdate(
       Number(id),
       vals,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/specialization/list");
+        navigate('/specialization/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
@@ -83,42 +79,33 @@ const SpecializationEditor = (): JSX.Element => {
   const createData = () => {
     const vals = {
       ...values,
-      names: values.names.filter((it) => !!it.name),
+      names: values.names.filter((it) => !!it.name)
     };
 
     actions.doCreate(
       vals,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/specialization/list");
+        navigate('/specialization/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
   };
 
-  const {
-    values,
-    errors,
-    handleGenericChange,
-    handleChange,
-    handleSubmit,
-    setValues,
-  } = useForm<SpecializationDto, SpecializationError>(
+  const { values, errors, handleGenericChange, handleChange, handleSubmit, setValues } = useForm<SpecializationDto, SpecializationError>(
     id ? updateData : createData,
     validate
   );
 
-  const handleLangChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
+  const handleLangChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     event.persist();
-    const name = (event.target.name as string).split("_");
+    const name = (event.target.name as string).split('_');
     const value = event.target.value;
 
     const names = [...(values.names || [])];
@@ -126,21 +113,21 @@ const SpecializationEditor = (): JSX.Element => {
     if (index >= 0) {
       names[index] = {
         ...names[index],
-        [name[0]]: value,
+        [name[0]]: value
       };
     } else {
       names.push({
         langCode: name[1],
         specializationId: values.specializationId as number,
-        name: "",
-        description: "",
-        shortDescription: "",
+        name: '',
+        description: '',
+        shortDescription: ''
       });
     }
 
     setValues({
       ...values,
-      names,
+      names
     });
   };
 
@@ -149,7 +136,7 @@ const SpecializationEditor = (): JSX.Element => {
       <Box display="flex" flexDirection="column" width={600}>
         <TextField
           variant="outlined"
-          value={values?.code || ""}
+          value={values?.code || ''}
           name="code"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
@@ -181,7 +168,7 @@ const SpecializationEditor = (): JSX.Element => {
             />
             <TextField
               variant="outlined"
-              value={getNameItem(lang).description || ""}
+              value={getNameItem(lang).description || ''}
               name={`description_${lang}`}
               onChange={handleLangChange}
               style={{ marginBottom: 35 }}
@@ -194,7 +181,7 @@ const SpecializationEditor = (): JSX.Element => {
             />
             <TextField
               variant="outlined"
-              value={getNameItem(lang).shortDescription || ""}
+              value={getNameItem(lang).shortDescription || ''}
               name={`shortDescription_${lang}`}
               onChange={handleLangChange}
               style={{ marginBottom: 35 }}
@@ -207,27 +194,23 @@ const SpecializationEditor = (): JSX.Element => {
             />
           </React.Fragment>
         ))}
-        <Box display="flex" justifyContent={"space-between"} width={600}>
+        <Box display="flex" justifyContent={'space-between'} width={600}>
           <SpecializationImage
             id="image"
             value={values.image}
-            onChange={(newValue: string | null) =>
-              handleGenericChange("image", newValue)
-            }
+            onChange={(newValue: string | null) => handleGenericChange('image', newValue)}
             title="Мобильное изображение"
           />
           <SpecializationImage
             id="largeImage"
             value={values.largeImage}
-            onChange={(newValue: string | null) =>
-              handleGenericChange("largeImage", newValue)
-            }
+            onChange={(newValue: string | null) => handleGenericChange('largeImage', newValue)}
             title="Изображение для сайта"
           />
         </Box>
         <EditorButtons
           width={600}
-          onCancel={() => navigate("/app/specialization/list")}
+          onCancel={() => navigate('/specialization/list')}
           submitDisabled={!isEmpty(errors)}
           onSubmit={handleSubmit}
         />

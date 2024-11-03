@@ -1,28 +1,24 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
-import { Box, TextField } from "@mui/material";
+import { Box, TextField } from '@mui/material';
 
-import {
-  useMedicalNetDispatch,
-  useMedicalNetState,
-  actions,
-} from "../../context/MedicalNetContext";
-import useForm from "../../hooks/useForm";
-import validate, { MedicalNetError } from "./validation";
-import { MedicalNetDto } from "../../helpers/dto";
-import { isNetRole } from "../../helpers/enums";
-import { useUserState } from "../../context/UserContext";
-import { useTranslation } from "react-i18next";
-import isEmpty from "../../helpers/isEmpty";
-import { EditorButtons } from "../../components/Common/editorButtons";
+import { useMedicalNetDispatch, useMedicalNetState, actions } from '../../context/MedicalNetContext';
+import useForm from '../../hooks/useForm';
+import validate, { MedicalNetError } from './validation';
+import { MedicalNetDto } from '../../helpers/dto';
+import { isNetRole } from '../../helpers/enums';
+import { useUserState } from '../../context/UserContext';
+import { useTranslation } from 'react-i18next';
+import isEmpty from '../../helpers/isEmpty';
+import { EditorButtons } from '../../components/Common/editorButtons';
 
 const MedicalNetEditor = (): JSX.Element => {
   const { t } = useTranslation();
   const {
-    currentUser: { role },
+    currentUser: { role }
   } = useUserState();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -38,7 +34,7 @@ const MedicalNetEditor = (): JSX.Element => {
   useEffect(() => {
     if (id && current)
       setValues({
-        ...(current as MedicalNetDto),
+        ...(current as MedicalNetDto)
       });
   }, [current, id]);
 
@@ -46,14 +42,14 @@ const MedicalNetEditor = (): JSX.Element => {
     actions.doCreate(
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/medical_net/list");
+        navigate('/medical_net/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
@@ -64,36 +60,36 @@ const MedicalNetEditor = (): JSX.Element => {
       Number(id),
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/medical_net/list");
+        navigate('/medical_net/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
   };
 
-  const { values, errors, handleChange, handleSubmit, setValues } = useForm<
-    MedicalNetDto,
-    MedicalNetError
-  >(id ? updateData : createData, validate);
+  const { values, errors, handleChange, handleSubmit, setValues } = useForm<MedicalNetDto, MedicalNetError>(
+    id ? updateData : createData,
+    validate
+  );
 
   return (
     <Box display="flex" justifyContent="center" flexDirection="row">
       <Box display="flex" flexDirection="column" width={600}>
         <TextField
           variant="outlined"
-          value={values?.code || ""}
+          value={values?.code || ''}
           name="code"
           disabled={isNetRole(role) && !!id}
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALNET.FIELDS.code") ?? ""}
-          label={t("MEDICALNET.FIELDS.code")}
+          placeholder={t('MEDICALNET.FIELDS.code') ?? ''}
+          label={t('MEDICALNET.FIELDS.code')}
           type="text"
           fullWidth
           required
@@ -102,12 +98,12 @@ const MedicalNetEditor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.title || ""}
+          value={values?.title || ''}
           name="title"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALNET.FIELDS.title") ?? ""}
-          label={t("MEDICALNET.FIELDS.title")}
+          placeholder={t('MEDICALNET.FIELDS.title') ?? ''}
+          label={t('MEDICALNET.FIELDS.title')}
           type="text"
           fullWidth
           required
@@ -117,33 +113,33 @@ const MedicalNetEditor = (): JSX.Element => {
         <TextField
           variant="outlined"
           name="appCode"
-          value={values?.appCode || ""}
+          value={values?.appCode || ''}
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALNET.FIELDS.appCode") ?? ""}
-          label={t("MEDICALNET.FIELDS.appCode")}
+          placeholder={t('MEDICALNET.FIELDS.appCode') ?? ''}
+          label={t('MEDICALNET.FIELDS.appCode')}
           type="text"
           fullWidth
         />
         <TextField
           variant="outlined"
-          value={values?.logo || ""}
+          value={values?.logo || ''}
           name="logo"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALNET.FIELDS.logo") ?? ""}
-          label={t("MEDICALNET.FIELDS.logo")}
+          placeholder={t('MEDICALNET.FIELDS.logo') ?? ''}
+          label={t('MEDICALNET.FIELDS.logo')}
           type="text"
           fullWidth
         />
         <TextField
           variant="outlined"
-          value={values?.license || ""}
+          value={values?.license || ''}
           name="license"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALNET.FIELDS.license") ?? ""}
-          label={t("MEDICALNET.FIELDS.license")}
+          placeholder={t('MEDICALNET.FIELDS.license') ?? ''}
+          label={t('MEDICALNET.FIELDS.license')}
           type="text"
           fullWidth
           multiline
@@ -151,23 +147,23 @@ const MedicalNetEditor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.websiteUrl || ""}
+          value={values?.websiteUrl || ''}
           name="websiteUrl"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALNET.FIELDS.websiteUrl") ?? ""}
-          label={t("MEDICALNET.FIELDS.websiteUrl")}
+          placeholder={t('MEDICALNET.FIELDS.websiteUrl') ?? ''}
+          label={t('MEDICALNET.FIELDS.websiteUrl')}
           type="text"
           fullWidth
         />
         <TextField
           variant="outlined"
-          value={values?.notifyEmail || ""}
+          value={values?.notifyEmail || ''}
           name="notifyEmail"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALNET.FIELDS.notifyEmail") ?? ""}
-          label={t("MEDICALNET.FIELDS.notifyEmail")}
+          placeholder={t('MEDICALNET.FIELDS.notifyEmail') ?? ''}
+          label={t('MEDICALNET.FIELDS.notifyEmail')}
           type="text"
           fullWidth
           required
@@ -176,12 +172,12 @@ const MedicalNetEditor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.notifyPhone || ""}
+          value={values?.notifyPhone || ''}
           name="notifyPhone"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALNET.FIELDS.notifyPhone") ?? ""}
-          label={t("MEDICALNET.FIELDS.notifyPhone")}
+          placeholder={t('MEDICALNET.FIELDS.notifyPhone') ?? ''}
+          label={t('MEDICALNET.FIELDS.notifyPhone')}
           type="text"
           fullWidth
           required
@@ -190,7 +186,7 @@ const MedicalNetEditor = (): JSX.Element => {
         />
         <EditorButtons
           width={600}
-          onCancel={() => navigate("/app/medical_net/list")}
+          onCancel={() => navigate('/medical_net/list')}
           submitDisabled={!isEmpty(errors)}
           onSubmit={handleSubmit}
         />

@@ -1,37 +1,27 @@
-import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Box, TextField, Typography } from "@mui/material";
-import MDEditor from "@uiw/react-markdown-editor";
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Box, TextField, Typography } from '@mui/material';
+import MDEditor from '@uiw/react-markdown-editor';
 
-import { useSnackbar } from "notistack";
+import { useSnackbar } from 'notistack';
 
-import useForm from "../../hooks/useForm";
-import validate, { MedicalNetFaqError } from "./validation";
-import {
-  actions,
-  useMedicalNetFaqDispatch,
-  useMedicalNetFaqState,
-} from "../../context/MedicalNetFaqContext";
-import { MedicalNetFaqDto } from "../../helpers/dto";
-import { useTranslation } from "react-i18next";
-import {
-  closedGalleryState,
-  GalleryOpenState,
-  getMarkdownCommands,
-  transformImageUri,
-} from "./MarkdownCommands";
-import ImageGallery from "./ImageGallery";
-import useStyles from "./styles";
-import { EditorButtons } from "../../components/Common/editorButtons";
-import isEmpty from "../../helpers/isEmpty";
+import useForm from '../../hooks/useForm';
+import validate, { MedicalNetFaqError } from './validation';
+import { actions, useMedicalNetFaqDispatch, useMedicalNetFaqState } from '../../context/MedicalNetFaqContext';
+import { MedicalNetFaqDto } from '../../helpers/dto';
+import { useTranslation } from 'react-i18next';
+import { closedGalleryState, GalleryOpenState, getMarkdownCommands, transformImageUri } from './MarkdownCommands';
+import ImageGallery from './ImageGallery';
+import useStyles from './styles';
+import { EditorButtons } from '../../components/Common/editorButtons';
+import isEmpty from '../../helpers/isEmpty';
 
 const MedicalNetFaqEditor = (): JSX.Element => {
   const { t } = useTranslation();
   const classes = useStyles();
   const navigate = useNavigate();
   const { id } = useParams();
-  const [galleryOpen, setGalleryOpen] =
-    React.useState<GalleryOpenState>(closedGalleryState);
+  const [galleryOpen, setGalleryOpen] = React.useState<GalleryOpenState>(closedGalleryState);
 
   const dispatch = useMedicalNetFaqDispatch();
   const { current, medicalNetId } = useMedicalNetFaqState();
@@ -53,7 +43,7 @@ const MedicalNetFaqEditor = (): JSX.Element => {
   useEffect(() => {
     if (!current) return;
     setValues({
-      ...current,
+      ...current
     });
   }, [current, id]);
 
@@ -62,14 +52,14 @@ const MedicalNetFaqEditor = (): JSX.Element => {
       Number(id),
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/medicalNetFaq/list");
+        navigate('/medicalNetFaq/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
@@ -79,60 +69,49 @@ const MedicalNetFaqEditor = (): JSX.Element => {
     actions.doCreate(
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/medicalNetFaq/list");
+        navigate('/medicalNetFaq/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
   };
 
-  const {
-    values,
-    errors,
-    handleChange,
-    handleGenericChange,
-    handleSubmit,
-    setValues,
-  } = useForm<MedicalNetFaqDto, MedicalNetFaqError>(
+  const { values, errors, handleChange, handleGenericChange, handleSubmit, setValues } = useForm<MedicalNetFaqDto, MedicalNetFaqError>(
     id ? updateData : createData,
     validate
   );
 
   const handleAnswerChange = (value?: string) => {
-    handleGenericChange("answer", value);
+    handleGenericChange('answer', value);
   };
 
   useEffect(() => {
     if (!id) {
       setValues({
         ...values,
-        medicalNetId: Number(medicalNetId),
+        medicalNetId: Number(medicalNetId)
       });
     }
   }, [id, medicalNetId]);
 
   return (
     <Box display="flex" justifyContent="center" flexDirection="row">
-      <ImageGallery
-        isOpen={galleryOpen.open}
-        medicalNetId={values?.medicalNetId}
-        onClose={galleryOpen.onClose}
-      />
+      <ImageGallery isOpen={galleryOpen.open} medicalNetId={values?.medicalNetId} onClose={galleryOpen.onClose} />
       <Box display="flex" flexDirection="column" width={1200}>
         <TextField
           variant="outlined"
-          value={`${values?.langCode || ""}`}
+          value={`${values?.langCode || ''}`}
           name="langCode"
           onChange={handleChange}
           style={{ marginBottom: 25 }}
-          placeholder={t("MEDICALNETFAQ.FIELDS.langCode") ?? ""}
-          label={t("MEDICALNETFAQ.FIELDS.langCode")}
+          placeholder={t('MEDICALNETFAQ.FIELDS.langCode') ?? ''}
+          label={t('MEDICALNETFAQ.FIELDS.langCode')}
           type="text"
           fullWidth
           required
@@ -141,12 +120,12 @@ const MedicalNetFaqEditor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.questionGroup || ""}
+          value={values?.questionGroup || ''}
           name="questionGroup"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALNETFAQ.FIELDS.questionGroup") ?? ""}
-          label={t("MEDICALNETFAQ.FIELDS.questionGroup")}
+          placeholder={t('MEDICALNETFAQ.FIELDS.questionGroup') ?? ''}
+          label={t('MEDICALNETFAQ.FIELDS.questionGroup')}
           type="text"
           fullWidth
           required
@@ -155,12 +134,12 @@ const MedicalNetFaqEditor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.question || ""}
+          value={values?.question || ''}
           name="question"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("MEDICALNETFAQ.FIELDS.question") ?? ""}
-          label={t("MEDICALNETFAQ.FIELDS.question")}
+          placeholder={t('MEDICALNETFAQ.FIELDS.question') ?? ''}
+          label={t('MEDICALNETFAQ.FIELDS.question')}
           type="text"
           fullWidth
           required
@@ -168,17 +147,15 @@ const MedicalNetFaqEditor = (): JSX.Element => {
           helperText={errors?.question != null && errors?.question}
         />
         <Box style={{ marginBottom: 35 }}>
-          <Typography variant="body2">
-            {t("MEDICALNETFAQ.FIELDS.answer")}{" "}
-          </Typography>
+          <Typography variant="body2">{t('MEDICALNETFAQ.FIELDS.answer')} </Typography>
           <div data-color-mode="light" className={classes.mdEditor}>
             <MDEditor
-              value={values?.answer || ""}
+              value={values?.answer || ''}
               onChange={handleAnswerChange}
-              placeholder={t("MEDICALNETFAQ.FIELDS.answer") ?? ""}
+              placeholder={t('MEDICALNETFAQ.FIELDS.answer') ?? ''}
               toolbars={getMarkdownCommands(setGalleryOpen)}
               previewProps={{
-                urlTransform: transformImageUri,
+                urlTransform: transformImageUri
               }}
               height="400px"
             />
@@ -189,18 +166,18 @@ const MedicalNetFaqEditor = (): JSX.Element => {
         </Box>
         <TextField
           variant="outlined"
-          value={values?.sortOrder != null ? `${values?.sortOrder}` : ""}
+          value={values?.sortOrder != null ? `${values?.sortOrder}` : ''}
           name="sortOrder"
           onChange={handleChange}
           style={{ marginBottom: 25 }}
-          placeholder={t("MEDICALNETFAQ.FIELDS.sortOrder") ?? ""}
-          label={t("MEDICALNETFAQ.FIELDS.sortOrder")}
+          placeholder={t('MEDICALNETFAQ.FIELDS.sortOrder') ?? ''}
+          label={t('MEDICALNETFAQ.FIELDS.sortOrder')}
           type="text"
           fullWidth
         />
         <EditorButtons
           width={1200}
-          onCancel={() => navigate("/app/medicalNetFaq/list")}
+          onCancel={() => navigate('/medicalNetFaq/list')}
           submitDisabled={!isEmpty(errors)}
           onSubmit={handleSubmit}
         />

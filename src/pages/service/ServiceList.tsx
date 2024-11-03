@@ -74,21 +74,21 @@ const ServiceList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/service/${params.id}/edit`)}
+          onClick={() => navigate(`/service/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="check"
           icon={<BugReporOutlinedtIcon />}
           label="Проверить"
           color="primary"
-          onClick={() => navigate(`/app/service/${params.id}/check`)}
+          onClick={() => navigate(`/service/${params.id}/check`)}
         />,
         <GridActionsCellItem
           key="metrics"
           icon={<AnalyticsOutlinedIcon />}
           label="Метрики"
           color="primary"
-          onClick={() => navigate(`/app/service/${params.id}/metrics`)}
+          onClick={() => navigate(`/service/${params.id}/metrics`)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -156,7 +156,7 @@ const ServiceList = (): JSX.Element => {
             }
           ]}
           startActions={
-            <Button size="small" color="primary" href="#/app/service/add" startIcon={<AddIcon />}>
+            <Button size="small" color="primary" href="#service/add" startIcon={<AddIcon />}>
               {t('LIST.ADD')}
             </Button>
           }

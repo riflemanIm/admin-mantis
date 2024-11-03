@@ -75,7 +75,7 @@ const ConfirmationCodeSettingsList = (): JSX.Element => {
             icon={<DatasetIcon />}
             label="Журнал"
             color="primary"
-            onClick={() => navigate(`/app/confirmationCodeSetting/${params.id}/records`)}
+            onClick={() => navigate(`/confirmationCodeSetting/${params.id}/records`)}
           />
         ]
       });

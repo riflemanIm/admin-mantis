@@ -1,22 +1,18 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
-import { Box, TextField, Checkbox, FormControlLabel } from "@mui/material";
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { Box, TextField, Checkbox, FormControlLabel } from '@mui/material';
 
-import { useSnackbar } from "notistack";
+import { useSnackbar } from 'notistack';
 
-import useForm from "../../hooks/useForm";
-import validate, { RateLimitError } from "./validation";
-import { useUserState } from "../../context/UserContext";
-import {
-  actions,
-  useRateLimitDispatch,
-  useRateLimitState,
-} from "../../context/RateLimitContext";
-import { RateLimitDto } from "../../helpers/dto";
-import { useTranslation } from "react-i18next";
-import { EditorButtons } from "../../components/Common/editorButtons";
-import isEmpty from "../../helpers/isEmpty";
+import useForm from '../../hooks/useForm';
+import validate, { RateLimitError } from './validation';
+import { useUserState } from '../../context/UserContext';
+import { actions, useRateLimitDispatch, useRateLimitState } from '../../context/RateLimitContext';
+import { RateLimitDto } from '../../helpers/dto';
+import { useTranslation } from 'react-i18next';
+import { EditorButtons } from '../../components/Common/editorButtons';
+import isEmpty from '../../helpers/isEmpty';
 
 const RateLimitEditor = (): JSX.Element => {
   const { t } = useTranslation();
@@ -26,7 +22,7 @@ const RateLimitEditor = (): JSX.Element => {
   const dispatch = useRateLimitDispatch();
   const { current } = useRateLimitState();
   const {
-    currentUser: { role },
+    currentUser: { role }
   } = useUserState();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -40,7 +36,7 @@ const RateLimitEditor = (): JSX.Element => {
   useEffect(() => {
     if (id && current) {
       setValues({
-        ...current,
+        ...current
       });
     }
   }, [current, id]);
@@ -50,14 +46,14 @@ const RateLimitEditor = (): JSX.Element => {
       Number(id),
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/rateLimit/list");
+        navigate('/rateLimit/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
@@ -67,27 +63,20 @@ const RateLimitEditor = (): JSX.Element => {
     actions.doCreate(
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/rateLimit/list");
+        navigate('/rateLimit/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
   };
 
-  const {
-    values,
-    errors,
-    handleChange,
-    handleCheckChange,
-    handleSubmit,
-    setValues,
-  } = useForm<RateLimitDto, RateLimitError>(
+  const { values, errors, handleChange, handleCheckChange, handleSubmit, setValues } = useForm<RateLimitDto, RateLimitError>(
     id ? updateData : createData,
     validate
   );
@@ -97,12 +86,12 @@ const RateLimitEditor = (): JSX.Element => {
       <Box display="flex" flexDirection="column" width={600}>
         <TextField
           variant="outlined"
-          value={values?.routePath ?? ""}
+          value={values?.routePath ?? ''}
           name="routePath"
           onChange={handleChange}
           style={{ marginBottom: 25 }}
-          placeholder={t("RATELIMIT.FIELDS.routePath") ?? ""}
-          label={t("RATELIMIT.FIELDS.routePath")}
+          placeholder={t('RATELIMIT.FIELDS.routePath') ?? ''}
+          label={t('RATELIMIT.FIELDS.routePath')}
           type="text"
           fullWidth
           required
@@ -111,12 +100,12 @@ const RateLimitEditor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.windowMs || ""}
+          value={values?.windowMs || ''}
           name="windowMs"
           onChange={handleChange}
           style={{ marginBottom: 25 }}
-          placeholder={t("RATELIMIT.FIELDS.windowMs") ?? ""}
-          label={t("RATELIMIT.FIELDS.windowMs")}
+          placeholder={t('RATELIMIT.FIELDS.windowMs') ?? ''}
+          label={t('RATELIMIT.FIELDS.windowMs')}
           type="text"
           fullWidth
           required
@@ -125,12 +114,12 @@ const RateLimitEditor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.rateLimit || ""}
+          value={values?.rateLimit || ''}
           name="rateLimit"
           onChange={handleChange}
           style={{ marginBottom: 25 }}
-          placeholder={t("RATELIMIT.FIELDS.rateLimit") ?? ""}
-          label={t("RATELIMIT.FIELDS.rateLimit")}
+          placeholder={t('RATELIMIT.FIELDS.rateLimit') ?? ''}
+          label={t('RATELIMIT.FIELDS.rateLimit')}
           type="text"
           required
           fullWidth
@@ -139,12 +128,12 @@ const RateLimitEditor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.limitReason || ""}
+          value={values?.limitReason || ''}
           name="limitReason"
           onChange={handleChange}
           style={{ marginBottom: 25 }}
-          placeholder={t("RATELIMIT.FIELDS.limitReason") ?? ""}
-          label={t("RATELIMIT.FIELDS.limitReason")}
+          placeholder={t('RATELIMIT.FIELDS.limitReason') ?? ''}
+          label={t('RATELIMIT.FIELDS.limitReason')}
           type="text"
           multiline
           minRows={4}
@@ -152,22 +141,10 @@ const RateLimitEditor = (): JSX.Element => {
         />
         <FormControlLabel
           style={{ marginBottom: 35 }}
-          control={
-            <Checkbox
-              checked={values?.isEnabled ?? true}
-              onChange={handleCheckChange}
-              name="isEnabled"
-              color="primary"
-            />
-          }
-          label={t("RATELIMIT.FIELDS.isEnabled")}
+          control={<Checkbox checked={values?.isEnabled ?? true} onChange={handleCheckChange} name="isEnabled" color="primary" />}
+          label={t('RATELIMIT.FIELDS.isEnabled')}
         />
-        <EditorButtons
-          width={600}
-          onCancel={() => navigate("/app/rateLimit/list")}
-          submitDisabled={!isEmpty(errors)}
-          onSubmit={handleSubmit}
-        />
+        <EditorButtons width={600} onCancel={() => navigate('/rateLimit/list')} submitDisabled={!isEmpty(errors)} onSubmit={handleSubmit} />
       </Box>
     </Box>
   );

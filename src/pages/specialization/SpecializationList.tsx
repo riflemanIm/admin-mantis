@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSnackbar } from 'notistack';
 import { Button, Stack } from '@mui/material';
-import Widget from '../../components/Widget';
 
 import { useSpecializationDispatch, useSpecializationState, actions } from '../../context/SpecializationContext';
 
@@ -22,7 +21,6 @@ import { useUserState } from '../../context/UserContext';
 import { isNetRole } from '../../helpers/enums';
 import ImageInfo from './ImageInfo';
 import SpecializationOrderDialog from './SpecializationOrderDialog';
-import { useLanguageValue } from '../../context/LanguageContext';
 import { useTranslation } from 'react-i18next';
 import { DeleteDialog } from '../../components/Common/deleteDialog';
 import config from '../../config';
@@ -121,7 +119,7 @@ const SpecializationList = (): JSX.Element => {
           setIsLoadingFile(false);
           sendNotification(t('SPECIALIZATION.IMPORTED'));
           setTimeout(() => {
-            navigate('/app/specialization/list');
+            navigate('/specialization/list');
           }, 1000);
         })
         .catch((e) => {
@@ -154,7 +152,7 @@ const SpecializationList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/specialization/${params.id}/edit`)}
+          onClick={() => navigate(`/specialization/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="editOrder"
@@ -272,7 +270,7 @@ const SpecializationList = (): JSX.Element => {
         ]}
         loading={isLoadingFile}
         startActions={
-          <Button size="small" color="primary" startIcon={<AddIcon />} href="#/app/specialization/add">
+          <Button size="small" color="primary" startIcon={<AddIcon />} href="#specialization/add">
             {t('LIST.ADD')}
           </Button>
         }

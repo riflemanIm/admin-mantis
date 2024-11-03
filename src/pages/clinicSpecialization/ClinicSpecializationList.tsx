@@ -47,7 +47,7 @@ const ClinicSpecializationList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/clinic/${clinicId}/specialization/${params.id}/edit`)}
+          onClick={() => navigate(`/clinic/${clinicId}/specialization/${params.id}/edit`)}
         />
       ]
     },

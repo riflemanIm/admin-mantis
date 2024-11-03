@@ -169,7 +169,7 @@ const AddUser = (): JSX.Element => {
           enqueueSnackbar(t('COMMON.RECORDSAVED'), {
             variant: 'success'
           });
-          navigate('/app/user/list');
+          navigate('/user/list');
         },
         (errorMessage) => {
           enqueueSnackbar(errorMessage, {
@@ -195,7 +195,7 @@ const AddUser = (): JSX.Element => {
           enqueueSnackbar(t('COMMON.RECORDSAVED'), {
             variant: 'success'
           });
-          navigate('/app/user/list');
+          navigate('/user/list');
         },
         (errorMessage) => {
           enqueueSnackbar(errorMessage, {

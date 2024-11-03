@@ -74,7 +74,7 @@ const PromoList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/promo/${params.id}/edit`)}
+          onClick={() => navigate(`/promo/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -89,7 +89,7 @@ const PromoList = (): JSX.Element => {
           label="Скопировать"
           color="primary"
           onClick={() => {
-            copyToClipboard(`[${params.row.description}](#/app/promo/${params.id})`).then(() => {
+            copyToClipboard(`[${params.row.description}](#promo/${params.id})`).then(() => {
               sendNotification(t('COMMON.RECORDCOPIED'));
             });
           }}
@@ -178,7 +178,7 @@ const PromoList = (): JSX.Element => {
             }
           ]}
           startActions={
-            <Button size="small" color="primary" href="#/app/promo/add" startIcon={<AddIcon />}>
+            <Button size="small" color="primary" href="#promo/add" startIcon={<AddIcon />}>
               {t('LIST.ADD')}
             </Button>
           }

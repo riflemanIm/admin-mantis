@@ -1,42 +1,27 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router";
-import InputMask from "react-input-mask";
-import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
-import {
-  Box,
-  TextField,
-  Tabs,
-  Tab,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import InputMask from 'react-input-mask';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import { Box, TextField, Tabs, Tab, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Checkbox } from '@mui/material';
 
-import useStyles from "./styles";
+import useStyles from './styles';
 
-import {
-  useClinicDispatch,
-  useClinicState,
-  actions,
-} from "../../context/ClinicContext";
+import { useClinicDispatch, useClinicState, actions } from '../../context/ClinicContext';
 
 // Icons
-import { Edit, PermMedia } from "@mui/icons-material";
+import { Edit, PermMedia } from '@mui/icons-material';
 
-import useForm from "../../hooks/useForm";
-import validate, { ClinicError } from "./validation";
-import Gallery from "./Gallery";
-import isEmpty from "../../helpers/isEmpty";
-import { cleanPhoneValue } from "../../helpers/numberFormat";
-import { ClinicDto, ClinicImageDto } from "../../helpers/dto";
-import { useUserState } from "../../context/UserContext";
-import { isNetRole } from "../../helpers/enums";
-import { useTranslation } from "react-i18next";
-import { EditorButtons } from "../../components/Common/editorButtons";
+import useForm from '../../hooks/useForm';
+import validate, { ClinicError } from './validation';
+import Gallery from './Gallery';
+import isEmpty from '../../helpers/isEmpty';
+import { cleanPhoneValue } from '../../helpers/numberFormat';
+import { ClinicDto, ClinicImageDto } from '../../helpers/dto';
+import { useUserState } from '../../context/UserContext';
+import { isNetRole } from '../../helpers/enums';
+import { useTranslation } from 'react-i18next';
+import { EditorButtons } from '../../components/Common/editorButtons';
 
 const EditClinic = (): JSX.Element => {
   const { t } = useTranslation();
@@ -45,31 +30,21 @@ const EditClinic = (): JSX.Element => {
   const { id } = useParams();
 
   const {
-    currentUser: { role },
+    currentUser: { role }
   } = useUserState();
 
   const dispatch = useClinicDispatch();
-  const {
-    current,
-    services,
-    medicalBrands,
-    medicalNets,
-    clientDatabases,
-    images,
-  } = useClinicState();
+  const { current, services, medicalBrands, medicalNets, clientDatabases, images } = useClinicState();
 
   const [tab, setTab] = React.useState(0);
-  const handleChangeTab = (
-    event: React.SyntheticEvent<any>,
-    newValue: number
-  ) => {
+  const handleChangeTab = (event: React.SyntheticEvent<any>, newValue: number) => {
     setTab(newValue);
   };
 
   const { enqueueSnackbar } = useSnackbar();
   function sendNotification(errorMessage?: string) {
-    enqueueSnackbar(errorMessage || t("COMMON.RECORDSAVED"), {
-      variant: errorMessage ? "warning" : "success",
+    enqueueSnackbar(errorMessage || t('COMMON.RECORDSAVED'), {
+      variant: errorMessage ? 'warning' : 'success'
     });
   }
 
@@ -92,14 +67,14 @@ const EditClinic = (): JSX.Element => {
       Number(id),
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/clinic/list");
+        navigate('/clinic/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
@@ -113,21 +88,15 @@ const EditClinic = (): JSX.Element => {
   const removeImage = (id: number) => {
     actions.doRemoveImage(id, sendNotification)(dispatch);
   };
-  const {
-    values,
-    errors,
-    handleChange,
-    handleChangeSelect,
-    handleCheckChange,
-    handlePhoneChange,
-    handleSubmit,
-    setValues,
-  } = useForm<ClinicDto, ClinicError>(saveData, validate);
+  const { values, errors, handleChange, handleChangeSelect, handleCheckChange, handlePhoneChange, handleSubmit, setValues } = useForm<
+    ClinicDto,
+    ClinicError
+  >(saveData, validate);
 
   useEffect(() => {
     if (current)
       setValues({
-        ...current,
+        ...current
       });
   }, [current, id]);
 
@@ -140,31 +109,23 @@ const EditClinic = (): JSX.Element => {
           value={tab}
           onChange={handleChangeTab}
           aria-label="full width tabs example"
-          sx={{ marginBottom: "35px" }}
+          sx={{ marginBottom: '35px' }}
         >
-          <Tab
-            label={t("CLINIC.DATATAB")}
-            icon={<Edit />}
-            className={classes.icon}
-          />
-          <Tab
-            label={t("CLINIC.PHOTOTAB")}
-            icon={<PermMedia />}
-            className={classes.icon}
-          />
+          <Tab label={t('CLINIC.DATATAB')} icon={<Edit />} className={classes.icon} />
+          <Tab label={t('CLINIC.PHOTOTAB')} icon={<PermMedia />} className={classes.icon} />
         </Tabs>
 
         {tab === 0 && (
           <React.Fragment>
             <TextField
               variant="outlined"
-              value={values?.code || ""}
+              value={values?.code || ''}
               name="code"
               onChange={handleChange}
               disabled={isNetRole(role)}
               style={{ marginBottom: 35 }}
-              placeholder={t("CLINIC.FIELDS.code") ?? ""}
-              label={t("CLINIC.FIELDS.code")}
+              placeholder={t('CLINIC.FIELDS.code') ?? ''}
+              label={t('CLINIC.FIELDS.code')}
               type="text"
               fullWidth
               required
@@ -173,12 +134,12 @@ const EditClinic = (): JSX.Element => {
             />
             <TextField
               variant="outlined"
-              value={values?.title || ""}
+              value={values?.title || ''}
               name="title"
               onChange={handleChange}
               style={{ marginBottom: 35 }}
-              placeholder={t("CLINIC.FIELDS.title") ?? ""}
-              label={t("CLINIC.FIELDS.title")}
+              placeholder={t('CLINIC.FIELDS.title') ?? ''}
+              label={t('CLINIC.FIELDS.title')}
               type="text"
               fullWidth
               required
@@ -187,24 +148,17 @@ const EditClinic = (): JSX.Element => {
             />
             <FormControlLabel
               style={{ marginBottom: 35 }}
-              control={
-                <Checkbox
-                  checked={values?.isVisible ?? true}
-                  onChange={handleCheckChange}
-                  name="isVisible"
-                  color="primary"
-                />
-              }
-              label={t("CLINIC.FIELDS.isVisible")}
+              control={<Checkbox checked={values?.isVisible ?? true} onChange={handleCheckChange} name="isVisible" color="primary" />}
+              label={t('CLINIC.FIELDS.isVisible')}
             />
             <TextField
               variant="outlined"
-              value={values?.url || ""}
+              value={values?.url || ''}
               name="url"
               onChange={handleChange}
               style={{ marginBottom: 35 }}
-              placeholder={t("CLINIC.FIELDS.url") ?? ""}
-              label={t("CLINIC.FIELDS.url")}
+              placeholder={t('CLINIC.FIELDS.url') ?? ''}
+              label={t('CLINIC.FIELDS.url')}
               type="text"
               fullWidth
               required
@@ -213,45 +167,39 @@ const EditClinic = (): JSX.Element => {
             />
             <TextField
               variant="outlined"
-              value={values?.postalAddress || ""}
+              value={values?.postalAddress || ''}
               name="postalAddress"
               onChange={handleChange}
               style={{ marginBottom: 35 }}
-              placeholder={t("CLINIC.FIELDS.postalAddress") ?? ""}
-              label={t("CLINIC.FIELDS.postalAddress")}
+              placeholder={t('CLINIC.FIELDS.postalAddress') ?? ''}
+              label={t('CLINIC.FIELDS.postalAddress')}
               multiline
               minRows={4}
               type="text"
               fullWidth
               required
               error={errors?.postalAddress != null}
-              helperText={
-                errors?.postalAddress != null && errors?.postalAddress
-              }
+              helperText={errors?.postalAddress != null && errors?.postalAddress}
             />
             <TextField
               variant="outlined"
-              value={values?.email || ""}
+              value={values?.email || ''}
               name="email"
               onChange={handleChange}
               style={{ marginBottom: 35 }}
-              placeholder={t("CLINIC.FIELDS.email") ?? ""}
-              label={t("CLINIC.FIELDS.email")}
+              placeholder={t('CLINIC.FIELDS.email') ?? ''}
+              label={t('CLINIC.FIELDS.email')}
               type="text"
               fullWidth
               error={errors?.email != null}
               helperText={errors?.email != null && errors?.email}
             />
-            <InputMask
-              mask="+7 (999) 999 9999"
-              value={values?.phone || ""}
-              onChange={handlePhoneChange}
-            >
+            <InputMask mask="+7 (999) 999 9999" value={values?.phone || ''} onChange={handlePhoneChange}>
               <TextField
                 name="phone"
                 variant="outlined"
                 style={{ marginBottom: 35 }}
-                label={t("CLINIC.FIELDS.phone")}
+                label={t('CLINIC.FIELDS.phone')}
                 type="tel"
                 fullWidth
                 required
@@ -269,77 +217,53 @@ const EditClinic = (): JSX.Element => {
                   color="primary"
                 />
               }
-              label={t("CLINIC.FIELDS.isAnonymousVisitsProhibited")}
+              label={t('CLINIC.FIELDS.isAnonymousVisitsProhibited')}
             />
             {!isNetRole(role) && (
               <React.Fragment>
-                <FormControl
-                  variant="outlined"
-                  style={{ marginBottom: 35, marginRight: 8 }}
-                  fullWidth
-                >
-                  <InputLabel id="id-client_database-label">
-                    {t("CLINIC.FIELDS.clientDatabaseId")}
-                  </InputLabel>
+                <FormControl variant="outlined" style={{ marginBottom: 35, marginRight: 8 }} fullWidth>
+                  <InputLabel id="id-client_database-label">{t('CLINIC.FIELDS.clientDatabaseId')}</InputLabel>
                   <Select
                     name="clientDatabaseId"
                     labelId="id-client_database-label"
                     id="id-client_database-select"
-                    label={t("CLINIC.FIELDS.clientDatabaseId")}
+                    label={t('CLINIC.FIELDS.clientDatabaseId')}
                     onChange={handleChangeSelect}
-                    value={values?.clientDatabaseId || ""}
+                    value={values?.clientDatabaseId || ''}
                   >
                     {clientDatabases.map((item) => (
-                      <MenuItem
-                        value={item.clientDatabaseId}
-                        key={item.clientDatabaseId}
-                      >
+                      <MenuItem value={item.clientDatabaseId} key={item.clientDatabaseId}>
                         {item.name}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl
-                  variant="outlined"
-                  style={{ marginBottom: 35, marginRight: 8 }}
-                  fullWidth
-                >
-                  <InputLabel id="id-medical_net-label">
-                    {t("CLINIC.FIELDS.defaultMedicalNetId")}
-                  </InputLabel>
+                <FormControl variant="outlined" style={{ marginBottom: 35, marginRight: 8 }} fullWidth>
+                  <InputLabel id="id-medical_net-label">{t('CLINIC.FIELDS.defaultMedicalNetId')}</InputLabel>
                   <Select
                     name="defaultMedicalNetId"
                     labelId="id-medical_net-label"
                     id="id-medical_net-select"
-                    label={t("CLINIC.FIELDS.defaultMedicalNetId")}
+                    label={t('CLINIC.FIELDS.defaultMedicalNetId')}
                     onChange={handleChangeSelect}
-                    value={values?.defaultMedicalNetId || ""}
+                    value={values?.defaultMedicalNetId || ''}
                   >
                     {medicalNets.map((item) => (
-                      <MenuItem
-                        value={item.medicalNetId}
-                        key={item.medicalNetId}
-                      >
+                      <MenuItem value={item.medicalNetId} key={item.medicalNetId}>
                         {item.title}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl
-                  variant="outlined"
-                  style={{ marginBottom: 35, marginRight: 8 }}
-                  fullWidth
-                >
-                  <InputLabel id="id-services-label">
-                    {t("CLINIC.FIELDS.clientServiceId")}
-                  </InputLabel>
+                <FormControl variant="outlined" style={{ marginBottom: 35, marginRight: 8 }} fullWidth>
+                  <InputLabel id="id-services-label">{t('CLINIC.FIELDS.clientServiceId')}</InputLabel>
                   <Select
                     name="clientServiceId"
                     labelId="id-services-label"
                     id="id-services-select"
-                    label={t("CLINIC.FIELDS.clientServiceId")}
+                    label={t('CLINIC.FIELDS.clientServiceId')}
                     onChange={handleChangeSelect}
-                    value={values?.clientServiceId || ""}
+                    value={values?.clientServiceId || ''}
                   >
                     {services.map((item) => (
                       <MenuItem value={item.id} key={item.id}>
@@ -348,27 +272,18 @@ const EditClinic = (): JSX.Element => {
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl
-                  variant="outlined"
-                  style={{ marginBottom: 35, marginRight: 8 }}
-                  fullWidth
-                >
-                  <InputLabel id="id-medical_brand-label">
-                    {t("CLINIC.FIELDS.medicalBrandId")}
-                  </InputLabel>
+                <FormControl variant="outlined" style={{ marginBottom: 35, marginRight: 8 }} fullWidth>
+                  <InputLabel id="id-medical_brand-label">{t('CLINIC.FIELDS.medicalBrandId')}</InputLabel>
                   <Select
                     name="medicalBrandId"
                     labelId="id-medical_brand-label"
                     id="id-medical_brand-select"
-                    label={t("CLINIC.FIELDS.medicalBrandId")}
+                    label={t('CLINIC.FIELDS.medicalBrandId')}
                     onChange={handleChangeSelect}
-                    value={values?.medicalBrandId || ""}
+                    value={values?.medicalBrandId || ''}
                   >
                     {medicalBrands.map((item) => (
-                      <MenuItem
-                        value={item.medicalBrandId}
-                        key={item.medicalBrandId}
-                      >
+                      <MenuItem value={item.medicalBrandId} key={item.medicalBrandId}>
                         {item.title}
                       </MenuItem>
                     ))}
@@ -376,21 +291,10 @@ const EditClinic = (): JSX.Element => {
                 </FormControl>
               </React.Fragment>
             )}
-            <EditorButtons
-              onCancel={() => navigate("/app/clinic/list")}
-              submitDisabled={!isEmpty(errors)}
-              onSubmit={handleSubmit}
-            />
+            <EditorButtons onCancel={() => navigate('/clinic/list')} submitDisabled={!isEmpty(errors)} onSubmit={handleSubmit} />
           </React.Fragment>
         )}
-        {tab === 1 && (
-          <Gallery
-            imgs={images}
-            addImages={addImages}
-            removeImage={removeImage}
-            clinicId={Number(id)}
-          />
-        )}
+        {tab === 1 && <Gallery imgs={images} addImages={addImages} removeImage={removeImage} clinicId={Number(id)} />}
       </Box>
     </Box>
   );

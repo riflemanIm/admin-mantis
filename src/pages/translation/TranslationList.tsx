@@ -251,7 +251,7 @@ const TranslationList = (): JSX.Element => {
             icon={<CreateIcon />}
             label="Edit"
             color="primary"
-            onClick={() => navigate(`/app/translation/${params.id}/edit`)}
+            onClick={() => navigate(`/translation/${params.id}/edit`)}
           />,
           <GridActionsCellItem
             key="delete"
@@ -269,7 +269,7 @@ const TranslationList = (): JSX.Element => {
             icon={<CreateIcon />}
             label="Edit"
             color="primary"
-            onClick={() => navigate(`/app/translation/${params.id}/edit`)}
+            onClick={() => navigate(`/translation/${params.id}/edit`)}
           />
         ];
       }

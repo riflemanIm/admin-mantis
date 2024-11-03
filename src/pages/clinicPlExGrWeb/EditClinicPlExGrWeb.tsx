@@ -1,26 +1,15 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
-import {
-  Box,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import { Box, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-import useForm from "../../hooks/useForm";
-import validate, { ClinicPlExGrWebError } from "./validation";
-import { ClinicPlExGrWebDto, SpecializationDto } from "../../helpers/dto";
-import { useTranslation } from "react-i18next";
-import {
-  actions,
-  useClinicPlExGrWebDispatch,
-  useClinicPlExGrWebState,
-} from "../../context/ClinicPlExGrWebContext";
-import { EditorButtons } from "../../components/Common/editorButtons";
+import useForm from '../../hooks/useForm';
+import validate, { ClinicPlExGrWebError } from './validation';
+import { ClinicPlExGrWebDto, SpecializationDto } from '../../helpers/dto';
+import { useTranslation } from 'react-i18next';
+import { actions, useClinicPlExGrWebDispatch, useClinicPlExGrWebState } from '../../context/ClinicPlExGrWebContext';
+import { EditorButtons } from '../../components/Common/editorButtons';
 
 const EditClinicPlExGrWeb = (): JSX.Element => {
   const { t } = useTranslation();
@@ -47,28 +36,25 @@ const EditClinicPlExGrWeb = (): JSX.Element => {
       Number(id),
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate(`/app/clinic/${clinicId}/plExGrWeb`);
+        navigate(`/clinic/${clinicId}/plExGrWeb`);
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
   };
 
-  const { values, handleChangeSelect, handleSubmit, setValues } = useForm<
-    ClinicPlExGrWebDto,
-    ClinicPlExGrWebError
-  >(saveData, validate);
+  const { values, handleChangeSelect, handleSubmit, setValues } = useForm<ClinicPlExGrWebDto, ClinicPlExGrWebError>(saveData, validate);
 
   useEffect(() => {
     if (current)
       setValues({
-        ...current,
+        ...current
       });
   }, [current, clinicId, id]);
 
@@ -77,29 +63,22 @@ const EditClinicPlExGrWeb = (): JSX.Element => {
       <Box display="flex" flexDirection="column" width={600}>
         <TextField
           variant="outlined"
-          value={values?.code || ""}
+          value={values?.code || ''}
           name="code"
           style={{ marginBottom: 35 }}
-          placeholder={t("CLINICPLEXGRWEB.FIELDS.code") ?? ""}
-          label={t("CLINICPLEXGRWEB.FIELDS.code")}
+          placeholder={t('CLINICPLEXGRWEB.FIELDS.code') ?? ''}
+          label={t('CLINICPLEXGRWEB.FIELDS.code')}
           type="text"
           fullWidth
           disabled
         />
-        <FormControl
-          variant="outlined"
-          margin="normal"
-          fullWidth
-          style={{ marginBottom: 35 }}
-        >
-          <InputLabel id="demo-simple-select-outlined-label">
-            {t("CLINICPLEXGRWEB.FIELDS.specializationId")}
-          </InputLabel>
+        <FormControl variant="outlined" margin="normal" fullWidth style={{ marginBottom: 35 }}>
+          <InputLabel id="demo-simple-select-outlined-label">{t('CLINICPLEXGRWEB.FIELDS.specializationId')}</InputLabel>
           <Select
             name="specializationId"
-            value={values.specializationId || ""}
+            value={values.specializationId || ''}
             onChange={handleChangeSelect}
-            label={t("CLINICPLEXGRWEB.FIELDS.specializationId")}
+            label={t('CLINICPLEXGRWEB.FIELDS.specializationId')}
           >
             {specializations.map((it: SpecializationDto) => (
               <MenuItem key={it.specializationId} value={it.specializationId}>
@@ -108,11 +87,7 @@ const EditClinicPlExGrWeb = (): JSX.Element => {
             ))}
           </Select>
         </FormControl>
-        <EditorButtons
-          width={600}
-          onCancel={() => navigate(`/app/clinic/${clinicId}/plExGrWeb`)}
-          onSubmit={handleSubmit}
-        />
+        <EditorButtons width={600} onCancel={() => navigate(`/clinic/${clinicId}/plExGrWeb`)} onSubmit={handleSubmit} />
       </Box>
     </Box>
   );

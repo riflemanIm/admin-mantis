@@ -67,7 +67,7 @@ const Hl7SettingsList = (): JSX.Element => {
             icon={<DatasetIcon />}
             label="Журнал"
             color="primary"
-            onClick={() => navigate(`/app/hl7Setting/${params.id}/records`)}
+            onClick={() => navigate(`/hl7Setting/${params.id}/records`)}
           />
         ]
       },

@@ -84,14 +84,14 @@ const MedicalNetList = (): JSX.Element => {
             icon={<CreateIcon />}
             label="Редактировать"
             color="primary"
-            onClick={() => navigate(`/app/medical_net/${params.id}/edit`)}
+            onClick={() => navigate(`/medical_net/${params.id}/edit`)}
           />,
           <GridActionsCellItem
             key="settings"
             icon={<SettingsIcon />}
             label="Настройки"
             color="primary"
-            onClick={() => navigate(`/app/medical_net/${params.id}/settings`)}
+            onClick={() => navigate(`/medical_net/${params.id}/settings`)}
           />,
           <GridActionsCellItem
             key="license"
@@ -201,7 +201,7 @@ const MedicalNetList = (): JSX.Element => {
           ]}
           startActions={
             !isNetRole(role) ? (
-              <Button size="small" color="primary" href="#/app/medical_net/add" startIcon={<AddIcon />}>
+              <Button size="small" color="primary" href="#medical_net/add" startIcon={<AddIcon />}>
                 {t('LIST.ADD')}
               </Button>
             ) : undefined

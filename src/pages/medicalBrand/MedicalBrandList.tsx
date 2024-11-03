@@ -65,7 +65,7 @@ const MedicalBrandList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/medical_brand/${params.id}/edit`)}
+          onClick={() => navigate(`/medical_brand/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -133,7 +133,7 @@ const MedicalBrandList = (): JSX.Element => {
             }
           ]}
           startActions={
-            <Button color="primary" size="small" href="#/app/medical_brand/add" startIcon={<AddIcon />}>
+            <Button color="primary" size="small" href="#medical_brand/add" startIcon={<AddIcon />}>
               {t('LIST.ADD')}
             </Button>
           }

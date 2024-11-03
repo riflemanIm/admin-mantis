@@ -155,7 +155,7 @@ const UserList = (): JSX.Element => {
             icon={<CreateIcon />}
             label="Edit"
             color="primary"
-            onClick={() => navigate(`/app/user/${params.id}/edit`)}
+            onClick={() => navigate(`/user/${params.id}/edit`)}
           />,
           <GridActionsCellItem
             key="token"
@@ -213,7 +213,7 @@ const UserList = (): JSX.Element => {
             icon={<CreateIcon />}
             label="Edit"
             color="primary"
-            onClick={() => navigate(`/app/user/${params.id}/editNet`)}
+            onClick={() => navigate(`/user/${params.id}/editNet`)}
           />,
           <GridActionsCellItem
             key="details"
@@ -244,7 +244,7 @@ const UserList = (): JSX.Element => {
             icon={<CreateIcon />}
             label="Edit"
             color="primary"
-            onClick={() => navigate(`/app/user/${params.id}/editNet`)}
+            onClick={() => navigate(`/user/${params.id}/editNet`)}
           />,
           <GridActionsCellItem
             key="details"
@@ -272,7 +272,7 @@ const UserList = (): JSX.Element => {
                   });
                 }
                 // переходим в чат
-                navigate('/app/chat', {
+                navigate('/chat', {
                   state: {
                     activeGroupId: chat.operatorGroupId
                   }
@@ -458,7 +458,7 @@ const UserList = (): JSX.Element => {
           startActions={
             <React.Fragment>
               {!isNetRole(role) && (
-                <Button size="small" color="primary" href="#/app/user/add" startIcon={<AddIcon />}>
+                <Button size="small" color="primary" href="#user/add" startIcon={<AddIcon />}>
                   {t('LIST.ADD')}
                 </Button>
               )}
@@ -483,7 +483,7 @@ const UserList = (): JSX.Element => {
           }
           endActions={
             role !== AccountRole.operator ? (
-              <Button size="small" color="primary" href="#/app/user/report" startIcon={<BarChartIcon />}>
+              <Button size="small" color="primary" href="#user/report" startIcon={<BarChartIcon />}>
                 {t('USER.REPORT')}
               </Button>
             ) : undefined

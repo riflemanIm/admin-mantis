@@ -1,37 +1,25 @@
-import React from "react";
-import { withStyles } from "@mui/styles";
-import {
-  IconButton,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Link,
-  MenuProps,
-} from "@mui/material";
+import React from 'react';
+import { withStyles } from '@mui/styles';
+import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Link, MenuProps } from '@mui/material';
 
-import {
-  GetApp as DownloadIcon,
-  Menu as MenuIcon,
-  LabelImportant as LabelImportantIcon,
-} from "@mui/icons-material";
+import { GetApp as DownloadIcon, Menu as MenuIcon, LabelImportant as LabelImportantIcon } from '@mui/icons-material';
 
-import config from "../../config";
+import config from '../../config';
 
 const StyledMenu = withStyles({
   paper: {
-    border: "1px solid #d3d4d5",
-  },
+    border: '1px solid #d3d4d5'
+  }
 })((props: MenuProps) => (
   <Menu
     elevation={0}
     anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "center",
+      vertical: 'bottom',
+      horizontal: 'center'
     }}
     transformOrigin={{
-      vertical: "top",
-      horizontal: "center",
+      vertical: 'top',
+      horizontal: 'center'
     }}
     {...props}
   />
@@ -39,24 +27,20 @@ const StyledMenu = withStyles({
 
 const StyledMenuItem = withStyles((theme) => ({
   root: {
-    "& .MuiListItemIcon-root": {
-      minWidth: theme.spacing(4),
+    '& .MuiListItemIcon-root': {
+      minWidth: theme.spacing(4)
     },
 
-    "&:focus": {
+    '&:focus': {
       backgroundColor: theme.palette.primary.main,
-      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-        color: theme.palette.common.white,
-      },
-    },
-  },
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white
+      }
+    }
+  }
 }))(MenuItem);
 
-export default function TranslationInterActions({
-  pname,
-}: {
-  pname: string;
-}): JSX.Element {
+export default function TranslationInterActions({ pname }: { pname: string }): JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -68,25 +52,11 @@ export default function TranslationInterActions({
   };
   return (
     <React.Fragment>
-      <IconButton
-        aria-label="delete"
-        style={{ marginTop: 8 }}
-        onClick={handleClick}
-        color="primary"
-      >
+      <IconButton aria-label="delete" style={{ marginTop: 8 }} onClick={handleClick} color="primary">
         <MenuIcon />
       </IconButton>
-      <StyledMenu
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <Link
-          href={`${config.baseURLApi}/translations/csv/${pname}`}
-          underline="none"
-          color="primary"
-        >
+      <StyledMenu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+        <Link href={`${config.baseURLApi}/translations/csv/${pname}`} underline="none" color="primary">
           <StyledMenuItem>
             <ListItemIcon>
               <DownloadIcon fontSize="small" />
@@ -95,11 +65,7 @@ export default function TranslationInterActions({
           </StyledMenuItem>
         </Link>
 
-        <Link
-          href="#/app/translation/import-csv"
-          underline="none"
-          color="primary"
-        >
+        <Link href="#translation/import-csv" underline="none" color="primary">
           <StyledMenuItem>
             <ListItemIcon>
               <LabelImportantIcon fontSize="small" />

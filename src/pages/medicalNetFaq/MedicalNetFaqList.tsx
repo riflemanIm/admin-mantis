@@ -85,7 +85,7 @@ const MedicalNetFaqList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/medicalNetFaq/${params.id}/edit`)}
+          onClick={() => navigate(`/medicalNetFaq/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -183,7 +183,7 @@ const MedicalNetFaqList = (): JSX.Element => {
           ]}
           params={[value.medicalNetId ?? -1]}
           startActions={
-            <Button size="small" color="primary" startIcon={<AddIcon />} disabled={!value.medicalNetId} href="#/app/medicalNetFaq/add">
+            <Button size="small" color="primary" startIcon={<AddIcon />} disabled={!value.medicalNetId} href="#medicalNetFaq/add">
               {t('LIST.ADD')}
             </Button>
           }

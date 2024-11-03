@@ -1,12 +1,11 @@
 import React from 'react';
-import Widget from '../Widget';
+
 import { Link, Box, Breadcrumbs, Typography } from '@mui/material';
 import { NavigateNext as NavigateNextIcon, SvgIconComponent } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // styles
-import useStyles from '../Layout/styles';
 
 //Sidebar structure
 import structure from '../Sidebar/SidebarStructure';
@@ -19,7 +18,7 @@ interface IRoute {
 
 const BreadCrumbs = (): JSX.Element => {
   const location = useLocation();
-  const classes = useStyles();
+
   const { t } = useTranslation();
 
   const convertGenericRoute = (route: string[]): IRoute[] => {
@@ -94,13 +93,11 @@ const BreadCrumbs = (): JSX.Element => {
   };
 
   return (
-    <Widget inheritHeight className={classes.margin} bodyClass={classes.navPadding}>
-      <Box justifyContent="space-between" alignItems="center" style={{ overflowX: 'auto' }}>
-        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-          {renderBreadCrumbs()}
-        </Breadcrumbs>
-      </Box>
-    </Widget>
+    <Box justifyContent="space-between" alignItems="center" style={{ overflowX: 'auto' }}>
+      <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+        {renderBreadCrumbs()}
+      </Breadcrumbs>
+    </Box>
   );
 };
 export default BreadCrumbs;

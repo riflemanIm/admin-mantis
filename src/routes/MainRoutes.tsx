@@ -9,7 +9,7 @@ const Typography = Loadable(lazy(() => import('pages/component-overview/typograp
 const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 const Specialization = Loadable(lazy(() => import('pages/specialization/index')));
-
+const SpecializationEditor = Loadable(lazy(() => import('pages/specialization/SpecializationEditor')));
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
 
@@ -28,8 +28,20 @@ const MainRoutes = {
       element: <Color />
     },
     {
+      path: 'specialization',
+      element: <Specialization />
+    },
+    {
       path: 'specialization/list',
       element: <Specialization />
+    },
+    {
+      path: 'specialization/add',
+      element: <SpecializationEditor />
+    },
+    {
+      path: 'specialization/:id/edit',
+      element: <SpecializationEditor />
     },
     {
       path: 'dashboard',

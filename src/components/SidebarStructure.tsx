@@ -46,55 +46,55 @@ const structure: StructureItem[] = [
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [],
     icon: BadgeIcon,
-    link: '/app/specialization/list'
+    link: 'specialization/list'
   },
   {
     id: 'promo',
     role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.netMarketer],
     features: [Feature.web, Feature.mobile],
     icon: CardGiftcardIcon,
-    link: '/app/promo/list'
+    link: 'promo/list'
   },
   {
     id: 'clinic',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [],
     icon: LocalHospitalIcon,
-    link: '/app/clinic/list'
+    link: 'clinic/list'
   },
   {
     id: 'medical_net',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [],
     icon: LibraryAddIcon,
-    link: '/app/medical_net/list'
+    link: 'medical_net/list'
   },
   {
     id: 'medical_brand',
     role: [AccountRole.admin],
     features: [],
     icon: AcUnitIcon,
-    link: '/app/medical_brand/list'
+    link: 'medical_brand/list'
   },
   {
     id: 'notificationTemplate',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [Feature.web, Feature.mobile],
-    link: '/app/notificationTemplate/list',
+    link: 'notificationTemplate/list',
     icon: EmailIcon
   },
   {
     id: 'agreement',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [Feature.web, Feature.mobile],
-    link: '/app/agreement/list',
+    link: 'agreement/list',
     icon: HandshakeIcon
   },
   {
     id: 'medicalNetFaq',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [Feature.web, Feature.mobile],
-    link: '/app/medicalNetFaq/list',
+    link: 'medicalNetFaq/list',
     icon: LiveHelpIcon
   },
   {
@@ -102,7 +102,7 @@ const structure: StructureItem[] = [
     role: [AccountRole.admin],
     features: [],
     icon: CalyspoIcon,
-    link: '/app/webForm/list'
+    link: 'webForm/list'
   },
   {
     id: 'userData',
@@ -113,21 +113,21 @@ const structure: StructureItem[] = [
     id: 'users',
     role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.operator],
     features: [],
-    link: '/app/user/list',
+    link: 'user/list',
     icon: PersonIcon
   },
   {
     id: 'chat',
     role: [AccountRole.operator],
     features: [Feature.chat],
-    link: '/app/chat',
+    link: 'chat',
     icon: ChatIcon
   },
   {
     id: 'reviews',
     role: [AccountRole.admin],
     features: [],
-    link: '/app/review/list',
+    link: 'review/list',
     icon: ReviewsIcon
   },
   {
@@ -140,56 +140,56 @@ const structure: StructureItem[] = [
     role: [AccountRole.admin],
     features: [],
     icon: DnsIcon,
-    link: '/app/service/list'
+    link: 'service/list'
   },
   {
     id: 'settings',
     role: [AccountRole.admin],
     features: [],
     icon: SettingsIcon,
-    link: '/app/setting/list'
+    link: 'setting/list'
   },
   {
     id: 'cacheSettings',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [],
     icon: DataObjectIcon,
-    link: '/app/cacheSetting/list'
+    link: 'cacheSetting/list'
   },
   {
     id: 'hl7Settings',
     role: [AccountRole.admin],
     features: [],
     icon: SendTimeExtensionIcon,
-    link: '/app/hl7Setting/list'
+    link: 'hl7Setting/list'
   },
   {
     id: 'rateLimitSettings',
     role: [AccountRole.admin],
     features: [],
     icon: SpeedIcon,
-    link: '/app/rateLimit/list'
+    link: 'rateLimit/list'
   },
   {
     id: 'confirmationCodeSettings',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [Feature.web, Feature.mobile],
     icon: ConfirmationNumberIcon,
-    link: '/app/confirmationCodeSetting/list'
+    link: 'confirmationCodeSetting/list'
   },
   {
     id: 'translation',
     role: [AccountRole.admin, AccountRole.interpreter],
     features: [],
     icon: TranslateIcon,
-    link: '/app/translation/list'
+    link: 'translation/list'
   },
   {
     id: 'serviceTasks',
     role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.operator],
     features: [],
     icon: BuildIcon,
-    link: '/app/serviceTasks'
+    link: 'serviceTasks'
   },
   {
     id: 'reports',
@@ -200,14 +200,14 @@ const structure: StructureItem[] = [
     id: 'statistics',
     role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.netMarketer],
     features: [],
-    link: '/app/user/report',
+    link: 'user/report',
     icon: DonutLargeIcon
   },
   {
     id: 'audit',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [],
-    link: '/app/audit/list',
+    link: 'audit/list',
     icon: VerifiedUserIcon
   }
 ];

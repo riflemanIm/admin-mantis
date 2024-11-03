@@ -1,34 +1,21 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { Box, TextField, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Checkbox } from '@mui/material';
 
-import { useSnackbar } from "notistack";
+import { useSnackbar } from 'notistack';
 
-import useForm from "../../hooks/useForm";
-import validate, { WebFormError } from "./validation";
-import { useUserState } from "../../context/UserContext";
-import { isNetRole } from "../../helpers/enums";
-import { WebFormDto } from "../../helpers/dto";
-import { useTranslation } from "react-i18next";
-import {
-  actions,
-  useWebFormDispatch,
-  useWebFormState,
-} from "../../context/WebFormContext";
-import { WebFormControl } from "./enums";
-import UploadImageButton from "../../components/Common/uploadImageButton";
-import { EditorButtons } from "../../components/Common/editorButtons";
-import isEmpty from "../../helpers/isEmpty";
+import useForm from '../../hooks/useForm';
+import validate, { WebFormError } from './validation';
+import { useUserState } from '../../context/UserContext';
+import { isNetRole } from '../../helpers/enums';
+import { WebFormDto } from '../../helpers/dto';
+import { useTranslation } from 'react-i18next';
+import { actions, useWebFormDispatch, useWebFormState } from '../../context/WebFormContext';
+import { WebFormControl } from './enums';
+import UploadImageButton from '../../components/Common/uploadImageButton';
+import { EditorButtons } from '../../components/Common/editorButtons';
+import isEmpty from '../../helpers/isEmpty';
 
 const WebFormEdititor = (): JSX.Element => {
   const { t } = useTranslation();
@@ -38,7 +25,7 @@ const WebFormEdititor = (): JSX.Element => {
   const dispatch = useWebFormDispatch();
   const { medicalNets, current } = useWebFormState();
   const {
-    currentUser: { role },
+    currentUser: { role }
   } = useUserState();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -58,7 +45,7 @@ const WebFormEdititor = (): JSX.Element => {
   useEffect(() => {
     if (!current) return;
     setValues({
-      ...current,
+      ...current
     });
   }, [current, id]);
 
@@ -67,14 +54,14 @@ const WebFormEdititor = (): JSX.Element => {
       Number(id),
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/webForm/list");
+        navigate('/webForm/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
@@ -84,49 +71,37 @@ const WebFormEdititor = (): JSX.Element => {
     actions.doCreate(
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/webForm/list");
+        navigate('/webForm/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
   };
 
-  const {
-    values,
-    errors,
-    handleGenericChange,
-    handleChange,
-    handleChangeSelect,
-    handleCheckChange,
-    handleSubmit,
-    setValues,
-  } = useForm<WebFormDto, WebFormError>(id ? updateData : createData, validate);
+  const { values, errors, handleGenericChange, handleChange, handleChangeSelect, handleCheckChange, handleSubmit, setValues } = useForm<
+    WebFormDto,
+    WebFormError
+  >(id ? updateData : createData, validate);
 
   return (
     <Box display="flex" justifyContent="center" flexDirection="row">
       <Box display="flex" flexDirection="column" width={600}>
         {!isNetRole(role) && (
-          <FormControl
-            variant="outlined"
-            style={{ marginBottom: 35, marginRight: 8 }}
-            fullWidth
-          >
-            <InputLabel id="id-medicalnet-label">
-              {t("WEBFORM.FIELDS.medicalNetId")}
-            </InputLabel>
+          <FormControl variant="outlined" style={{ marginBottom: 35, marginRight: 8 }} fullWidth>
+            <InputLabel id="id-medicalnet-label">{t('WEBFORM.FIELDS.medicalNetId')}</InputLabel>
             <Select
               name="medicalNetId"
               labelId="id-medicalnet-label"
               id="id-medicalnet-select"
-              label={t("WEBFORM.FIELDS.medicalNetId")}
+              label={t('WEBFORM.FIELDS.medicalNetId')}
               onChange={handleChangeSelect}
-              value={values?.medicalNetId || ""}
+              value={values?.medicalNetId || ''}
             >
               {medicalNets.map((item) => (
                 <MenuItem value={item.medicalNetId} key={item.medicalNetId}>
@@ -138,12 +113,12 @@ const WebFormEdititor = (): JSX.Element => {
         )}
         <TextField
           variant="outlined"
-          value={values?.formUUID || ""}
+          value={values?.formUUID || ''}
           name="formUUID"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("WEBFORM.FIELDS.formUUID") ?? ""}
-          label={t("WEBFORM.FIELDS.formUUID")}
+          placeholder={t('WEBFORM.FIELDS.formUUID') ?? ''}
+          label={t('WEBFORM.FIELDS.formUUID')}
           type="text"
           fullWidth
           required
@@ -152,23 +127,23 @@ const WebFormEdititor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.scope || ""}
+          value={values?.scope || ''}
           name="scope"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("WEBFORM.FIELDS.scope") ?? ""}
-          label={t("WEBFORM.FIELDS.scope")}
+          placeholder={t('WEBFORM.FIELDS.scope') ?? ''}
+          label={t('WEBFORM.FIELDS.scope')}
           type="text"
           fullWidth
         />
         <TextField
           variant="outlined"
-          value={values?.title || ""}
+          value={values?.title || ''}
           name="title"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("WEBFORM.FIELDS.title") ?? ""}
-          label={t("WEBFORM.FIELDS.title")}
+          placeholder={t('WEBFORM.FIELDS.title') ?? ''}
+          label={t('WEBFORM.FIELDS.title')}
           type="text"
           fullWidth
           required
@@ -178,25 +153,20 @@ const WebFormEdititor = (): JSX.Element => {
 
         <UploadImageButton
           icon={values.icon}
-          onDelete={() => handleGenericChange("icon", "")}
-          onChange={(newValue: string) => handleGenericChange("icon", newValue)}
+          onDelete={() => handleGenericChange('icon', '')}
+          onChange={(newValue: string) => handleGenericChange('icon', newValue)}
           accept="image/png,image/jpeg"
           maxWidth={610}
           maxHeight={610}
         />
-        <FormControl
-          fullWidth
-          style={{ marginBottom: 35 }}
-          required
-          error={errors?.control != null}
-        >
-          <InputLabel id="nrt-label">{t("WEBFORM.FIELDS.control")}</InputLabel>
+        <FormControl fullWidth style={{ marginBottom: 35 }} required error={errors?.control != null}>
+          <InputLabel id="nrt-label">{t('WEBFORM.FIELDS.control')}</InputLabel>
           <Select
             labelId="nrt-label"
-            label={t("WEBFORM.FIELDS.control")}
+            label={t('WEBFORM.FIELDS.control')}
             name="control"
             onChange={handleChangeSelect}
-            value={values?.control || "profile"}
+            value={values?.control || 'profile'}
           >
             {WebFormControl.map((k) => (
               <MenuItem key={k} value={k}>
@@ -207,33 +177,21 @@ const WebFormEdititor = (): JSX.Element => {
         </FormControl>
         <TextField
           variant="outlined"
-          value={values?.position || ""}
+          value={values?.position || ''}
           name="position"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("WEBFORM.FIELDS.position") ?? ""}
-          label={t("WEBFORM.FIELDS.position")}
+          placeholder={t('WEBFORM.FIELDS.position') ?? ''}
+          label={t('WEBFORM.FIELDS.position')}
           type="number"
           fullWidth
         />
         <FormControlLabel
           style={{ marginBottom: 35 }}
-          control={
-            <Checkbox
-              checked={values?.isEnabled ?? true}
-              onChange={handleCheckChange}
-              name="isEnabled"
-              color="primary"
-            />
-          }
-          label={t("WEBFORM.FIELDS.isEnabled")}
+          control={<Checkbox checked={values?.isEnabled ?? true} onChange={handleCheckChange} name="isEnabled" color="primary" />}
+          label={t('WEBFORM.FIELDS.isEnabled')}
         />
-        <EditorButtons
-          width={600}
-          onCancel={() => navigate("/app/webForm/list")}
-          submitDisabled={!isEmpty(errors)}
-          onSubmit={handleSubmit}
-        />
+        <EditorButtons width={600} onCancel={() => navigate('/webForm/list')} submitDisabled={!isEmpty(errors)} onSubmit={handleSubmit} />
       </Box>
     </Box>
   );

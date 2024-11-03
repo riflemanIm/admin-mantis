@@ -1,5 +1,5 @@
-import React from "react";
-import axios from "axios";
+import React from 'react';
+import axios from 'axios';
 import {
   ChatIdentifiersDto,
   ChatUserDto,
@@ -15,17 +15,10 @@ import {
   UserDto,
   UserNotificationSettingDto,
   UserReportDto,
-  VisitRecordDto,
-} from "../helpers/dto";
-import {
-  doGenericReferenceLists,
-  genericActions,
-  GenericActionType,
-  genericReducer,
-  GenericState,
-  initialState,
-} from "../helpers/state";
-import { NavigateFunction } from "react-router-dom";
+  VisitRecordDto
+} from '../helpers/dto';
+import { doGenericReferenceLists, genericActions, GenericActionType, genericReducer, GenericState, initialState } from '../helpers/state';
+import { NavigateFunction } from 'react-router-dom';
 
 interface UserState extends GenericState<UserDto> {
   medicalNets: MedicalNetDto[];
@@ -35,7 +28,7 @@ interface UserState extends GenericState<UserDto> {
 const initialData: UserState = {
   ...initialState(),
   medicalNets: [],
-  report: undefined,
+  report: undefined
 };
 
 interface Action {
@@ -43,39 +36,26 @@ interface Action {
   payload?: any;
 }
 
-const managementReducer = (
-  state = initialData,
-  { type, payload }: Action
-): UserState => genericReducer(state, { type, payload });
+const managementReducer = (state = initialData, { type, payload }: Action): UserState => genericReducer(state, { type, payload });
 
 type ManagementDispatch = React.Dispatch<Action>;
 const emptyDispatch: ManagementDispatch = () => null;
 
 const ManagementContext = React.createContext({
   state: initialData,
-  dispatch: emptyDispatch,
+  dispatch: emptyDispatch
 });
 
-const ManagementProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}): JSX.Element => {
+const ManagementProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const [state, dispatch] = React.useReducer(managementReducer, initialData);
 
-  return (
-    <ManagementContext.Provider value={{ state, dispatch }}>
-      {children}
-    </ManagementContext.Provider>
-  );
+  return <ManagementContext.Provider value={{ state, dispatch }}>{children}</ManagementContext.Provider>;
 };
 
 const useManagementState = (): UserState => {
   const context = React.useContext(ManagementContext);
   if (context === undefined) {
-    throw new Error(
-      "useManagementState must be used within a ManagementProvider"
-    );
+    throw new Error('useManagementState must be used within a ManagementProvider');
   }
   return context.state;
 };
@@ -83,35 +63,27 @@ const useManagementState = (): UserState => {
 const useManagementDispatch = (): ManagementDispatch => {
   const context = React.useContext(ManagementContext);
   if (context === undefined) {
-    throw new Error(
-      "useManagementDispatch must be used within a ManagementProvider"
-    );
+    throw new Error('useManagementDispatch must be used within a ManagementProvider');
   }
   return context.dispatch;
 };
 
 const actions = {
-  ...genericActions<UserDto, ManagementDispatch>("/user", "userId"),
+  ...genericActions<UserDto, ManagementDispatch>('/user', 'userId'),
 
   doChangePassword:
     (id: number, password: string, notify: (message?: string) => void) =>
-    async (
-      dispatch: ManagementDispatch,
-      navigate: NavigateFunction
-    ): Promise<void> => {
+    async (dispatch: ManagementDispatch, navigate: NavigateFunction): Promise<void> => {
       try {
-        const { data }: { data: number } = await axios.put(
-          `/user/password/${id}`,
-          {
-            password,
-          }
-        );
-        console.log("password-update", data);
-        if (data === 1) notify("Пароль изменен");
-        navigate("/app/user/list");
+        const { data }: { data: number } = await axios.put(`/user/password/${id}`, {
+          password
+        });
+        console.log('password-update', data);
+        if (data === 1) notify('Пароль изменен');
+        navigate('/user/list');
       } catch (error) {
         dispatch({
-          type: "FORM_CREATE_ERROR",
+          type: 'FORM_CREATE_ERROR'
         });
       }
     },
@@ -121,17 +93,17 @@ const actions = {
     async (dispatch: ManagementDispatch): Promise<void> => {
       try {
         await axios.put(`/user/activate/${id}`, {});
-        dispatch({ type: "LIST_REFRESH" });
-        notify("Пользователь активирован");
+        dispatch({ type: 'LIST_REFRESH' });
+        notify('Пользователь активирован');
       } catch (error) {
         dispatch({
-          type: "FORM_CREATE_ERROR",
+          type: 'FORM_CREATE_ERROR'
         });
       }
     },
 
   doReferenceLists: doGenericReferenceLists({
-    medicalNets: "/medicalNet",
+    medicalNets: '/medicalNet'
   }),
 
   doReport:
@@ -139,58 +111,51 @@ const actions = {
     async (dispatch: ManagementDispatch): Promise<void> => {
       try {
         dispatch({
-          type: "FORM_FIND_STARTED",
+          type: 'FORM_FIND_STARTED'
         });
         const { data } = await axios.get(`/statistics`, {
           params: {
             dateFrom,
             dateTo,
-            medicalNetId,
-          },
+            medicalNetId
+          }
         });
 
         const report: UserReportDto = {
           ...data,
           condition: {
             ...data.condition,
-            dateFrom: data.condition.dateFrom
-              ? new Date(data.condition.dateFrom)
-              : undefined,
-            dateTo: data.condition.dateTo
-              ? new Date(data.condition.dateTo)
-              : undefined,
-            medicalNetId: data.condition.medicalNetId,
-          },
+            dateFrom: data.condition.dateFrom ? new Date(data.condition.dateFrom) : undefined,
+            dateTo: data.condition.dateTo ? new Date(data.condition.dateTo) : undefined,
+            medicalNetId: data.condition.medicalNetId
+          }
         };
 
         dispatch({
-          type: "FORM_FIND_SUCCESS",
+          type: 'FORM_FIND_SUCCESS',
           payload: {
-            report,
-          },
+            report
+          }
         });
       } catch (error) {
         dispatch({
-          type: "FORM_FIND_ERROR",
-          payload: (error as any).response.data?.message,
+          type: 'FORM_FIND_ERROR',
+          payload: (error as any).response.data?.message
         });
       }
     },
 
-  doIssueSupportToken: async (
-    userId: number,
-    medicalNetId: number
-  ): Promise<string> => {
+  doIssueSupportToken: async (userId: number, medicalNetId: number): Promise<string> => {
     try {
-      const { data } = await axios.post("/auth/issueSupportToken", {
+      const { data } = await axios.post('/auth/issueSupportToken', {
         userId,
-        medicalNetId,
+        medicalNetId
       });
 
       return (data as TokenResponseDto).authToken;
     } catch (error) {
       console.error((error as any).response.data?.message);
-      return "";
+      return '';
     }
   },
 
@@ -216,13 +181,9 @@ const actions = {
     }
   },
 
-  getConfirmationCodes: async (
-    userId: number
-  ): Promise<ConfirmationCodeDto[]> => {
+  getConfirmationCodes: async (userId: number): Promise<ConfirmationCodeDto[]> => {
     try {
-      const { data } = await axios.get(
-        `/confirmationCode/user/${userId}/records`
-      );
+      const { data } = await axios.get(`/confirmationCode/user/${userId}/records`);
 
       return (data as ListDto<ConfirmationCodeDto>).rows;
     } catch (error) {
@@ -231,9 +192,7 @@ const actions = {
     }
   },
 
-  getNotificationSettings: async (
-    userId: number
-  ): Promise<UserNotificationSettingDto[]> => {
+  getNotificationSettings: async (userId: number): Promise<UserNotificationSettingDto[]> => {
     try {
       const { data } = await axios.get(`/user/notificationSettings/${userId}`);
 
@@ -244,14 +203,9 @@ const actions = {
     }
   },
 
-  getMergeInfo: async (
-    sourceId: number,
-    targetId: number
-  ): Promise<MergeInfoDto> => {
+  getMergeInfo: async (sourceId: number, targetId: number): Promise<MergeInfoDto> => {
     try {
-      const { data } = await axios.get(
-        `/user/mergeInfo/${sourceId}/${targetId}`
-      );
+      const { data } = await axios.get(`/user/mergeInfo/${sourceId}/${targetId}`);
 
       return data as MergeInfoDto;
     } catch (error) {
@@ -260,18 +214,14 @@ const actions = {
     }
   },
 
-  doMerge: async (
-    sourceId: number,
-    targetId: number,
-    copyFields: string[]
-  ): Promise<string> => {
+  doMerge: async (sourceId: number, targetId: number, copyFields: string[]): Promise<string> => {
     try {
-      await axios.post("/user/merge", {
+      await axios.post('/user/merge', {
         sourceId,
         targetId,
-        copyFields,
+        copyFields
       });
-      return "";
+      return '';
     } catch (error) {
       return (error as any).response.data?.message;
     }
@@ -298,13 +248,10 @@ const actions = {
     }
   },
 
-  setVisitOutsidePlanning: async (
-    visitId: number,
-    isOutsidePlanning: boolean
-  ): Promise<boolean> => {
+  setVisitOutsidePlanning: async (visitId: number, isOutsidePlanning: boolean): Promise<boolean> => {
     try {
       await axios.put(`/user/visits/isOutsidePlanning/${visitId}`, {
-        isOutsidePlanning,
+        isOutsidePlanning
       });
       return true;
     } catch (error) {
@@ -339,7 +286,7 @@ const actions = {
     count = 50,
     filter: string | null = null,
     orderBy: string | null = null,
-    order: OrderDirection = "asc"
+    order: OrderDirection = 'asc'
   ) => {
     const res = await axios.get(`/user/notifications/${userId}`, {
       params: {
@@ -348,16 +295,11 @@ const actions = {
         count,
         filter,
         orderBy,
-        order,
-      },
+        order
+      }
     });
     return res.data as ListDto<NotificationDto>;
-  },
+  }
 };
 
-export {
-  ManagementProvider,
-  useManagementState,
-  useManagementDispatch,
-  actions,
-};
+export { ManagementProvider, useManagementState, useManagementDispatch, actions };

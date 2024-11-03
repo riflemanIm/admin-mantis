@@ -42,8 +42,8 @@ export default function NavItem({ item, level }) {
     // eslint-disable-next-line
   }, [pathname]);
 
-  const textColor = 'text.primary';
-  const iconSelectedColor = 'primary.main';
+  const textColor = 'primary.main';
+  const iconSelectedColor = 'primary.dark';
 
   return (
     <ListItemButton

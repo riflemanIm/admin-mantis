@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Translate as TranslateIcon,
   Chat as ChatIcon,
@@ -21,13 +21,13 @@ import {
   Reviews as ReviewsIcon,
   VerifiedUser as VerifiedUserIcon,
   Speed as SpeedIcon,
-  SvgIconComponent,
-} from "@mui/icons-material";
-import { AccountRole, Feature } from "../../helpers/enums";
-import CalyspoIcon from "./calypso";
+  SvgIconComponent
+} from '@mui/icons-material';
+import { AccountRole, Feature } from '../../helpers/enums';
+import CalyspoIcon from './calypso';
 
 export interface StructureItem {
-  kind?: "page" | "header" | "divider";
+  kind?: 'page' | 'header' | 'divider';
   id: string;
   role?: AccountRole[];
   features?: Feature[];
@@ -37,179 +37,179 @@ export interface StructureItem {
 
 const structure: StructureItem[] = [
   {
-    id: "content",
-    kind: "header",
-    role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.netMarketer],
+    id: 'content',
+    kind: 'header',
+    role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.netMarketer]
   },
   {
-    id: "specialization",
+    id: 'specialization',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [],
     icon: BadgeIcon,
-    link: "/app/specialization/list",
+    link: 'specialization/list'
   },
   {
-    id: "promo",
+    id: 'promo',
     role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.netMarketer],
     features: [Feature.web, Feature.mobile],
     icon: CardGiftcardIcon,
-    link: "/app/promo/list",
+    link: 'promo/list'
   },
   {
-    id: "clinic",
+    id: 'clinic',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [],
     icon: LocalHospitalIcon,
-    link: "/app/clinic/list",
-  },  
+    link: 'clinic/list'
+  },
   {
-    id: "medical_net",
+    id: 'medical_net',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [],
     icon: LibraryAddIcon,
-    link: "/app/medical_net/list",
+    link: 'medical_net/list'
   },
   {
-    id: "medical_brand",
+    id: 'medical_brand',
     role: [AccountRole.admin],
     features: [],
     icon: AcUnitIcon,
-    link: "/app/medical_brand/list",
+    link: 'medical_brand/list'
   },
   {
-    id: "notificationTemplate",
+    id: 'notificationTemplate',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [Feature.web, Feature.mobile],
-    link: "/app/notificationTemplate/list",
-    icon: EmailIcon,
+    link: 'notificationTemplate/list',
+    icon: EmailIcon
   },
   {
-    id: "agreement",
+    id: 'agreement',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [Feature.web, Feature.mobile],
-    link: "/app/agreement/list",
-    icon: HandshakeIcon,
+    link: 'agreement/list',
+    icon: HandshakeIcon
   },
   {
-    id: "medicalNetFaq",
+    id: 'medicalNetFaq',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [Feature.web, Feature.mobile],
-    link: "/app/medicalNetFaq/list",
-    icon: LiveHelpIcon,
+    link: 'medicalNetFaq/list',
+    icon: LiveHelpIcon
   },
   {
-    id: "webForms",
+    id: 'webForms',
     role: [AccountRole.admin],
     features: [],
     icon: CalyspoIcon,
-    link: "/app/webForm/list",
+    link: 'webForm/list'
   },
   {
-    id: "userData",
-    kind: "header",
-    role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.operator],
-  },  
+    id: 'userData',
+    kind: 'header',
+    role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.operator]
+  },
   {
-    id: "users",
+    id: 'users',
     role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.operator],
     features: [],
-    link: "/app/user/list",
-    icon: PersonIcon,
+    link: 'user/list',
+    icon: PersonIcon
   },
   {
-    id: "chat",
+    id: 'chat',
     role: [AccountRole.operator],
     features: [Feature.chat],
-    link: "/app/chat",
-    icon: ChatIcon,
+    link: 'chat',
+    icon: ChatIcon
   },
   {
-    id: "reviews",
+    id: 'reviews',
     role: [AccountRole.admin],
     features: [],
-    link: "/app/review/list",
-    icon: ReviewsIcon,
+    link: 'review/list',
+    icon: ReviewsIcon
   },
   {
-    id: "manage",
-    kind: "header",
-    role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.operator],
+    id: 'manage',
+    kind: 'header',
+    role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.operator]
   },
   {
-    id: "service",
+    id: 'service',
     role: [AccountRole.admin],
     features: [],
     icon: DnsIcon,
-    link: "/app/service/list",
+    link: 'service/list'
   },
   {
-    id: "settings",
+    id: 'settings',
     role: [AccountRole.admin],
     features: [],
     icon: SettingsIcon,
-    link: "/app/setting/list",
+    link: 'setting/list'
   },
   {
-    id: "cacheSettings",
+    id: 'cacheSettings',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [],
     icon: DataObjectIcon,
-    link: "/app/cacheSetting/list",
+    link: 'cacheSetting/list'
   },
   {
-    id: "hl7Settings",
+    id: 'hl7Settings',
     role: [AccountRole.admin],
     features: [],
     icon: SendTimeExtensionIcon,
-    link: "/app/hl7Setting/list",
+    link: 'hl7Setting/list'
   },
   {
-    id: "rateLimitSettings",
+    id: 'rateLimitSettings',
     role: [AccountRole.admin],
     features: [],
     icon: SpeedIcon,
-    link: "/app/rateLimit/list",
+    link: 'rateLimit/list'
   },
   {
-    id: "confirmationCodeSettings",
+    id: 'confirmationCodeSettings',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [Feature.web, Feature.mobile],
     icon: ConfirmationNumberIcon,
-    link: "/app/confirmationCodeSetting/list",
+    link: 'confirmationCodeSetting/list'
   },
   {
-    id: "translation",
+    id: 'translation',
     role: [AccountRole.admin, AccountRole.interpreter],
     features: [],
     icon: TranslateIcon,
-    link: "/app/translation/list",
+    link: 'translation/list'
   },
   {
-    id: "serviceTasks",
+    id: 'serviceTasks',
     role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.operator],
     features: [],
     icon: BuildIcon,
-    link: "/app/serviceTasks",
+    link: 'serviceTasks'
   },
   {
-    id: "reports",
-    kind: "header",
-    role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.netMarketer],
+    id: 'reports',
+    kind: 'header',
+    role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.netMarketer]
   },
   {
-    id: "statistics",
+    id: 'statistics',
     role: [AccountRole.admin, AccountRole.netAdmin, AccountRole.netMarketer],
     features: [],
-    link: "/app/user/report",
-    icon: DonutLargeIcon,
+    link: 'user/report',
+    icon: DonutLargeIcon
   },
   {
-    id: "audit",
+    id: 'audit',
     role: [AccountRole.admin, AccountRole.netAdmin],
     features: [],
-    link: "/app/audit/list",
-    icon: VerifiedUserIcon,
-  },
+    link: 'audit/list',
+    icon: VerifiedUserIcon
+  }
 ];
 
 export default structure;

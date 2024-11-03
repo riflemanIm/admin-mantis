@@ -84,28 +84,28 @@ const ClinicList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/clinic/${params.id}/edit`)}
+          onClick={() => navigate(`/clinic/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="specialization"
           icon={<BadgeIcon />}
           label="Специальности"
           color="primary"
-          onClick={() => navigate(`/app/clinic/${params.id}/specialization`)}
+          onClick={() => navigate(`/clinic/${params.id}/specialization`)}
         />,
         <GridActionsCellItem
           key="plExGrWeb"
           icon={<PaymentIcon />}
           label="Коммерческие группы приема"
           color="primary"
-          onClick={() => navigate(`/app/clinic/${params.id}/plExGrWeb`)}
+          onClick={() => navigate(`/clinic/${params.id}/plExGrWeb`)}
         />,
         <GridActionsCellItem
           key="check"
           icon={<BugReportIcon />}
           label="Проверить"
           color="primary"
-          onClick={() => navigate(`/app/clinic/${params.id}/check`)}
+          onClick={() => navigate(`/clinic/${params.id}/check`)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -184,7 +184,7 @@ const ClinicList = (): JSX.Element => {
             }
           ]}
           startActions={
-            <Button size="small" color="primary" href="#/app/clinic/add" startIcon={<AddIcon />}>
+            <Button size="small" color="primary" href="#clinic/add" startIcon={<AddIcon />}>
               {t('LIST.ADD')}
             </Button>
           }

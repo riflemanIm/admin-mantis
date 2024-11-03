@@ -65,7 +65,7 @@ const RateLimitList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/rateLimit/${params.id}/edit`)}
+          onClick={() => navigate(`/rateLimit/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -131,7 +131,7 @@ const RateLimitList = (): JSX.Element => {
           dispatch={dispatch}
           doFetch={actions.doFetch}
           startActions={
-            <Button size="small" color="primary" href="#/app/rateLimit/add" startIcon={<AddIcon />}>
+            <Button size="small" color="primary" href="#rateLimit/add" startIcon={<AddIcon />}>
               {t('LIST.ADD')}
             </Button>
           }

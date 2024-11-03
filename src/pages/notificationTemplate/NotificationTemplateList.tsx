@@ -79,7 +79,7 @@ const NotificationTemplateList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/notificationTemplate/${params.id}/edit`)}
+          onClick={() => navigate(`/notificationTemplate/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -194,7 +194,7 @@ const NotificationTemplateList = (): JSX.Element => {
             }
           ]}
           startActions={
-            <Button size="small" color="primary" href="#/app/notificationTemplate/add" startIcon={<AddIcon />}>
+            <Button size="small" color="primary" href="#notificationTemplate/add" startIcon={<AddIcon />}>
               {t('LIST.ADD')}
             </Button>
           }

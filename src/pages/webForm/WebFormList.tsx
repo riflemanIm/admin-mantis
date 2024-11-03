@@ -75,7 +75,7 @@ const WebFormList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/webForm/${params.id}/edit`)}
+          onClick={() => navigate(`/webForm/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -169,7 +169,7 @@ const WebFormList = (): JSX.Element => {
             }
           ]}
           startActions={
-            <Button size="small" color="primary" href="#/app/webForm/add" startIcon={<AddIcon />}>
+            <Button size="small" color="primary" href="#webForm/add" startIcon={<AddIcon />}>
               {t('LIST.ADD')}
             </Button>
           }

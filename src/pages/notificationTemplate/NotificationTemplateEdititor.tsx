@@ -1,39 +1,27 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  IconButton,
-} from "@mui/material";
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { Box, TextField, FormControl, InputLabel, Select, MenuItem, IconButton } from '@mui/material';
 
-import { useSnackbar } from "notistack";
-import { Info as InfoIcon } from "@mui/icons-material";
+import { useSnackbar } from 'notistack';
+import { Info as InfoIcon } from '@mui/icons-material';
 
-import useForm from "../../hooks/useForm";
-import validate, { NotificationTemplateError } from "./validation";
-import { useUserState } from "../../context/UserContext";
+import useForm from '../../hooks/useForm';
+import validate, { NotificationTemplateError } from './validation';
+import { useUserState } from '../../context/UserContext';
 import {
   isNetRole,
   NotificationRecordType,
   notificationRecordTypeNames,
   NotificationType,
-  notificationTypeNames,
-} from "../../helpers/enums";
-import {
-  actions,
-  useNotificationTemplateDispatch,
-  useNotificationTemplateState,
-} from "../../context/NotificationTemplateContext";
-import { NotificationTemplateDto } from "../../helpers/dto";
-import { useTranslation } from "react-i18next";
-import DescriptionDialog from "./DescriptionDialog";
-import { EditorButtons } from "../../components/Common/editorButtons";
-import isEmpty from "../../helpers/isEmpty";
+  notificationTypeNames
+} from '../../helpers/enums';
+import { actions, useNotificationTemplateDispatch, useNotificationTemplateState } from '../../context/NotificationTemplateContext';
+import { NotificationTemplateDto } from '../../helpers/dto';
+import { useTranslation } from 'react-i18next';
+import DescriptionDialog from './DescriptionDialog';
+import { EditorButtons } from '../../components/Common/editorButtons';
+import isEmpty from '../../helpers/isEmpty';
 
 const NotificationTemplateEdititor = (): JSX.Element => {
   const { t } = useTranslation();
@@ -43,7 +31,7 @@ const NotificationTemplateEdititor = (): JSX.Element => {
   const dispatch = useNotificationTemplateDispatch();
   const { medicalNets, help, current } = useNotificationTemplateState();
   const {
-    currentUser: { role, medicalNetId },
+    currentUser: { role, medicalNetId }
   } = useUserState();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -60,14 +48,12 @@ const NotificationTemplateEdititor = (): JSX.Element => {
     }
   }, [id]);
 
-  const [description, setDescription] = React.useState<
-    { title: string; description: string } | undefined
-  >(undefined);
+  const [description, setDescription] = React.useState<{ title: string; description: string } | undefined>(undefined);
 
   useEffect(() => {
     if (id && current) {
       setValues({
-        ...current,
+        ...current
       });
     }
   }, [current, id]);
@@ -76,14 +62,14 @@ const NotificationTemplateEdititor = (): JSX.Element => {
     actions.doCreate(
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/notificationTemplate/list");
+        navigate('/notificationTemplate/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
@@ -94,30 +80,23 @@ const NotificationTemplateEdititor = (): JSX.Element => {
       Number(id),
       values,
       () => {
-        enqueueSnackbar(t("COMMON.RECORDSAVED"), {
-          variant: "success",
+        enqueueSnackbar(t('COMMON.RECORDSAVED'), {
+          variant: 'success'
         });
-        navigate("/app/notificationTemplate/list");
+        navigate('/notificationTemplate/list');
       },
       (errorMessage: string) => {
         enqueueSnackbar(errorMessage, {
-          variant: "warning",
+          variant: 'warning'
         });
       }
     )(dispatch);
   };
 
-  const {
-    values,
-    errors,
-    handleChange,
-    handleChangeSelect,
-    handleSubmit,
-    setValues,
-  } = useForm<NotificationTemplateDto, NotificationTemplateError>(
-    id ? updateData : createData,
-    validate
-  );
+  const { values, errors, handleChange, handleChangeSelect, handleSubmit, setValues } = useForm<
+    NotificationTemplateDto,
+    NotificationTemplateError
+  >(id ? updateData : createData, validate);
 
   useEffect(() => {
     if (id) return;
@@ -125,33 +104,29 @@ const NotificationTemplateEdititor = (): JSX.Element => {
       setValues({
         ...values,
         medicalNetId,
-        langCode: values.langCode || "rus",
+        langCode: values.langCode || 'rus',
         notificationType: values.notificationType || NotificationType.Email,
-        recordType: values.recordType || NotificationRecordType.Confirmation,
+        recordType: values.recordType || NotificationRecordType.Confirmation
       });
     } else {
       setValues({
         ...values,
-        langCode: values.langCode || "rus",
+        langCode: values.langCode || 'rus',
         notificationType: values.notificationType || NotificationType.Email,
-        recordType: values.recordType || NotificationRecordType.Confirmation,
+        recordType: values.recordType || NotificationRecordType.Confirmation
       });
     }
   }, [id, role]);
 
   const hasDescription = React.useCallback(() => {
-    return help.some(
-      (it) => it.code === NotificationRecordType[values.recordType]
-    );
+    return help.some((it) => it.code === NotificationRecordType[values.recordType]);
   }, [help, values.recordType]);
 
   const showDescription = React.useCallback(() => {
-    const helpItem = help.find(
-      (it) => it.code === NotificationRecordType[values.recordType]
-    );
+    const helpItem = help.find((it) => it.code === NotificationRecordType[values.recordType]);
     setDescription({
       title: NotificationRecordType[values.recordType],
-      description: helpItem!.value,
+      description: helpItem!.value
     });
   }, [hasDescription, values.recordType]);
 
@@ -166,12 +141,12 @@ const NotificationTemplateEdititor = (): JSX.Element => {
       <Box display="flex" flexDirection="column" width={800}>
         <TextField
           variant="outlined"
-          value={values?.description || ""}
+          value={values?.description || ''}
           name="description"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("NOTIFICATIONTEMPLATE.FIELDS.description") ?? ""}
-          label={t("NOTIFICATIONTEMPLATE.FIELDS.description")}
+          placeholder={t('NOTIFICATIONTEMPLATE.FIELDS.description') ?? ''}
+          label={t('NOTIFICATIONTEMPLATE.FIELDS.description')}
           type="text"
           fullWidth
           required
@@ -179,21 +154,15 @@ const NotificationTemplateEdititor = (): JSX.Element => {
           helperText={errors?.description != null && errors?.description}
         />
         {!isNetRole(role) && (
-          <FormControl
-            variant="outlined"
-            style={{ marginBottom: 35, marginRight: 8 }}
-            fullWidth
-          >
-            <InputLabel id="id-medicalnet-label">
-              {t("NOTIFICATIONTEMPLATE.FIELDS.medicalNetId")}
-            </InputLabel>
+          <FormControl variant="outlined" style={{ marginBottom: 35, marginRight: 8 }} fullWidth>
+            <InputLabel id="id-medicalnet-label">{t('NOTIFICATIONTEMPLATE.FIELDS.medicalNetId')}</InputLabel>
             <Select
               name="medicalNetId"
               labelId="id-medicalnet-label"
               id="id-medicalnet-select"
-              label={t("NOTIFICATIONTEMPLATE.FIELDS.medicalNetId")}
+              label={t('NOTIFICATIONTEMPLATE.FIELDS.medicalNetId')}
               onChange={handleChangeSelect}
-              value={values?.medicalNetId || ""}
+              value={values?.medicalNetId || ''}
             >
               {medicalNets.map((item) => (
                 <MenuItem value={item.medicalNetId} key={item.medicalNetId}>
@@ -205,22 +174,20 @@ const NotificationTemplateEdititor = (): JSX.Element => {
         )}
         <TextField
           variant="outlined"
-          value={values?.clinicId || ""}
+          value={values?.clinicId || ''}
           name="clinicId"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("NOTIFICATIONTEMPLATE.FIELDS.clinicId") ?? ""}
-          label={t("NOTIFICATIONTEMPLATE.FIELDS.clinicId")}
+          placeholder={t('NOTIFICATIONTEMPLATE.FIELDS.clinicId') ?? ''}
+          label={t('NOTIFICATIONTEMPLATE.FIELDS.clinicId')}
           type="number"
           fullWidth
         />
         <FormControl fullWidth style={{ marginBottom: 35 }}>
-          <InputLabel id="nt-label">
-            {t("NOTIFICATIONTEMPLATE.FIELDS.notificationType")}
-          </InputLabel>
+          <InputLabel id="nt-label">{t('NOTIFICATIONTEMPLATE.FIELDS.notificationType')}</InputLabel>
           <Select
             labelId="nt-label"
-            label={t("NOTIFICATIONTEMPLATE.FIELDS.notificationType")}
+            label={t('NOTIFICATIONTEMPLATE.FIELDS.notificationType')}
             name="notificationType"
             onChange={handleChangeSelect}
             value={values?.notificationType || NotificationType.Email}
@@ -236,12 +203,10 @@ const NotificationTemplateEdititor = (): JSX.Element => {
         </FormControl>
         <Box display="flex" mb={2} alignItems="flex-start">
           <FormControl fullWidth style={{ marginBottom: 35 }}>
-            <InputLabel id="nrt-label">
-              {t("NOTIFICATIONTEMPLATE.FIELDS.recordType")}
-            </InputLabel>
+            <InputLabel id="nrt-label">{t('NOTIFICATIONTEMPLATE.FIELDS.recordType')}</InputLabel>
             <Select
               labelId="nrt-label"
-              label={t("NOTIFICATIONTEMPLATE.FIELDS.recordType")}
+              label={t('NOTIFICATIONTEMPLATE.FIELDS.recordType')}
               name="recordType"
               onChange={handleChangeSelect}
               value={values?.recordType || NotificationRecordType.Confirmation}
@@ -253,23 +218,18 @@ const NotificationTemplateEdititor = (): JSX.Element => {
               ))}
             </Select>
           </FormControl>
-          <IconButton
-            style={{ padding: 15 }}
-            size="large"
-            disabled={!hasDescription()}
-            onClick={() => showDescription()}
-          >
+          <IconButton style={{ padding: 15 }} size="large" disabled={!hasDescription()} onClick={() => showDescription()}>
             <InfoIcon />
           </IconButton>
         </Box>
         <TextField
           variant="outlined"
-          value={values?.langCode || "rus"}
+          value={values?.langCode || 'rus'}
           name="langCode"
           onChange={handleChange}
           style={{ marginBottom: 25 }}
-          placeholder={t("NOTIFICATIONTEMPLATE.FIELDS.langCode") ?? ""}
-          label={t("NOTIFICATIONTEMPLATE.FIELDS.langCode")}
+          placeholder={t('NOTIFICATIONTEMPLATE.FIELDS.langCode') ?? ''}
+          label={t('NOTIFICATIONTEMPLATE.FIELDS.langCode')}
           type="text"
           fullWidth
           required
@@ -278,12 +238,12 @@ const NotificationTemplateEdititor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.template || ""}
+          value={values?.template || ''}
           name="template"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("NOTIFICATIONTEMPLATE.FIELDS.template") ?? ""}
-          label={t("NOTIFICATIONTEMPLATE.FIELDS.template")}
+          placeholder={t('NOTIFICATIONTEMPLATE.FIELDS.template') ?? ''}
+          label={t('NOTIFICATIONTEMPLATE.FIELDS.template')}
           multiline
           minRows={4}
           type="text"
@@ -291,12 +251,12 @@ const NotificationTemplateEdititor = (): JSX.Element => {
         />
         <TextField
           variant="outlined"
-          value={values?.templateHtml || ""}
+          value={values?.templateHtml || ''}
           name="templateHtml"
           onChange={handleChange}
           style={{ marginBottom: 35 }}
-          placeholder={t("NOTIFICATIONTEMPLATE.FIELDS.templateHtml") ?? ""}
-          label={t("NOTIFICATIONTEMPLATE.FIELDS.templateHtml")}
+          placeholder={t('NOTIFICATIONTEMPLATE.FIELDS.templateHtml') ?? ''}
+          label={t('NOTIFICATIONTEMPLATE.FIELDS.templateHtml')}
           multiline
           minRows={4}
           type="text"
@@ -304,7 +264,7 @@ const NotificationTemplateEdititor = (): JSX.Element => {
         />
         <EditorButtons
           width={800}
-          onCancel={() => navigate("/app/notificationTemplate/list")}
+          onCancel={() => navigate('/notificationTemplate/list')}
           submitDisabled={!isEmpty(errors)}
           onSubmit={handleSubmit}
         />

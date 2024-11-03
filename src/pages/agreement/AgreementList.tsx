@@ -76,7 +76,7 @@ const AgreementList = (): JSX.Element => {
           icon={<CreateIcon />}
           label="Редактировать"
           color="primary"
-          onClick={() => navigate(`/app/agreement/${params.id}/edit`)}
+          onClick={() => navigate(`/agreement/${params.id}/edit`)}
         />,
         <GridActionsCellItem
           key="delete"
@@ -167,7 +167,7 @@ const AgreementList = (): JSX.Element => {
             }
           ]}
           startActions={
-            <Button size="small" color="primary" href="#/app/agreement/add" startIcon={<AddIcon />}>
+            <Button size="small" color="primary" href="#agreement/add" startIcon={<AddIcon />}>
               {t('LIST.ADD')}
             </Button>
           }
